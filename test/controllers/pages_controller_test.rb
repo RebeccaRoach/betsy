@@ -1,7 +1,9 @@
 require "test_helper"
 
 describe PagesController do
-  # it "does a thing" do
-  #   value(1+1).must_equal 2
-  # end
+  it "can get the homepage and is the root path" do
+    get root_path
+
+    must_respond_with :success
+  end
 end
