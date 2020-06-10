@@ -39,4 +39,29 @@ class OrderitemsController < ApplicationController
     redirect_back fallback_location: root_path
     return
   end
+
+  def edit ; end
+  
+  # comment here
+  def update
+    if @orderitem.order.status == "pending"
+      if @orderitem.update(quantity: params[:orderitem][:quantity])
+        flash[:status] = :success
+        flash[:result_text] = "Update sucessful"
+        redirect_to cart_path
+        return
+      else
+        flash.now[:status] = :failure
+        flash.now[:result_text] = "Error updating the item"
+        flash.now[:messages] = @orderitem.errors.messages
+        render :edit, status: :bad_request
+        return
+      end
+    else
+      flash[:status] = :failure
+      flash[:result_text] = "Cannot update a #{@orderitem.order.status} order"
+      redirect_to root_path
+    end
+  end
+
 end
