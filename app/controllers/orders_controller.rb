@@ -43,6 +43,17 @@ class OrdersController < ApplicationController
     end
   end
 
+  # Confirmation page for order
+  def show
+    if @order.status == "pending"
+      flash[:status] = :failure
+      flash[:result_text] = "Your order is being process"
+      flash[:messages] = @order.errors.messages
+      redirect_to root root_path
+      return
+    end
+  end
+
   private
   def order_params
     params.require(:order).permit(:email, :mailing_address, :cc_number, :cvv, :expiration, :zip)
