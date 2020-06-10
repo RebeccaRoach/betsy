@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_225854) do
     t.string "description"
     t.float "price"
     t.string "photo_url"
-    t.bigint "available_quantity"
+    t.bigint "stock"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "reviews_id"
