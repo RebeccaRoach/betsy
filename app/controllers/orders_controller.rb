@@ -1,5 +1,8 @@
 class OrdersController < ApplicationController
-  # product model made then collab for update order quantity
+  # todo -product model made then collab for update order quantity
+  before_action :require_login, only: [:merchant_order]
+  before_action :find_order_from_session, only: [:edit, :update]
+  before_action :find_order_from_params, only: [:show, :merchant_order]
 
   # Find order or display message if cart is empty
   def cart
@@ -54,6 +57,7 @@ class OrdersController < ApplicationController
     end
   end
 
+  # comment here
   def merchant_order
     unless @order.is_order_of(session[:merchant_id]) && @order.status != 'pending'
       flash[:status] = :failure
