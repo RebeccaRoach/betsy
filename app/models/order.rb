@@ -3,7 +3,7 @@ class Order < ApplicationRecord
   has_many :products, through: :orderitems
 
   validates :status, presence: true, inclusion: { 
-    in: %w(pending paid complete cancel),
+    in: %w(pending paid complete),
     message: "%{value} is not a valid status" 
   }
 
