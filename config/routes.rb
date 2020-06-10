@@ -11,5 +11,5 @@ Rails.application.routes.draw do
   patch '/orders/:id', to: 'orders#update'
 
   resources :reviews, only: [:new, :create]
-
+  resources :categories, only: [:new, :create, :show, :index]
 end
