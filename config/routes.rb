@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'homepages#index'
+  root to: 'pages#index'
 
   resources :orderitems, only: [:edit, :destroy]
   patch 'orderitems/:id', to: 'orderitems#update'
