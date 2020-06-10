@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root to: 'pages#index'
+  resources :pages, only: :index
 
   resources :orderitems, only: [:edit, :destroy]
   patch 'orderitems/:id', to: 'orderitems#update'
