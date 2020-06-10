@@ -64,4 +64,14 @@ class OrderitemsController < ApplicationController
     end
   end
 
+  # comment here
+  def destroy
+    if @orderitem.order.status == "pending"
+      @orderitem.destroy
+      flash[:status] = :success
+      flash[:result_text] = "#{@orderitem.product.name} was removed from your cart"
+      redirect_to root_path
+    end
+  end
+
 end
