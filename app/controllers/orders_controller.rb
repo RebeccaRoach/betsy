@@ -54,8 +54,27 @@ class OrdersController < ApplicationController
     end
   end
 
+  def merchant_order
+    unless @order.is_order_of(session[:merchant_id]) && @order.status != 'pending'
+      flash[:status] = :failure
+      flash[:result_text] = "You do not have access to this page"
+      redirect_back fallback_location: root_path
+      return
+    end
+  end
+
   private
   def order_params
     params.require(:order).permit(:email, :mailing_address, :cc_number, :cvv, :expiration, :zip)
+  end
+
+  def find_order_from_session
+    @order = Order.find_by(id: session[:order_id])
+    return head :not_found if @order.nil?
+  end
+
+  def find_order_from_params
+    @order = Order.find_by(id: params[:id])
+    return head :not_found if @order.nil?
   end
 end
