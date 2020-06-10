@@ -9,4 +9,7 @@ Rails.application.routes.draw do
   resources :orders, only: [:show, :edit]
   get '/cart', to: 'orders#cart', as: 'cart'
   patch '/orders/:id', to: 'orders#update'
+
+  resources :reviews, only: [:new, :create]
+
 end
