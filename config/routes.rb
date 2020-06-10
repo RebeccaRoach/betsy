@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :pages, only: :index
 
   resources :products
+  resources :merchants
 
   resources :orderitems, only: [:edit, :destroy]
   patch 'orderitems/:id', to: 'orderitems#update'
