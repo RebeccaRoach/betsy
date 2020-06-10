@@ -1,5 +1,5 @@
 class OrderitemsController < ApplicationController
-  before_action
+  before_action: find_orderitem, only: [:edit, :update, :destroy, :mark_shipped]
 
   # create a new order or add to existing- do we want this?
   def create
@@ -70,8 +70,38 @@ class OrderitemsController < ApplicationController
       @orderitem.destroy
       flash[:status] = :success
       flash[:result_text] = "#{@orderitem.product.name} was removed from your cart"
+      redirect_to cart_path
+    else
+      flash[:status] = :failure
+      flash[:result_text] = "Cannot delete items"
       redirect_to root_path
     end
   end
 
+  # comment here
+  def mark_shipped
+    if @orderitem.order.status == "paid" && @orderitem.shipped == false
+      @orderitem.shipped = true
+      @orderitem.save
+      flash[:status] = :success
+      flash[:result_text] = "#{@orderitem.product.name} - shipped"
+      @orderitem.order.mark_as_complete?
+      redirect_back fallback_location: root_path
+
+    elsif @orderitem.order.status == "paid" && @orderitem.shipped == true
+      flash[:status] = :failure
+      flash[:result_text] = "#{@orderitem.shipped}- shipped"
+      redirect_back fallback_location: root_path
+    else
+      flash[:status] = :failure
+      flash[:result_text] = "Cannot perform this action for a #{@orderitem.order.status} order"
+      redirect_to root_path
+    end
+  end
+
+  private
+  def find_orderitem
+    @orderitem = Orderitem.find_by(id: params[:id])
+    head :not_found unless @orderitem
+  end
 end
