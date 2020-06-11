@@ -1,3 +1,7 @@
+#todo
+# create a shipped column (bool) maybe product needs that 'retired' column on it's side
+# create a table with orders info and migrate
+
 class Order < ApplicationRecord
   has_many :orderitems
   has_many :products, through: :orderitems
@@ -5,7 +9,7 @@ class Order < ApplicationRecord
   belongs_to :merchant
 
   validates :status, presence: true, inclusion: { 
-    in: %w(pending paid complete cancel),
+    in: %w(pending paid complete),
     message: "%{value} is not a valid status" 
   }
 
@@ -18,21 +22,22 @@ class Order < ApplicationRecord
   # validates :cc_exp, presence: true, on: :update
   # validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
-  def reduce_stock
-    self.orderitems.each do |orderitem|
-      orderitem.product.stock -= orderitem.quantity
-      orderitem.product.save
-    end
-  end
+  # review after seeding
+  # def reduce_stock
+  #   self.orderitems.each do |orderitem|
+  #     orderitem.product.stock -= orderitem.quantity
+  #     orderitem.product.save
+  #   end
+  # end
 
-  def return_stock
-    self.orderitems.each do |orderitem|
-      if !orderitem.product.retired
-        orderitem.product.stock += orderitem.quantity
-        orderitem.product.save
-      end
-    end
-  end
+  # def return_stock
+  #   self.orderitems.each do |orderitem|
+  #     if !orderitem.product.retired
+  #       orderitem.product.stock += orderitem.quantity
+  #       orderitem.product.save
+  #     end
+  #   end
+  # end
 
   def total
     total_cost = 0
