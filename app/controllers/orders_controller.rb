@@ -16,6 +16,9 @@ class OrdersController < ApplicationController
     end
   end
 
+  #todo create payment information form
+  def edit ; end
+
   # Process order after payment info has been addded
   def update
     @order.orderitems.each do |oderitem|
