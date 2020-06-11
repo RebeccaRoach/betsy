@@ -1,16 +1,86 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- */
-/* Custom bootstrap variables must be set or imported *before* bootstrap. */
 @import "bootstrap";
 @import "**/*";
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* Header */
+header {
+  padding: 30px;
+  font-size: 20px;
+  max-width: 100%;
+}
+
+.header-logo, a{
+  font-family: 'Old Standard TT', serif;
+  font-weight: 700;
+  font-size: 90px;
+  color: #000;
+}
+
+.header-logo:hover {
+  text-decoration: none;
+  color: #6d6d6d;
+}
+
+.header-byline {
+  font-family: 'Old Standard TT', serif;
+  font-weight: 400;
+  font-style: italic;
+  color: #7f7f7f;
+}
+
+/* Navigation */
+.nav-item-custom {
+  font-family: 'Rubik', sans-serif;
+  text-transform: uppercase;
+}
+
+.nav-link-custom, a {
+  font-family: 'Rubik', sans-serif;
+  color: black;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.nav-link-custom:hover {
+  text-decoration: none;
+  color: #7f7f7f;
+}
+
+/* Content */
+
+html {
+  height: 100%;
+}
+
+.content {
+  padding: 40px 70px 60px 70px;
+}
+
+body {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow-x: hidden;
+  font-family: 'Rubik', sans-serif;
+}
+
+
+/* Footer */
+.footer {
+  padding: 30px;
+  text-transform: uppercase;
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
+  background-color: rgb(206, 206, 206);
+  color: white;
+}
+
+// allows for sticky footer when placed in body class
+.wrapper {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
