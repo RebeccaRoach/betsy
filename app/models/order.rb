@@ -2,19 +2,21 @@ class Order < ApplicationRecord
   has_many :orderitems
   has_many :products, through: :orderitems
 
+  belongs_to :merchant
+
   validates :status, presence: true, inclusion: { 
     in: %w(pending paid complete cancel),
     message: "%{value} is not a valid status" 
   }
 
-  validates :orderitems, length: { minimum: 1, message: "Your cart is empty" }, on: :update
-  validates :email, presence: true, on: :update
-  validates :address, presence: true, on: :update
-  validates :cc_name, presence: true, on: :update
-  validates :cc_num, presence: true, numericality: { only_integer: true }, length: { minimum: 4 }, on: :update
-  validates :cvv, presence: true, numericality: { only_integer: true }, on: :update
-  validates :cc_exp, presence: true, on: :update
-  validates :zip, presence: true, numericality: { only_integer: true }, on: :update
+  # validates :orderitems, length: { minimum: 1, message: "Your cart is empty" }, on: :update
+  # validates :email, presence: true, on: :update
+  # validates :address, presence: true, on: :update
+  # validates :cc_name, presence: true, on: :update
+  # validates :cc_num, presence: true, numericality: { only_integer: true }, length: { minimum: 4 }, on: :update
+  # validates :cvv, presence: true, numericality: { only_integer: true }, on: :update
+  # validates :cc_exp, presence: true, on: :update
+  # validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
   def reduce_stock
     self.orderitems.each do |orderitem|
