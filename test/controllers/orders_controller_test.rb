@@ -1,4 +1,5 @@
 require "test_helper"
+require "pry"
 
 describe OrdersController do
   let(:valid_params){
@@ -14,7 +15,7 @@ describe OrdersController do
       },
     }
   }
-
+binding.pry
   describe "empty cart" do
     it "redirects to root path and provides a message" do
       get cart_path
