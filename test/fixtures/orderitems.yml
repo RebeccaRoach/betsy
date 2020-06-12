@@ -1,7 +1,8 @@
 rxbar:
   quantity: 3
   order: order1
-  product: RxBar
+  # if we have trouble, change product to product_id to mirror the table for orderitems
+  product: rx_bar
   shipped: false
 snow:
   quantity: 1
@@ -16,10 +17,10 @@ nature_valley:
 rainer:
   quantity: 1
   order: order2
-  product: mount_rainer
+  product: rainer
   shipped: false
 discover:
   quantity: 1
   order: order2
-  product_id: discover_pass
+  product: discover
   shipped: false

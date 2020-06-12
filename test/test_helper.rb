@@ -1,3 +1,4 @@
+require "pry"
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
@@ -18,11 +19,18 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # helper method to set session for a valid order
-  def valid_order
-    # empty_order = Order.new(status: "pending", )
-    # orderItem = fixture data for an orderitem
-    # orderItem.order_id = empty_order.id
-    # # maybe need merchant id??
-    # orderitem.save
+  def make_order
+    # empty_order = Order.new(status: "pending")
+    # orderitem = orderitems(:rainer)
+    # # orderitem.order_id = empty_order.id
+    # orderitem.save!
+    # @order = Order.find_by(id: orderitem.order.id)
+    # return @order
+
+    orderitem = Orderitem.create!(quantity: 1, order: orders(:order2), product: products(:rainer), shipped: false)
+    @order = Order.find_by(id: orderitem.order.id)
+    # expect id = 2
+    puts "ORDER ID: #{@order.id}"
+    return @order
   end
 end
