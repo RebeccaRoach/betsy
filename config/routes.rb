@@ -9,9 +9,9 @@ Rails.application.routes.draw do
   patch 'orderitems/:id', to: 'orderitems#update'
   patch 'orderitems/:id/mark_shipped', to: 'orderitems#markshipped', as: 'mark_shipped'
 
-  resources :orders, only: [:show, :edit]
-  get '/cart', to: 'orders#cart', as: 'cart'
-  patch '/orders/:id', to: 'orders#update'
+  resources :orders, only: [:show, :edit, :update]
+  get '/orders/:id/cart', to: 'orders#cart', as: 'cart'
+  # need custom route for place order?
 
   resources :reviews, only: [:new, :create]
   resources :categories, only: [:new, :create, :show, :index]
