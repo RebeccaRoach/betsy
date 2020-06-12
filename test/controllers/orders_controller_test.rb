@@ -50,9 +50,12 @@ describe OrdersController do
     end
 
     it "redirects for orders with a valid id" do
-      get order_path(id: orders(:order1))
-      must_redirect_to root_path
-      expect(flash[:status]).must_equal :failure
+      order_id = orders(:order1).id
+      puts "ORDER ID: #{order_id}"
+
+      get order_path(id: order_id)
+      must_redirect_to order_path(order_id)
+      expect(flash[:status]).must_equal :success
     end
 
     #ActionController::MissingExactTemplate: OrdersController#show is missing a template for request formats: text/html
@@ -62,17 +65,4 @@ describe OrdersController do
     # end
 
   end
-
-  # describe "initialized cart" do
-  #   before do
-  #     # path that connects product and orderitems?
-  #     post comment? (product_id: products(:nature_valley).id), params: { orderitem: { quantity: 2, }, }
-  #   end
-  #   describe "cart" do
-  #     it "returns success for an existing session order id" do
-  #       get cart_path
-  #       must_respond_with :success
-  #     end
-  #   end
-  # end
 end
