@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   resources :orders, only: [:show, :edit]
   get '/cart', to: 'orders#cart', as: 'cart'
   patch '/orders/:id', to: 'orders#update'
+  get '/orders/:id/merchant_order', to: 'orders#merchant_order', as: 'merchant_order'
 end

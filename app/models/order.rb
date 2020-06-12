@@ -21,21 +21,21 @@ class Order < ApplicationRecord
   validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
   # review after seeding
-  # def reduce_stock
-  #   self.orderitems.each do |orderitem|
-  #     orderitem.product.stock -= orderitem.quantity
-  #     orderitem.product.save
-  #   end
-  # end
+  def reduce_stock
+    self.orderitems.each do |orderitem|
+      orderitem.product.stock -= orderitem.quantity
+      orderitem.product.save
+    end
+  end
 
-  # def return_stock
-  #   self.orderitems.each do |orderitem|
-  #     if !orderitem.product.retired
-  #       orderitem.product.stock += orderitem.quantity
-  #       orderitem.product.save
-  #     end
-  #   end
-  # end
+  def return_stock
+    self.orderitems.each do |orderitem|
+      if !orderitem.product.retired
+        orderitem.product.stock += orderitem.quantity
+        orderitem.product.save
+      end
+    end
+  end
 
   def total
     total_cost = 0
@@ -58,7 +58,7 @@ class Order < ApplicationRecord
     if self.products.find_by(merchant_id: merch_id).nil?
       return false
     end
-
+    
     return true
   end
 end
