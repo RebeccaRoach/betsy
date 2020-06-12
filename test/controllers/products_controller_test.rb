@@ -21,4 +21,21 @@ describe ProductsController do
       must_respond_with :success
     end
   end
+
+
+  describe "show" do
+    it "responds with success when showing an existing valid product" do
+      valid_product_id = products(:rainier).id
+
+      get "/products/#{valid_product_id}"
+
+      must_respond_with :success
+    end
+
+    it "responds with 404 with an invalid product id" do
+      get "/products/#{@invalid_product_id}"
+
+      must_respond_with :not_found
+    end
+  end
 end

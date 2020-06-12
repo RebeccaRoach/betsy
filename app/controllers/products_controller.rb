@@ -9,7 +9,7 @@ class ProductsController < ApplicationController
   def show
     if @product.nil?
       flash[:error] = "Product has either been deleted, sold out, or not found."
-      redirect_to root_path
+      head :not_found
       return
     end
   end
