@@ -58,6 +58,10 @@ header {
   text-decoration: none;
 }
 
+.navbar-nav li:hover>.dropdown-menu {
+  display: block;
+}
+
 /* Content */
 
 html {
