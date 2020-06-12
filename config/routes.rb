@@ -15,4 +15,5 @@ Rails.application.routes.draw do
 
   resources :reviews, only: [:new, :create]
   resources :categories, only: [:new, :create, :show, :index]
+  get '/orders/:id/merchant_order', to: 'orders#merchant_order', as: 'merchant_order'
 end

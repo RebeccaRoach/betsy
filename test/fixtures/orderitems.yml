@@ -1,25 +1,25 @@
-rx_bar:
+rxbar:
   quantity: 3
   order: order1
-  product: rx bar
+  product: RxBar
   shipped: false
 snow:
   quantity: 1
   order: order1
-  product: snow pass
+  product: snow_pass
   shipped: false
 nature_valley:
   quantity: 2
   order: order2
-  product: nature valley
+  product: nature_valley
   shipped: false
 rainer:
   quantity: 1
   order: order2
-  product: mount rainer
+  product: mount_rainer
   shipped: false
 discover:
   quantity: 1
   order: order2
-  product: discover pass
+  product_id: discover_pass
   shipped: false

@@ -22,6 +22,7 @@ class Order < ApplicationRecord
   validates :cc_exp, presence: true, on: :update
   validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
+  # review after seeding
   def reduce_stock
     self.orderitems.each do |orderitem|
       orderitem.product.stock -= orderitem.quantity
@@ -59,7 +60,7 @@ class Order < ApplicationRecord
     if self.products.find_by(merchant_id: merch_id).nil?
       return false
     end
-
+    
     return true
   end
 end
