@@ -1,0 +1,46 @@
+<%# Product Description Header %>
+<section class="px-5">
+  <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
+  <h6><%= link_to "< ALL PRODUCTS", products_path, class: "local-navigation" %></h6>
+  <h1 class="catalog__header"><%= @product.product_name %></h1>
+  <h4 class="catalog__detail-header">RATING: ##/5 (# of reviews)</h4>
+  <h4 class="catalog__detail-header">Sold by: <span><%= link_to "MERCHANT MOTHER NATURE", root_path, class: "catalog__detail-header" %></span></h4>
+  <h6 class="catalog__secondary-header">Categories: TODO-LOOP TO LIST CATEGORIES </h6>
+  
+  <hr>
+</section>
+
+
+<%# Product Picture and Description %>
+<section class="container-fluid px-5">
+  <div class="row px-5">
+    <div class="col">
+      <div class="embed-responsive embed-responsive-1by1">
+        <img class="card-img-top embed-responsive-item rounded-0" src=<%= @product.photo_url %> alt=<%= @product.product_name%>>
+      </div>
+    </div>
+    <div class="col">
+      <h2 class="catalog__description-title">$<%= @product.price %></h2>
+      <h2 class="text-uppercase catalog__description-title">Description</h2>
+      <div class="catalog__description-text"><%= @product.description %></div>
+
+      <div class="py-3">
+      <%# mini form to "add to card", link to order, and send up params of current product to be an orderitem %>
+      <h2 class="catalog__description-title">Quantity <span>▭</span></h2> 
+      <%= button_to "add to cart", root_path, method: :get, class: "catalog__add-to-cart-button"   %>
+
+      </div>
+    </div>
+  </div>
+
+<%# Product Reviews %>
+<section class="container-fluid p-5 mb-5">
+  <h2 class="catalog__review-title">Reviews</h2>
+  <hr>
+  <% if !@product.reviews.empty? %>
+    <h6 class="catalog__review-text">Reviews exist you just haven't put a loop to place the reviews here</h6>
+  <% else %>
+    <h6 class="catalog__review-text">No reviews yet</h6>
+  <% end %>
+</section>
+</section>
