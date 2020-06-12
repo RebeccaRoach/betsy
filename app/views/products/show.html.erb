@@ -1,16 +1,19 @@
 <%# Product Description Header %>
-<h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
-<h6><%= link_to "< ALL PRODUCTS", products_path, class: "local-navigation" %></h6>
-<h1 class="catalog__header"><%= @product.product_name %></h1>
-<h4 class="catalog__detail-header">RATING: ##/5 (# of reviews)</h4>
-<h4 class="catalog__detail-header">Sold by: <span><%= link_to "MERCHANT MOTHER NATURE", root_path, class: "catalog__detail-header" %></span></h4>
-<h6 class="catalog__secondary-header">Categories: TODO-LOOP TO LIST CATEGORIES </h6>
+<section class="px-5">
+  <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
+  <h6><%= link_to "< ALL PRODUCTS", products_path, class: "local-navigation" %></h6>
+  <h1 class="catalog__header"><%= @product.product_name %></h1>
+  <h4 class="catalog__detail-header">RATING: ##/5 (# of reviews)</h4>
+  <h4 class="catalog__detail-header">Sold by: <span><%= link_to "MERCHANT MOTHER NATURE", root_path, class: "catalog__detail-header" %></span></h4>
+  <h6 class="catalog__secondary-header">Categories: TODO-LOOP TO LIST CATEGORIES </h6>
+  
+  <hr>
+</section>
 
-<hr>
 
 <%# Product Picture and Description %>
 <section class="container-fluid px-5">
-  <div class="row">
+  <div class="row px-5">
     <div class="col">
       <div class="embed-responsive embed-responsive-1by1">
         <img class="card-img-top embed-responsive-item rounded-0" src=<%= @product.photo_url %> alt=<%= @product.product_name%>>
@@ -29,7 +32,6 @@
       </div>
     </div>
   </div>
-</section>
 
 <%# Product Reviews %>
 <section class="container-fluid p-5 mb-5">
@@ -40,4 +42,5 @@
   <% else %>
     <h6 class="catalog__review-text">No reviews yet</h6>
   <% end %>
+</section>
 </section>
