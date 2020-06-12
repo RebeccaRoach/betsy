@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2020_06_12_173351) do
+=======
+ActiveRecord::Schema.define(version: 2020_06_12_183310) do
+>>>>>>> master
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,8 +63,6 @@ ActiveRecord::Schema.define(version: 2020_06_12_173351) do
     t.integer "cvv"
     t.string "cc_exp"
     t.integer "zip"
-    t.bigint "merchant_id"
-    t.index ["merchant_id"], name: "index_orders_on_merchant_id"
   end
 
   create_table "products", force: :cascade do |t|
