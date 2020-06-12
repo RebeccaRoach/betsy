@@ -15,4 +15,9 @@ Rails.application.routes.draw do
 
   resources :reviews, only: [:new, :create]
   resources :categories, only: [:new, :create, :show, :index]
+
+  resources :merchants
+  get "/auth/github", as: "github_login"
+  get "/auth/github/callback", to: "merchants#create", as: "auth_callback"
+  delete "/logout", to: "merchants#destroy", as: "logout"
 end
