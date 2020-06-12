@@ -6,8 +6,6 @@ class Order < ApplicationRecord
   has_many :orderitems
   has_many :products, through: :orderitems
 
-  belongs_to :merchant
-
   validates :status, presence: true, inclusion: { 
     in: %w(pending paid complete),
     message: "%{value} is not a valid status" 

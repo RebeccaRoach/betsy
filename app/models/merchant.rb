@@ -1,6 +1,5 @@
 class Merchant < ApplicationRecord
   has_many :products
-  has_many :orders
 
   #validates :username, presence: true, uniqueness: true
   # remove?
