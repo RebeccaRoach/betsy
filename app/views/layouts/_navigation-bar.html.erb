@@ -1,0 +1,42 @@
+<section class="inline-navigation">
+  <%# <h1 class="mb-0"><a href="#">Logo</a></h1> %>
+  <button class="navbar-toggler mt-1" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse flex-column align-items-start ml-lg-2 ml-0" id="navbarCollapse">
+      <div class="d-flex">
+        <div class="mr-auto p-2"><%= link_to "Outdoorsy", root_path, class: "header-logo" %>
+        <section class="header-byline">
+            <p class="lead">Shop for a piece of the outdoors regardless of your budget</p>
+        </section>  
+        </div>
+        <%# <div class="navbar-text d-flex col-1 justify-content-end">(00) 1234 5678</div> %>
+      </div>
+      <%# Navigation Links %>
+      <ul class="navbar-nav mb-auto mt-0 ml-auto mr-auto">
+          <li class="nav-item">
+              <%= link_to "All products", products_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
+          </li>
+          <li class="nav-item">
+              <%= link_to "All merchants", root_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
+          </li>
+          <li class="nav-item dropdown">
+          <a class="nav-link-custom text-uppercase dropdown-toggle mr-5" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Categories
+          </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item nav-link-custom" href="#">A</a>
+              <a class="dropdown-item nav-link-custom" href="#">B</a>
+              <a class="dropdown-item nav-link-custom" href="#">C</a>
+              <a class="dropdown-item nav-link-custom" href="#">D</a>
+            </div>
+          </li>
+          <li class="nav-item">
+              <%= link_to "Sign-in", root_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
+          </li>
+          <li class="nav-item">
+              <%= link_to "Cart", root_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
+          </li>
+      </ul>
+  </div>
+</section>
