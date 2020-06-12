@@ -39,7 +39,7 @@ header {
 
 .nav-link-custom, a {
   font-family: 'Rubik', sans-serif;
-  color: black;
+  color: #000;
   font-size: 20px;
   font-weight: 300;
 }
@@ -47,6 +47,15 @@ header {
 .nav-link-custom:hover {
   text-decoration: none;
   color: #7f7f7f;
+}
+
+.local-navigation, a {
+  color: rgb(206, 206, 206);
+}
+
+.local-navigation:hover {
+  color: #000;
+  text-decoration: none;
 }
 
 /* Content */
