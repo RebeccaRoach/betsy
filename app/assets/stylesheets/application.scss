@@ -67,6 +67,18 @@ body {
   font-family: 'Rubik', sans-serif;
 }
 
+.catalog__header, .catalog__secondary-header  {
+  text-transform: uppercase;
+}
+.catalog__secondary-header {
+  color: rgb(206, 206, 206);
+}
+
+/* Auto Crop Photos */
+.embed-responsive .card-img-top {
+  object-fit: cover;
+}
+
 
 /* Footer */
 .footer {
