@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_11_021903) do
+ActiveRecord::Schema.define(version: 2020_06_11_210431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,8 +36,6 @@ ActiveRecord::Schema.define(version: 2020_06_11_021903) do
     t.bigint "provider"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "order_id"
-    t.index ["order_id"], name: "index_merchants_on_order_id"
   end
 
   create_table "orderitems", force: :cascade do |t|
@@ -46,6 +44,7 @@ ActiveRecord::Schema.define(version: 2020_06_11_021903) do
     t.boolean "shipped"
     t.bigint "order_id"
     t.bigint "product_id"
+    t.bigint "quantity"
     t.index ["order_id"], name: "index_orderitems_on_order_id"
     t.index ["product_id"], name: "index_orderitems_on_product_id"
   end
@@ -62,6 +61,8 @@ ActiveRecord::Schema.define(version: 2020_06_11_021903) do
     t.integer "cvv"
     t.integer "cc_exp"
     t.integer "zip"
+    t.bigint "merchant_id"
+    t.index ["merchant_id"], name: "index_orders_on_merchant_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -74,6 +75,7 @@ ActiveRecord::Schema.define(version: 2020_06_11_021903) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "reviews_id"
     t.bigint "merchant_id"
+    t.boolean "retired"
     t.index ["merchant_id"], name: "index_products_on_merchant_id"
     t.index ["reviews_id"], name: "index_products_on_reviews_id"
   end

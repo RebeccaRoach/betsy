@@ -1,5 +1,5 @@
 class OrderitemsController < ApplicationController
-  before_action: find_orderitem, only: [:edit, :update, :destroy, :mark_shipped]
+  before_action :find_orderitem, only: [:edit, :update, :destroy, :mark_shipped]
 
   # create a new order or add to existing- do we want this?
   def create
