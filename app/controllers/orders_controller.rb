@@ -16,6 +16,9 @@ class OrdersController < ApplicationController
     end
   end
 
+  #todo create payment information form
+  def edit ; end
+
   # Process order after payment info has been addded
   def update
     @order.orderitems.each do |oderitem|
@@ -69,7 +72,7 @@ class OrdersController < ApplicationController
 
   private
   def order_params
-    params.require(:order).permit(:email, :mailing_address, :cc_number, :cvv, :expiration, :zip)
+    params.require(:order).permit(:email, :address, :cc_name, :cc_num, :cvv, :cc_exp, :zip)
   end
 
   def find_order_from_session
