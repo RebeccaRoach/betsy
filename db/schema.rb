@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_183310) do
     t.string "cc_name"
     t.bigint "cc_num"
     t.integer "cvv"
-    t.integer "cc_exp"
+    t.string "cc_exp"
     t.integer "zip"
   end
 
