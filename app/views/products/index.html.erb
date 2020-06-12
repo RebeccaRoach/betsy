@@ -3,6 +3,7 @@
 <h1 class="catalog__header">All Products</h1>
 <h4 class="catalog__secondary-header">## results</h4>
 <hr>
+<% if @products.length > 0 %>
     <section class="container-fluid">
         <div class="row">
             <% @products.each do |product| %>
@@ -30,4 +31,8 @@
         </div>
     </section>
 </section>
+
+<% else %>
+    <h3 class="catalog__header">No products in the system!</h3>
+<% end %>
 
