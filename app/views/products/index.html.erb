@@ -1,7 +1,7 @@
 <section class="album px-5">
 <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
 <h1 class="catalog__header">All Products</h1>
-<h4 class="catalog__secondary-header">## results</h4>
+<h4 class="catalog__secondary-header"> <%= @products.count %> results</h4>
 <hr>
 <% if @products.length > 0 %>
     <section class="container-fluid">
