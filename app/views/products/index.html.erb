@@ -1,7 +1,7 @@
 <section class="album px-5">
 <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
 <h1 class="catalog__header">All Products</h1>
-<h4 class="catalog__secondary-header">## results</h3>
+<h4 class="catalog__secondary-header">## results</h4>
 <hr>
     <section class="container-fluid">
         <div class="row">
@@ -11,12 +11,15 @@
                         <div class="embed-responsive embed-responsive-1by1">
                             <img class="card-img-top embed-responsive-item rounded-0" src=<%= product.photo_url %> alt=<%= product.product_name%>>
                         </div>
+
                         <div class="card-title text-uppercase pt-3">
-                        <h5> <%= product.product_name %> </h3>
-                        <div>
-                        $<%= product.price %>
+                            <section class="catalog__card-title-container">
+                                <h5> <%= button_to product.product_name, product_path(product.id), method: :get, class: "catalog__card-title-button text-left"%> </h5>
+                            </section>
+                        <div class="catalog__body-text">
+                        $<%= product.price%>
                         </div>
-                        <div>
+                        <div class="catalog__body-text">
                         Rating: ##/5 (# of reviews)
                         </div>
 
