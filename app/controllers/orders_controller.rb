@@ -55,7 +55,7 @@ class OrdersController < ApplicationController
       flash[:status] = :failure
       flash[:result_text] = "Your order is being process"
       flash[:messages] = @order.errors.messages
-      redirect_to root root_path
+      redirect_to root_path
       return
     end
   end

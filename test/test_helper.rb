@@ -17,5 +17,12 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
+  # helper method to set session for a valid order
+  def valid_order
+    # empty_order = Order.new(status: "pending", )
+    # orderItem = fixture data for an orderitem
+    # orderItem.order_id = empty_order.id
+    # # maybe need merchant id??
+    # orderitem.save
+  end
 end
