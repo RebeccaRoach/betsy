@@ -16,3 +16,5 @@ order2:
   cc_exp: 02/23
   zip: 90210
   status: paid
+pending_order:
+  status: pending
