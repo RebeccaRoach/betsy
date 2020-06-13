@@ -31,6 +31,63 @@ header {
   color: #7f7f7f;
 }
 
+/* Homepage */
+.jumbotron-custom {
+  background-image: url(https://i.imgur.com/u2oPC.jpg);
+  background-size: cover;
+  height: 600px;
+  width: auto;
+}
+
+.jumbotron-text {
+  font-family: 'Old Standard TT', serif;
+  font-weight: 400;
+  font-style: italic;
+  color: #fff;
+}
+
+.jumbotron-disclaimer-text {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 12px;
+}
+
+.browse-by-category__header {
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.browse-by-category__image {
+  filter: brightness(75%);
+}
+
+.browse-by-category__link {
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 300;
+  font-size: 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.808);
+  color: #161616;
+  padding: 5px;
+  min-width: 100%;
+  font-weight: 300;  
+  white-space: normal;
+  border: none;
+  text-transform: uppercase;
+}
+
+.browse-by-category__link:hover {
+  text-decoration: none;
+  background-color: #161616;
+  color: #fff;
+}
+
 /* Navigation */
 .nav-item-custom {
   font-family: 'Rubik', sans-serif;
