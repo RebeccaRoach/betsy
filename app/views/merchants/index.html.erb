@@ -1,10 +1,39 @@
-<% if @merchants.length > 0 %>
-  <% @merchants.each do |merchant| %>
-    <h1>photo avatar here</h1>
-    <h1>need to add merchant detail page and show action</h1>
-    <%= link_to merchant.username, root_path, class: "text-dark"%>
-    <%= link_to "all of this merchant's products", root_path, class: "text-dark" %>
+<section class="content">
+
+  <section class="album px-5">
+    <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
+    <h1 class="catalog__header">All Merchants</h1>
+    <h4 class="catalog__secondary-header"> <%= @merchants.count %> merchants</h4>
+    <hr>
+    <% if @merchants.length > 0 %>
+    <section class="container-fluid">
+      <div class="row">
+        <% @merchants.each do |merchant| %>
+        <div class="col-md-3">
+          <div class="card mb-3 rounded-0 border-0">
+            <div class="embed-responsive embed-responsive-1by1">
+                <img class="card-img-top embed-responsive-item rounded-0" src=<%= @url + "#{merchant.id}" %> alt=<%= merchant.username%>>
+            </div>
+            
+            <div class="card-title text-uppercase pt-3">
+              <section class="catalog__card-title-container">
+                  <h5> <%= button_to merchant.username, merchant_path(merchant.id), method: :get, class: "catalog__card-title-button text-left"%> </h5>
+              </section>
+          
+              <section class="catalog__card-title-container">
+                  <h5> <%= link_to "View Shop", products_path(username: merchant.username), class: "catalog__card-title-button text-left"%> </h5>
+              </section>
+
+
+          </div>
+        </div>
+      </div>
   <% end %>
+    </section>
+
+  
 <% else %>
-  <h1>No merchants!</h1>
+  <h1>No merchants in the system!</h1>
 <% end %>
+
+</section>
