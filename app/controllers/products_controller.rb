@@ -6,6 +6,9 @@ class ProductsController < ApplicationController
       # NOTE TO SELF DO NOT EVER USE WHERE, FIND_BY IS THE WAY TO GO
       @products = Category.find_by(category_name: params[:category_name]).products
       @collection_name = params[:category_name]
+    elsif params[:username]
+      @products = Merchant.find_by(username: params[:username]).products
+      @collection_name = "Products by #{params[:username]}"
     else
       @products = Product.all
       @collection_name = "all products"
