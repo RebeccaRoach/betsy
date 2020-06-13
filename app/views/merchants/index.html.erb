@@ -1,0 +1,10 @@
+<% if @merchants.length > 0 %>
+  <% @merchants.each do |merchant| %>
+    <h1>photo avatar here</h1>
+    <h1>need to add merchant detail page and show action</h1>
+    <%= link_to merchant.username, root_path, class: "text-dark"%>
+    <%= link_to "all of this merchant's products", root_path, class: "text-dark" %>
+  <% end %>
+<% else %>
+  <h1>No merchants!</h1>
+<% end %>
