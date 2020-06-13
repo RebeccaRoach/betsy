@@ -2,8 +2,14 @@ class ProductsController < ApplicationController
   before_action :find_product, only: [:show, :update, :edit, :destroy]
 
   def index
-    # paginate / kaminari gem will be helpful in the case there are numerous products
-    @products = Product.all
+    if params[:category_name]
+      # NOTE TO SELF DO NOT EVER USE WHERE, FIND_BY IS THE WAY TO GO
+      @products = Category.find_by(category_name: params[:category_name]).products
+      @collection_name = params[:category_name]
+    else
+      @products = Product.all
+      @collection_name = "all products"
+    end
   end
 
   def show
@@ -11,7 +17,7 @@ class ProductsController < ApplicationController
       flash[:error] = "Product has either been deleted, sold out, or not found."
       head :not_found
       return
-    end
+    end 
   end
 
   def new
