@@ -23,17 +23,13 @@
               <section class="catalog__card-title-container">
                   <h5> <%= link_to "View Shop", products_path(username: merchant.username), class: "catalog__card-title-button text-left"%> </h5>
               </section>
-
-
           </div>
         </div>
       </div>
-  <% end %>
+     <% end %>
     </section>
-
-  
-<% else %>
-  <h1>No merchants in the system!</h1>
-<% end %>
-
+  <% else %>
+    <h1>No merchants in the system!</h1>
+  <% end %>
+  </section>
 </section>
