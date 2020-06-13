@@ -25,10 +25,10 @@
             Categories
           </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item nav-link-custom" href="#">A</a>
-              <a class="dropdown-item nav-link-custom" href="#">B</a>
-              <a class="dropdown-item nav-link-custom" href="#">C</a>
-              <a class="dropdown-item nav-link-custom" href="#">D</a>
+              <% collection.each do |category| %>
+                <%= link_to category.category_name, products_path(category_name: category.category_name), class: "dropdown-item nav-link-custom text-uppercase"  %>
+              <% end %>
+
             </div>
           </li>
           <li class="nav-item">
