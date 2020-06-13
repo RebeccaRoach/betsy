@@ -3,6 +3,7 @@ class MerchantsController < ApplicationController
 
   def index
     @merchants = Merchant.all
+    @url = "http://thecatapi.com/api/images/get?format=src&type=gif&timestamp="
   end
 
   def create
