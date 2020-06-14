@@ -85,6 +85,37 @@ class OrdersController < ApplicationController
     end
   end
 
+  def cancel
+    unless @order.status == "paid"
+      flash[:status] = :failure
+      flash[:result_text] = "Cannot cancel #{@order.status} orders."
+      flash[:messages] = @order.errors.messages
+      
+      redirect_to root_path
+      return
+    end
+    
+    @order.status = "cancel"
+    
+    if @order.save
+      flash[:status] = :success
+      flash[:result_text] = "Your order has been cancelled."
+      
+      # Returns all previously purchased inventory to product stock
+      @order.return_stock
+      
+      redirect_to order_path(@order.id)
+      return
+    else
+      flash[:status] = :failure
+      flash[:result_text] = "Something went wrong. Could not cancel order."
+      flash[:messages] = @order.errors.messages
+      
+      redirect_back fallback_location: root_path
+      return
+    end
+  end
+
   # comment here
   def merchant_order
     unless @order.is_order_of(session[:merchant_id]) && @order.status != 'pending'

@@ -1,0 +1,68 @@
+<section class='order'>
+<section class="confirm-header">
+  <% if @order.status == 'cancel' %>
+    <h2>Your Order has been Cancelled<h2>
+
+  <% else %>
+    <h2>THANK YOU FOR SHOPPING WITH KEGSY</h2>
+
+    <% if @order.status == 'paid' %>
+      <p>Your order is on its way!</p>
+    <% else %>
+      <p>Your order is complete!</p>
+    <% end %>
+  <% end %>
+</section>
+<section class="confirm-info">
+  <ul>
+    <li><span class="bolded">Name:  </span> <%= @order.cc_name %></li>
+    <li><span class="bolded">Shipping Address:  </span> <%= @order.address %></li>
+    <li><span class="bolded">Email:  </span> <%= @order.email %></li>
+  </ul>
+
+  <ul>
+    <li><span class="bolded">Order Number:  </span> <%= @order.id %></li>
+    <li><span class="bolded">Purchased On:  </span> <%= @order.created_at.to_date %></li>
+    <li><span class="bolded">Order Status:  </span> <%= @order.status %></li>
+  </ul>
+</section>
+
+<section class='order'>
+  <h3 class="h-center-text" id="embed-title">YOUR ORDER SUMMARY</h3>
+
+  <table class="table">
+  <tbody>
+
+  <% @order.orderitems.each do |orderitem| %>
+  <tr>
+    <td>
+      <span class="img-cart cont-center"><%= image_tag "#{orderitem.product.photo_url}", alt: "#{orderitem.product.name}" %></span>
+    </td>
+
+    <td id="text-just-center">
+      <h4><%= link_to orderitem.product.name, product_path(orderitem.product) %></h4>
+      <p>Quantity: <%= orderitem.quantity %></p>
+      <% if orderitem.shipped %>
+        <p class="shipped-font">Shipped!</p>
+      <% end %>
+    </td>
+
+    <td id="text-just-center">
+      <p><span class='text-bold'>$<%= number_with_precision(orderitem.subtotal, :precision => 2) %></span> ($<%= number_with_precision(orderitem.product.price, :precision => 2) %> each)</p>
+    </td>
+  </tr>
+  <% end %>
+
+  </tbody>
+  </table>
+
+  <hr class="hr-total">
+
+  <section class="align-right">  
+    <h4>TOTAL $<%= number_with_precision(@order.total, :precision => 2) %></h4>
+    <% if @order.status != 'cancel' %>
+      <p><%= link_to 'Cancel Order', cancel_order_path(id: @order.id), method: :patch, class:"btn btn-danger" %></p>
+    <% end %>
+  </section>
+</section>
+</section>
