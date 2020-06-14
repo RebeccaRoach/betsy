@@ -3,16 +3,17 @@ class Orderitem < ApplicationRecord
   belongs_to :order
 
   validates :quantity, presence: true, numericality: { only_integer: true, greater_than: 0}
-  validates :shipped, inclusion: { in: [true, false],message: "shipped status : true or false"}
-
-  validate :in_stock
-  validate :not_retired
+  validates :shipped, inclusion: { in: [true, false], message: "shipped status : true or false"}
+  # validates :in_stock
+  # validates :not_retired
 
   def subtotal
-    return (self.quantity) * (self.product.price)
+    subtotal = (self.quantity) * (self.product.price)
+    return subtotal.round(2)
   end
 
   private
+
   def in_stock
     if quantity && product && quantity > product.stock
       errors.add(:quantity, "order exceeds in-stock inventory")
