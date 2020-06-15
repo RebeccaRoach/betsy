@@ -7,11 +7,11 @@ describe Orderitem do
     end
 
     it "belongs to an order" do
-      expect(@orderitem.order_id).must_equal orders(:order1).id
+      expect(@orderitem.order).must_equal orders(:order1)
     end
 
     it "belongs to a product" do
-      expect(@orderitem.product_id).must_equal products(:rx_bar).id
+      expect(@orderitem.product).must_equal products(:rx_bar)
     end
   end
 
@@ -56,14 +56,14 @@ describe Orderitem do
     end
 
     # SHIPPED VALIDATIONS:
-    # test message content???????????
+    # test message content????
     it "is valid with a false shipped status" do
       expect(@orderitem.valid?).must_equal true
       expect(@orderitem.shipped.class).must_equal FalseClass
       expect(@orderitem.shipped).must_equal false
     end
 
-    # test message content???????????
+    # test message content????
     it "is valid with a true shipped status" do
       @orderitem = orderitems(:discover)
 
@@ -100,9 +100,5 @@ describe Orderitem do
       expect(@orderitem.product.price).must_equal 2.45
       expect(@orderitem.subtotal).must_equal 0
     end
-
-    # Any edge test cases????
-
-    
   end
 end
