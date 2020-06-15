@@ -8,6 +8,7 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= favicon_link_tag 'favicon.png' %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
 
@@ -28,7 +29,7 @@
     
     
     <%# Footer %>
-    <footer class="footer">Footer, Gretchen Granola Girls, icon attributions, disclaimer</footer>
+    <footer class="footer"><%= render partial: "layouts/footer" %></footer>
   </body>
 
 
