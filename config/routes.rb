@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   resources :pages, only: :index
 
   resources :products
-  resources :merchants
 
   resources :orderitems, only: [:edit, :destroy]
   patch 'orderitems/:id', to: 'orderitems#update'
@@ -16,7 +15,8 @@ Rails.application.routes.draw do
   resources :reviews, only: [:new, :create]
   resources :categories, only: [:new, :create, :show, :index]
 
-  resources :merchants
+  resources :merchants except: [:index, :edit, :update]
+
   get "/auth/github", as: "github_login"
   get "/auth/github/callback", to: "merchants#create", as: "auth_callback"
   delete "/logout", to: "merchants#destroy", as: "logout"

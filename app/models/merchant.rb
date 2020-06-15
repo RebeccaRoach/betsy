@@ -16,20 +16,28 @@ class Merchant < ApplicationRecord
     merchant.email = auth_hash["info"]["email"]
     return merchant
   end
-
-  # need to work with OrderItem
-  def self.total_revenue
-
+  
+  def total_revenue
+    total_rev = 0
+    self.products.each do |product|
+      product.order_items.each do |item|
+        total += item.subtotal
+      end
+    end
+    return total_rev
   end
 
-  # def find.all_orders
-
-
-  # end
-
-  # need to work with OrderItem
-  def revenue_by_status(status)
-  
+  # double check on edge cases i.e. nil or pending order
+  def total_revenue_by_status(status)
+    total_rev_status = 0
+    self.products.each do |product|
+      product.order_items.each do |item|
+        if item.order.status == status
+          total += item.subtotal
+        end
+      end
+    end
+    return total_rev_status
   end
 
 end
