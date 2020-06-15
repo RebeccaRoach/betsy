@@ -19,8 +19,8 @@ nature_valley:
   photo_url:
   stock: 8
   retired: false
-rainier:
-  product_name: Mount Rainier
+rainer:
+  product_name: Mount Rainer
   description: Volcano
   price: 5000
   photo_url:
