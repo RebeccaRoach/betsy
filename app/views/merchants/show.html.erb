@@ -22,6 +22,7 @@
       <%= button_to "Add New Product", new_product_path, method: :get, class: "btn btn-primary" %>
     </div>
   </div>
+</section>
 
 <%# Merchant List of Products %>
   <section class="album px-5">
@@ -55,10 +56,10 @@
               <% end %>
           </div>
       </section>
-  </section>
-
   <% else %>
       <h3 class="catalog__header">No items in the system!</h3>
   <% end %>
   </section>
+
+
 </section>
