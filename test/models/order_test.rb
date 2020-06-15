@@ -24,9 +24,8 @@ describe Order do
     paid_order.status = "complete"
     expect(paid_order.valid?).must_equal true
 
-    #why is cancel not working
-    # paid_order.status = "cancel"
-    # expect(paid_order.valid?).must_equal true
+    paid_order.status = "cancel"
+    expect(paid_order.valid?).must_equal true
 
     paid_order.status = "gretchen"
     expect(paid_order.valid?).must_equal false
@@ -230,5 +229,22 @@ describe Order do
         expect(product).must_be_instance_of Product
       end
     end
+  end
+
+  describe "custom methods" do
+    # describe "reduce_stock" do
+    #   it "will reduce the number of product stock by orderitem quantity" do
+    #     expect(products(:rx_bar).stock).must_equal 3
+    #     expect(products(:kind).stock).must_equal 5
+        
+    #     paid_order.reduce_stock
+        
+    #     updated_rx_bar = Product.find_by(id: products(:rx_bar).id)
+    #     updated_kind = Product.find_by(id: products(:kind).id)
+        
+    #     expect(updated_rx_bar.stock).must_equal 2
+    #     expect(updated_kind.stock).must_equal 4
+    #   end
+    # end
   end
 end

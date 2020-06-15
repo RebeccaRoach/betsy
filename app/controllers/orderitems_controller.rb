@@ -64,7 +64,7 @@ class OrderitemsController < ApplicationController
     end
   end
 
-  # comment here
+  # comment here- video said about a difference between destroy and delete
   def destroy
     if @orderitem.order.status == "pending"
       @orderitem.destroy
