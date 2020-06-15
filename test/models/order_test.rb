@@ -213,4 +213,22 @@ describe Order do
       expect(paid_order.errors.messages[:zip]).must_include "must be an integer"
     end
   end
+
+  describe "relationships" do
+    it "has many orderitems" do
+      expect(paid_order.orderitems.count).must_be :>, 1
+      
+      paid_order.orderitems.each do |orderitem|
+        expect(orderitem).must_be_instance_of Orderitem
+      end
+    end
+
+    it "has many products" do
+      expect(paid_order.products.count).must_be :>, 1
+      
+      paid_order.products.each do |product|
+        expect(product).must_be_instance_of Product
+      end
+    end
+  end
 end
