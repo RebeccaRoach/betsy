@@ -2,9 +2,7 @@ class Merchant < ApplicationRecord
   has_many :products
   has_many :orders
 
-  #validates :username, presence: true, uniqueness: true
-  # remove?
-  # validates :merchant_id, uniqueness: true, presence: true
+  validates :username, presence: true, uniqueness: true
   validates :email, uniqueness: true, presence: true
 
   # custom mthod to create new merchant
@@ -20,7 +18,7 @@ class Merchant < ApplicationRecord
   def total_revenue
     total_rev = 0
     self.products.each do |product|
-      product.order_items.each do |item|
+      product.orderitems.each do |item|
         total += item.subtotal
       end
     end
@@ -31,7 +29,7 @@ class Merchant < ApplicationRecord
   def total_revenue_by_status(status)
     total_rev_status = 0
     self.products.each do |product|
-      product.order_items.each do |item|
+      product.orderitems.each do |item|
         if item.order.status == status
           total += item.subtotal
         end
