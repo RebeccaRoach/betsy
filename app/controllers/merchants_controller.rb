@@ -39,13 +39,20 @@ class MerchantsController < ApplicationController
     return redirect_to root_path
   end
 
-  def destroy
-    session[:merchant_id] = nil
-    flash[:status] = :success
-    flash[:result_text] = "You've successfully logged out as #{merchant.username}."
+  def logout
+    session[:uid] = nil
+    flash[:success] = "Successfully logged out"
     redirect_to root_path
-    return 
+    return
   end
+
+  # def destroy
+  #   session[:uid] = nil
+  #   flash[:status] = :success
+  #   flash[:result_text] = "You've successfully logged out as #{merchant.username}."
+  #   redirect_to root_path
+  #   return 
+  # end
 
   def current
     @current_merchant = Merchant.find_by(id: session[:merchant_id])

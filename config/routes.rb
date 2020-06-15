@@ -15,9 +15,9 @@ Rails.application.routes.draw do
 
   resources :merchants
 
-  get "/auth/github", as: "github_login"
+  post "/auth/github", as: "github_login"
   get "/auth/github/callback", to: "merchants#create", as: "auth_callback"
-  delete "/logout", to: "merchants#destroy", as: "logout"
+  delete "/logout", to: "merchants#logout", as: "logout"
   get '/orders/:id/merchant_order', to: 'orders#merchant_order', as: 'merchant_order'
 
   resources :reviews, only: [:new, :create]
