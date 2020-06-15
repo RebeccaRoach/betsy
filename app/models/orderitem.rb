@@ -3,18 +3,32 @@ class Orderitem < ApplicationRecord
   belongs_to :order
 
   validates :quantity, presence: true, numericality: { only_integer: true, greater_than: 0}
-  validates :shipped, inclusion: { in: [true, false],message: "shipped status : true or false"}
-
-  validate :in_stock
-  validate :not_retired
+  # do we need below?
+  validates :shipped, inclusion: { in: [true, false], message: "shipped status : must be true or false"}
+  # validates :in_stock
+  # validates :not_retired
 
   def subtotal
-    return (self.quantity) * (self.product.price)
+    subtotal = (self.quantity) * (self.product.price)
+    return subtotal.round(2)
   end
 
   private
-  def in_stock
-    if quantity && product && quantity > product.stock
+
+  # mark_shipped for order (Order in charge of gateway: check this item shipped, check if can mark complete on whole order)
+  # check if the order is complete?
+  # if so, 
+  # order.mark_item_shipped(id)
+  # can mark whole order complete
+
+  # def marked_shipped
+  # single orderitem change shipped status
+  # end
+
+
+  def enough_stock
+    # call product's in_stock?
+    if quantity && product && product.enough_stock?(quantity)
       errors.add(:quantity, "order exceeds in-stock inventory")
     end
   end
