@@ -1,8 +1,19 @@
 class MerchantsController < ApplicationController
-  before_action :require_login, except: [:index, :destroy, :create]
+  # before_action :require_login, except: [:index, :destroy, :create]
 
   def index
     @merchants = Merchant.all
+    @url = "http://thecatapi.com/api/images/get?format=src&type=gif&timestamp="
+  end
+
+  def show
+    @merchant = Merchant.find_by(id: params[:id])
+    @url = "http://thecatapi.com/api/images/get?format=src&type=gif&timestamp="
+    if @merchant.nil?
+      flash[:error] = "Merchant not found."
+      head :not_found
+      return
+    end 
   end
 
   def create

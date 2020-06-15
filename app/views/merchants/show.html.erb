@@ -1,0 +1,63 @@
+<section class="content">
+<%# Merchant Description Header %>
+<section class="px-5">
+  <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
+  <h6><%= link_to "< ALL MERCHANTS", merchants_path, class: "local-navigation" %></h6>
+  <h1 class="catalog__header"><%= @merchant.username %></h1>  
+  <hr>
+</section>
+
+
+<%# Merchant Picture and Description %>
+<section class="container-fluid px-5">
+  <div class="row px-5">
+    <div class="col">
+      <div class="embed-responsive embed-responsive-1by1">
+        <img class="card-img-top embed-responsive-item rounded-0" src=<%= @url + "#{@merchant.id}" %> alt=<%= @merchant.username%>>
+      </div>
+    </div>
+    <div class="col">
+      <h2 class="catalog__description-text">On Outdoorsy since: <%= @merchant.created_at.strftime("%B %d, %Y") %></h2>
+      <div class="catalog__description-text">Contact: <%= @merchant.email %></div>
+    </div>
+  </div>
+
+<%# Merchant List of Products %>
+  <section class="album px-5">
+  <h1 class="catalog__header mt-5">Items</h1>
+  <h4 class="catalog__secondary-header"> <%= @merchant.products.count %> results</h4>
+  <hr>
+  <% if @merchant.products.length > 0 %>
+      <section class="container-fluid">
+          <div class="row">
+              <% @merchant.products.each do |product| %>
+                  <div class="col-md-3">
+                      <div class="card mb-3 rounded-0 border-0">
+                          <div class="embed-responsive embed-responsive-1by1">
+                              <img class="card-img-top embed-responsive-item rounded-0" src=<%= product.photo_url %> alt=<%= product.product_name%>>
+                          </div>
+
+                          <div class="card-title text-uppercase pt-3">
+                              <section class="catalog__card-title-container">
+                                  <h5> <%= button_to product.product_name, product_path(product.id), method: :get, class: "catalog__card-title-button text-left"%> </h5>
+                              </section>
+                          <div class="catalog__body-text">
+                          $<%= product.price%>
+                          </div>
+                          <div class="catalog__body-text">
+                          Rating: ##/5 (# of reviews)
+                          </div>
+
+                          </div>
+                      </div>
+                  </div>
+              <% end %>
+          </div>
+      </section>
+  </section>
+
+  <% else %>
+      <h3 class="catalog__header">No items in the system!</h3>
+  <% end %>
+  </section>
+</section>
