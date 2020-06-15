@@ -65,21 +65,15 @@ class OrderitemsController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
-  # comment here- video said about a difference between destroy and delete
-=======
-
->>>>>>> 06-BR-orderItems
   def destroy
     if @orderitem.order.status == "pending"
       @orderitem.destroy
       flash[:status] = :success
       flash[:result_text] = "#{@orderitem.product.product_name} was removed from your cart"
-<<<<<<< HEAD
+     
+      # TODO: choose correct redirect
       redirect_to cart_path
-=======
-      redirect_to cart_path(order_id: session[:id])
->>>>>>> 06-BR-orderItems
+      # redirect_to cart_path(order_id: session[:id])
     else
       flash[:status] = :failure
       flash[:result_text] = "Cannot delete items"
@@ -94,14 +88,9 @@ class OrderitemsController < ApplicationController
       @orderitem.shipped = true
       @orderitem.save
       flash[:status] = :success
-<<<<<<< HEAD
-      flash[:result_text] = "#{@orderitem.product.product_name} - shipped"
-      @orderitem.order.mark_as_complete?
-=======
       flash[:result_text] = "#{ @orderitem.product.product_name } - shipped"
       # @orderitem.order.mark_as_complete!
 
->>>>>>> 06-BR-orderItems
       redirect_back fallback_location: root_path
 
     elsif @orderitem.order.status == "paid" && @orderitem.shipped == true
