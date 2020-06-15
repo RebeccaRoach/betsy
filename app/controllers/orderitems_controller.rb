@@ -30,10 +30,10 @@ class OrderitemsController < ApplicationController
 
     if @orderitem.save
       flash[:status] = :success
-      flash[:result_text] = "#{orderitem.product.name} was added to cart"
+      flash[:result_text] = "#{orderitem.product.product_name} was added to cart"
     else
       flash[:status] = :failure
-      flash[:result_text] = "Error adding #{orderitem.product.name} to cart"
+      flash[:result_text] = "Error adding #{orderitem.product.product_name} to cart"
       flash[:messages] = @orderitem.errors.messages
     end
     redirect_back fallback_location: root_path
@@ -69,7 +69,7 @@ class OrderitemsController < ApplicationController
     if @orderitem.order.status == "pending"
       @orderitem.destroy
       flash[:status] = :success
-      flash[:result_text] = "#{@orderitem.product.name} was removed from your cart"
+      flash[:result_text] = "#{@orderitem.product.product_name} was removed from your cart"
       redirect_to cart_path
     else
       flash[:status] = :failure
@@ -84,7 +84,7 @@ class OrderitemsController < ApplicationController
       @orderitem.shipped = true
       @orderitem.save
       flash[:status] = :success
-      flash[:result_text] = "#{@orderitem.product.name} - shipped"
+      flash[:result_text] = "#{@orderitem.product.product_name} - shipped"
       @orderitem.order.mark_as_complete?
       redirect_back fallback_location: root_path
 
