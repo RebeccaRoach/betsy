@@ -19,6 +19,7 @@
     <div class="col">
       <h2 class="catalog__description-text">On Outdoorsy since: <%= @merchant.created_at.strftime("%B %d, %Y") %></h2>
       <div class="catalog__description-text">Contact: <%= @merchant.email %></div>
+      <%= button_to "Add New Product", new_product_path, method: :get, class: "btn btn-primary" %>
     </div>
   </div>
 
