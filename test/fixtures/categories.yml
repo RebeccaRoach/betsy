@@ -1,0 +1,10 @@
+category1: 
+  category_name: snacks
+  products: rx_bar, kind
+
+category2:
+  category_name: parking
+  products: discover
+
+no_products_category:
+  category_name: slides
