@@ -24,6 +24,23 @@
     </header>
 
     <%# Content %>
+    <section class="alert__container flash-msg__section">
+          <% flash.each do |name, message| %>
+            <% if name == "success" %>
+              <div class="alert alert-success light-text" role="alert">
+                  <strong class="<%= name %>">
+                    <%= message %>
+                  </strong>
+              </div>
+            <% else %>
+              <div class="alert alert-danger light-text" role="alert">
+                  <strong class="<%= name %>">
+                    <%= message %>
+                  </strong>
+              </div>
+            <% end %>
+          <% end %>
+    </section>
     <%= yield %>
 
     
