@@ -5,4 +5,12 @@ class Product < ApplicationRecord
   belongs_to :merchant
   has_and_belongs_to_many :categories
   has_many :reviews
+
+  has_many :orderitems
+  # product.orders => all the orders that a product has been attached to
+  has_many :orders, through: :orderitems
+
+  def enough_stock?(quantity)
+    return self.quantity >= quantity
+  end
 end

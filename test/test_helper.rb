@@ -1,3 +1,4 @@
+require "pry"
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
@@ -17,5 +18,19 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
+  # helper method to set session for a valid order
+  def make_order
+    # empty_order = Order.new(status: "pending")
+    # orderitem = orderitems(:rainer)
+    # # orderitem.order_id = empty_order.id
+    # orderitem.save!
+    # @order = Order.find_by(id: orderitem.order.id)
+    # return @order
+
+    orderitem = Orderitem.create!(quantity: 1, order: orders(:order2), product: products(:rainer), shipped: false)
+    @order = Order.find_by(id: orderitem.order.id)
+    # expect id = 2
+    puts "ORDER ID: #{@order.id}"
+    return @order
+  end
 end

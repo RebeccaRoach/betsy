@@ -4,7 +4,6 @@ rx_bar:
   price: 2.45
   photo_url:
   stock: 3
-  merchant_id: Nena
   retired: false
 kind:
   product_name: KIND bar
@@ -12,15 +11,13 @@ kind:
   price: 1.45
   photo_url:
   stock: 5
-  merchant_id: Nena
   retired: true
-nature:
+nature_valley:
   product_name: Nature Valley
   description: Crunchy Granola Oats n Honey
   price: 1.25
   photo_url:
   stock: 8
-  merchant_id: Nena
   retired: false
 rainer:
   product_name: Mount Rainer
@@ -28,7 +25,6 @@ rainer:
   price: 5000
   photo_url:
   stock: 1
-  merchant_id: Max
   retired: false
 discover:
   product_name: Discover Pass
@@ -36,13 +32,11 @@ discover:
   price: 40
   photo_url:
   stock: 30
-  merchant_id: Max
   retired: false
-snow:
+snow_pass:
   product_name: Snow Pass
   description: Parking pass for local parks in winter
   price: 25
   photo_url:
   stock: 15
-  merchant_id: Max
   retired: false

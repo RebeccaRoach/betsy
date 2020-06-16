@@ -1,5 +1,5 @@
 class AddColumnToOrderitems < ActiveRecord::Migration[6.0]
   def change
-    add_column :orderitems, :quantity, :bigint
+    change_column :orderitems, :quantity, 'bigint USING CAST(quantity AS bigint)'
   end
 end

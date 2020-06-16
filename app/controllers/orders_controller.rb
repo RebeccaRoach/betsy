@@ -8,20 +8,23 @@ class OrdersController < ApplicationController
   def cart
     if session[:order_id]
       @order = Order.find_by(id: session[:order_id])
+      session[:order_id] = @order.id
     else
-      flash[:status] = :failure
-      flash[:result_text] = "Cart is empty"
-      redirect_back fallback_location: root_path
-      return
+      flash[:result_text] = "Couldn't create order, try again later"
+      # flash[:messages] = order.errors.messages
     end
   end
 
-  #todo create payment information form
-  def edit ; end
+  #renders payment information form
+  # enter payment details, find order_id from session
+  def edit; end
 
   # Process order after payment info has been addded
+  # order items model: add, remove
+  # use orderitems model methods in order controller to add/remove orderitem in order
   def update
-    @order.orderitems.each do |oderitem|
+    @order.orderitems.each do |orderitem|
+      # check enough_stock from product model***
       if !orderitem.valid?
         flash[:status] = :failure
         flash[:result_text] = "Some items in your cart are no longer available"
@@ -31,6 +34,19 @@ class OrdersController < ApplicationController
         return redirect_to cart_path
       end
     end
+
+  # #def update
+  # @order.orderitems.each do |orderitem|
+  #   if !orderitem.valid?
+  #     flash.now[:status] = :failure
+  #     flash.now[:result_text] = "Sorry. Some of the items in your cart are no longer available."
+  #     flash.now[:messages] = orderitem.errors.messages
+  #   end
+
+  #   if flash.now[:status] == :failure
+  #     return redirect_to cart_path
+  #   end
+  # end
 
     # Change status and clear cart 
     @order.status = "paid"
@@ -49,14 +65,22 @@ class OrdersController < ApplicationController
     end
   end
 
-  # Confirmation page for order
+  # Confirmation page for order : for all statuses ?
   def show
+    if @order.id < 0
+      head :not_found
+    end
+
     if @order.status == "pending"
       flash[:status] = :failure
       flash[:result_text] = "Your order is being process"
       flash[:messages] = @order.errors.messages
-      redirect_to root root_path
+      redirect_to root_path
       return
+    elsif @order.status == "paid"
+      flash[:status] = :success
+      # maybe add result text, maybe not?
+      redirect_to order_path(@order.id)
     end
   end
 

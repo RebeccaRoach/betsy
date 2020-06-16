@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_11_210431) do
+ActiveRecord::Schema.define(version: 2020_06_16_184933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,8 +19,6 @@ ActiveRecord::Schema.define(version: 2020_06_11_210431) do
     t.string "category_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "products_id"
-    t.index ["products_id"], name: "index_categories_on_products_id"
   end
 
   create_table "categories_products", force: :cascade do |t|
@@ -33,9 +31,10 @@ ActiveRecord::Schema.define(version: 2020_06_11_210431) do
   create_table "merchants", force: :cascade do |t|
     t.string "username"
     t.string "email"
-    t.bigint "provider"
+    t.string "provider"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "uid"
   end
 
   create_table "orderitems", force: :cascade do |t|
@@ -59,10 +58,8 @@ ActiveRecord::Schema.define(version: 2020_06_11_210431) do
     t.string "cc_name"
     t.bigint "cc_num"
     t.integer "cvv"
-    t.integer "cc_exp"
+    t.string "cc_exp"
     t.integer "zip"
-    t.bigint "merchant_id"
-    t.index ["merchant_id"], name: "index_orders_on_merchant_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -73,11 +70,9 @@ ActiveRecord::Schema.define(version: 2020_06_11_210431) do
     t.bigint "stock"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "reviews_id"
     t.bigint "merchant_id"
     t.boolean "retired"
     t.index ["merchant_id"], name: "index_products_on_merchant_id"
-    t.index ["reviews_id"], name: "index_products_on_reviews_id"
   end
 
   create_table "reviews", force: :cascade do |t|

@@ -8,6 +8,7 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= favicon_link_tag 'favicon.png' %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
 
@@ -18,50 +19,34 @@
       <nav class="navbar navbar-expand-md navbar bg">
       <%# <section class="header-logo">
       </section> %>
-
-       
-        <section class="inline-navigation">
-            <%# <h1 class="mb-0"><a href="#">Logo</a></h1> %>
-            <button class="navbar-toggler mt-1" type="button" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse flex-column align-items-start ml-lg-2 ml-0" id="navbarCollapse">
-                <div class="d-flex">
-                  <div class="mr-auto p-2"><%= link_to "Outdoorsy", root_path, class: "header-logo" %>
-                  <section class="header-byline">
-                      <p class="lead">Shop for a piece of the outdoors regardless of your budget</p>
-                  </section>  
-                  </div>
-                  <%# <div class="navbar-text d-flex col-1 justify-content-end">(00) 1234 5678</div> %>
-                </div>
-                <%# Navigation Links %>
-                <ul class="navbar-nav mb-auto mt-0 ml-auto mr-auto">
-                    <li class="nav-item">
-                        <%= link_to "View all products", products_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
-                    </li>
-                    <li class="nav-item">
-                        <%= link_to "View all merchants", root_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
-                    </li>
-                    <li class="nav-item">
-                        <%= link_to "Cart", root_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
-                    </li>
-                    <li class="nav-item">
-                        <%= link_to "Sign-in", root_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
-                    </li>
-                </ul>
-            </div>
-        </section>
+       <%= render partial: "layouts/navigation-bar", locals: { collection: @categories } %>
       </nav>
     </header>
 
     <%# Content %>
-    <section class="content">
-      <%= yield %>
+    <section class="alert__container flash-msg__section">
+          <% flash.each do |name, message| %>
+            <% if name == "success" %>
+              <div class="alert alert-success light-text" role="alert">
+                  <strong class="<%= name %>">
+                    <%= message %>
+                  </strong>
+              </div>
+            <% else %>
+              <div class="alert alert-danger light-text" role="alert">
+                  <strong class="<%= name %>">
+                    <%= message %>
+                  </strong>
+              </div>
+            <% end %>
+          <% end %>
     </section>
+    <%= yield %>
+
     
     
     <%# Footer %>
-    <footer class="footer">Footer, Gretchen Granola Girls, icon attributions, disclaimer</footer>
+    <footer class="footer"><%= render partial: "layouts/footer" %></footer>
   </body>
 
 
