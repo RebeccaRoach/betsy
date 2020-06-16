@@ -60,18 +60,6 @@ class ProductsController < ApplicationController
     end
   end
 
-  def destroy
-    if @product.nil?
-      redirect_to products_path
-      return
-    end
-
-    @product.destroy
-
-    redirect_to products_path
-    return
-  end
-
   private
   def find_product
     # TODO: need to add case for when product cannot be found, to DRY up code
