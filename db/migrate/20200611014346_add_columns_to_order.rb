@@ -5,9 +5,9 @@ class AddColumnsToOrder < ActiveRecord::Migration[6.0]
     change_column :orders, :email, :string
     change_column :orders, :address, :string
     change_column :orders, :cc_name, :string
-    change_column :orders, :cc_num, :bigint
-    change_column :orders, :cvv, :integer
-    change_column :orders, :cc_exp, :integer
-    change_column :orders, :zip, :integer
+    change_column :orders, :cc_num, :string
+    change_column :orders, :cvv, 'integer USING CAST(cvv AS integer)'
+    change_column :orders, :cc_exp, 'integer USING CAST(cc_exp AS integer)'
+    change_column :orders, :zip, 'integer USING CAST(zip AS integer)'
   end
 end
