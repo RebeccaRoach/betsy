@@ -5,7 +5,7 @@ class Orderitem < ApplicationRecord
   validates :quantity, presence: true, numericality: { only_integer: true, greater_than: 0}
   # do we need below?
   validates :shipped, inclusion: { in: [true, false], message: "shipped status : must be true or false"}
-  # validates :in_stock
+  # validates :enough_stock, exclusion false?******
   # validates :not_retired
 
   def subtotal
@@ -21,14 +21,13 @@ class Orderitem < ApplicationRecord
   # order.mark_item_shipped(id)
   # can mark whole order complete
 
-  # def marked_shipped
-  # single orderitem change shipped status
+  # def marked_item_shipped
+  #   single orderitem change shipped status
   # end
 
-
   def enough_stock
-    # call product's in_stock?
-    if quantity && product && product.enough_stock?(quantity)
+    # correct syntax??
+    if !self.product.enough_stock?(quantity)
       errors.add(:quantity, "order exceeds in-stock inventory")
     end
   end
