@@ -5,13 +5,14 @@ class OrdersController < ApplicationController
   before_action :find_order_from_params, only: [:show, :merchant_order]
 
   # Find order or display message if cart is empty
+  # route triggers 
   def cart
     if session[:order_id]
       @order = Order.find_by(id: session[:order_id])
       session[:order_id] = @order.id
     else
       flash[:result_text] = "Couldn't create order, try again later"
-      # flash[:messages] = order.errors.messages
+      flash[:messages] = @order.errors.messages
     end
   end
 
@@ -19,10 +20,9 @@ class OrdersController < ApplicationController
   # enter payment details, find order_id from session
   def edit; end
 
-  # Process order after payment info has been addded
-  # order items model: add, remove
-  # use orderitems model methods in order controller to add/remove orderitem in order
+  # this is called when user clicks the "checkout" button on cart page
   def update
+    # all fields must be valid; validations run on save to db - need extra code for this?
     @order.orderitems.each do |orderitem|
       # check enough_stock from product model***
       if !orderitem.valid?
@@ -30,38 +30,11 @@ class OrdersController < ApplicationController
         flash[:result_text] = "Some items in your cart are no longer available"
         flash[:messages] = orderitem.errors.messages
       end
-      if flash[:status] == :failure
+
+      if flash[:status] = :failure
+        flash[:messages] = order.errors.messages
         return redirect_to cart_path
       end
-    end
-
-  # #def update
-  # @order.orderitems.each do |orderitem|
-  #   if !orderitem.valid?
-  #     flash.now[:status] = :failure
-  #     flash.now[:result_text] = "Sorry. Some of the items in your cart are no longer available."
-  #     flash.now[:messages] = orderitem.errors.messages
-  #   end
-
-  #   if flash.now[:status] == :failure
-  #     return redirect_to cart_path
-  #   end
-  # end
-
-    # Change status and clear cart 
-    @order.status = "paid"
-    if @order.update(order_params)
-      @order.reduce_stock
-      session[:order_id] = nil
-      redirect_to order_path(@order.id)
-      return
-    else
-      flash.now[:status] = :failure
-      flash.now[:result_text] = "Review and Resubmit"
-      flash.now[:messages] = orderitem.errors.messages
-
-      render :edit, status: :bad_request
-      return
     end
   end
 
@@ -81,6 +54,19 @@ class OrdersController < ApplicationController
       flash[:status] = :success
       # maybe add result text, maybe not?
       redirect_to order_path(@order.id)
+    end
+  end
+
+  # we call this method when user submits payment form
+  def submit
+    result = @order.checkout
+    if result
+      flash[:result_text] = "Order successfully paid!"
+      redirect_to order_path(@order.id)
+    else
+      render :edit, status: :bad_request
+      flash[:status] = :failure
+      flash[:messages] = @order.errors.messages
     end
   end
 
