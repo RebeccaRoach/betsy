@@ -170,6 +170,10 @@ body {
   text-transform: uppercase;
 }
 
+.light-text {
+  font-weight: 300;
+}
+
 /* Auto Crop Photos */
 .embed-responsive .card-img-top {
   object-fit: cover;
@@ -244,6 +248,10 @@ body {
   justify-content: center;
   text-decoration: none;
   border-radius: 50%;
+}
+
+.fa-custom {
+  padding: 0px
 }
 
 .fa-snapchat-ghost:hover {
