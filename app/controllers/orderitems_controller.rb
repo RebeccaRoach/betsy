@@ -65,7 +65,6 @@ class OrderitemsController < ApplicationController
     end
   end
 
-
   def destroy
     if @orderitem.order.status == "pending"
       @orderitem.destroy
@@ -79,21 +78,16 @@ class OrderitemsController < ApplicationController
     end
   end
 
-
   def mark_shipped
-    # put into model test
     if @orderitem.order.status == "paid" && @orderitem.shipped == false
-      @orderitem.shipped = true
-      @orderitem.save
+      @orderitem.mark_item_shipped!
       flash[:status] = :success
-      flash[:result_text] = "#{ @orderitem.product.product_name } - shipped"
+      flash[:result_text] = "#{ @orderitem.product.product_name } has shipped!"
       # @orderitem.order.mark_as_complete!
-
       redirect_back fallback_location: root_path
-
     elsif @orderitem.order.status == "paid" && @orderitem.shipped == true
       flash[:status] = :failure
-      flash[:result_text] = "#{@orderitem.shipped}- shipped"
+      flash[:result_text] = "#{ @orderitem.product.product_name } has already shipped."
       redirect_back fallback_location: root_path
     else
       flash[:status] = :failure
@@ -103,6 +97,7 @@ class OrderitemsController < ApplicationController
   end
 
   private
+  
   def find_orderitem
     @orderitem = Orderitem.find_by(id: params[:id])
     head :not_found unless @orderitem
