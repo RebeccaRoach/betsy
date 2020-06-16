@@ -8,11 +8,10 @@ class OrdersController < ApplicationController
   def cart
     if session[:order_id]
       @order = Order.find_by(id: session[:order_id])
+      session[:order_id] = @order.id
     else
-      flash[:status] = :failure
-      flash[:result_text] = "Cart is empty"
-      # redirect_to :show
-      return
+      flash[:result_text] = "Couldn't create order, try again later"
+      # flash[:messages] = order.errors.messages
     end
   end
 

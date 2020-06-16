@@ -32,15 +32,13 @@
             </div>
           </li>
           <li class="nav-item">
-              <%# <a href="http://localhost:3000/auth/github/callback" class="nav-link-custom py-0 text-uppercase mr-5"> Sign-In</a> %>
               <%= link_to "Sign-in", github_login_path, method: :post, class: "nav-link-custom py-0 text-uppercase mr-5"%>
           </li>
           <li class="nav-item">
-              <%# <a href="http://localhost:3000/auth/github/callback" class="nav-link-custom py-0 text-uppercase mr-5"> Sign-In</a> %>
               <%= link_to "Logout", logout_path, method: :delete, class: "nav-link-custom py-0 text-uppercase mr-5"%>
           </li>
           <li class="nav-item">
-              <%# <%= link_to "Cart", cart_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                         %>
+              <%= link_to "Cart", cart_path(@order), class: "nav-link-custom py-0 text-uppercase mr-5" %>
           </li>
       </ul>
   </div>
