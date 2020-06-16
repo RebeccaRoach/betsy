@@ -8,24 +8,23 @@ class OrdersController < ApplicationController
   def cart
     if session[:order_id]
       @order = Order.find_by(id: session[:order_id])
+      session[:order_id] = @order.id
     else
-      flash[:status] = :failure
-      flash[:result_text] = "Cart is empty"
-      # redirect_to :show
-      return
+      flash[:result_text] = "Couldn't create order, try again later"
+      # flash[:messages] = order.errors.messages
     end
   end
 
-  #todo create payment information form
+  #renders payment information form
   # enter payment details, find order_id from session
-  # changes status on order from complete to paid
-  def edit ; end
+  def edit; end
 
   # Process order after payment info has been addded
   # order items model: add, remove
   # use orderitems model methods in order controller to add/remove orderitem in order
   def update
     @order.orderitems.each do |orderitem|
+      # check enough_stock from product model***
       if !orderitem.valid?
         flash[:status] = :failure
         flash[:result_text] = "Some items in your cart are no longer available"

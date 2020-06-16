@@ -31,6 +31,63 @@ header {
   color: #7f7f7f;
 }
 
+/* Homepage */
+.jumbotron-custom {
+  background-image: url(https://i.imgur.com/u2oPC.jpg);
+  background-size: cover;
+  height: 600px;
+  width: auto;
+}
+
+.jumbotron-text {
+  font-family: 'Old Standard TT', serif;
+  font-weight: 400;
+  font-style: italic;
+  color: #fff;
+}
+
+.jumbotron-disclaimer-text {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 12px;
+}
+
+.browse-by-category__header {
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.browse-by-category__image {
+  filter: brightness(75%);
+}
+
+.browse-by-category__link {
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 300;
+  font-size: 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.808);
+  color: #161616;
+  padding: 5px;
+  min-width: 100%;
+  font-weight: 300;  
+  white-space: normal;
+  border: none;
+  text-transform: uppercase;
+}
+
+.browse-by-category__link:hover {
+  text-decoration: none;
+  background-color: #161616;
+  color: #fff;
+}
+
 /* Navigation */
 .nav-item-custom {
   font-family: 'Rubik', sans-serif;
@@ -156,13 +213,62 @@ body {
 
 /* Footer */
 .footer {
-  padding: 30px;
+  padding: 20px 0px 10px 0px;
   text-transform: uppercase;
   text-align: center;
   font-family: 'Rubik', sans-serif;
+  font-weight: 300;
   background-color: rgb(206, 206, 206);
   color: white;
 }
+
+.footer__text {
+  font-size: 12px;
+}
+
+.footer__link {
+  color: #fff;
+  font-size: 12px;
+}
+
+.footer__link:hover {
+  text-decoration: none;
+  color: #161616;
+}
+
+// Social Media Icons
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 50%;
+}
+
+.fa-snapchat-ghost:hover {
+  text-decoration: none;
+  background: #fffc00;
+  text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+  color: white;
+}
+
+.fa-twitter:hover {
+  text-decoration: none;
+  background: #55ACEE;
+  color: white;
+}
+
+.fa-instagram:hover {
+  text-decoration: none;
+  color: white;
+  background: #f09433; 
+  background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+  background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
+  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); 
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
+}
+
 
 // allows for sticky footer when placed in body class
 .wrapper {

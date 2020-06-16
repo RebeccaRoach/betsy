@@ -7,7 +7,7 @@ class Order < ApplicationRecord
   has_many :products, through: :orderitems
 
   validates :status, presence: true, inclusion: { 
-    in: %w(pending paid complete),
+    in: %w(pending paid complete cancelled),
     message: "%{value} is not a valid status" 
   }
 
@@ -20,7 +20,7 @@ class Order < ApplicationRecord
   validates :cc_exp, presence: true, on: :update
   validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
-  # review after seeding
+  # custom methods
   def reduce_stock
     self.orderitems.each do |orderitem|
       orderitem.product.stock -= orderitem.quantity
@@ -54,6 +54,7 @@ class Order < ApplicationRecord
     else
       raise Exception, "Order is not paid or all items haven't shipped"
     end
+    # need else statement??
   end
 
   # def is_order_of(merch_id)
