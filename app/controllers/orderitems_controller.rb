@@ -4,18 +4,19 @@ class OrderitemsController < ApplicationController
   # create a new orderitem
   # add to existing order if order exists; if not, create new order and add this orderitem to it
   def create
-    if session[:order_id] && Order.find_by(id: session[:order_id])
-      @order = Order.find_by(id: session[:order_id])
-    else
-      @order = Order.new(status: "pending")
-      unless @order.save
-        flash[:status] = :failure
-        flash[:result_text] = "Couldn't create order, try again later"
-        # flash[:messages] = orderitem.errors.messages
-        return
-      end
-      session[:order_id] = @order.id
-    end
+    # moved this to application_controller logic
+    # if session[:order_id] && Order.find_by(id: session[:order_id])
+      # @order = Order.find_by(id: session[:order_id])
+    # else
+    #   @order = Order.new(status: "pending")
+    #   unless @order.save
+    #     flash[:status] = :failure
+    #     flash[:result_text] = "Couldn't create order, try again later"
+    #     # flash[:messages] = orderitem.errors.messages
+    #     return
+    #   end
+    #   session[:order_id] = @order.id
+    # end
 
     # Increase quantity of desired product
     @orderitem = Orderitem.find_by(order_id: session[:order_id], product_id: params[:product_id])
@@ -29,9 +30,13 @@ class OrderitemsController < ApplicationController
         order_id: @order.id,
         shipped: false
       )
+      flash[:result_text] = "CURRENT NUM OF ITEMS IN ORDER = #{@order.orderitem.count}"
     end
 
     if @orderitem.save
+      # push orderitem into current order
+      @order << @orderitem
+      flash[:result_text] = "AFTER ADD TO ORDER: ITEM COUNT = #{@order.orderitem.count}"
       flash[:status] = :success
       flash[:result_text] = "Added #{@orderitem.product.product_name} to cart!"
     else

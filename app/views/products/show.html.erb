@@ -28,7 +28,13 @@
       <div class="py-3">
       <%# mini form to "add to card", link to order, and send up params of current product to be an orderitem %>
       <h2 class="catalog__description-title">Quantity <span>▭</span></h2> 
-      <%= button_to "add to cart", root_path, method: :get, class: "catalog__add-to-cart-button"   %>
+      <%= form_with model: @product, class: "add-orderitem" do |f| %>
+        <div class="form-group">
+          <%= f.label :quantity %>
+          <%= f.select :quantity, options_for_select(1..@product.stock), {}, {class: "form-control"} %>
+        </div>
+      <% end %>
+      <%= button_to "add to cart", orderitem_path(product_id: @product.id), method: :post, class: "catalog__add-to-cart-button"   %>
 
       </div>
     </div>
