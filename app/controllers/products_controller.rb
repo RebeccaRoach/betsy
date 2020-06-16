@@ -4,7 +4,6 @@ class ProductsController < ApplicationController
 
   def index
     if params[:category_name]
-      # NOTE TO SELF DO NOT EVER USE WHERE, FIND_BY IS THE WAY TO GO
       @products = Category.find_by(category_name: params[:category_name]).products
       @collection_name = params[:category_name]
     elsif params[:username]
@@ -31,6 +30,7 @@ class ProductsController < ApplicationController
   def create
     @product = Product.create(product_params)
     if @product.id?
+      flash[:success] = "#{@product.product_name} successfully added."
       redirect_to root_path
     else
       render :new
