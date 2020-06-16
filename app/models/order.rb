@@ -7,7 +7,7 @@ class Order < ApplicationRecord
   has_many :products, through: :orderitems
 
   validates :status, presence: true, inclusion: { 
-    in: %w(pending paid complete cancel),
+    in: %w(pending paid complete cancelled),
     message: "%{value} is not a valid status" 
   }
 
@@ -55,11 +55,11 @@ class Order < ApplicationRecord
     # need else statement??
   end
 
-  def is_order_of(merch_id)
-    if self.products.find_by(merchant_id: merch_id).nil?
-      return false
-    end
+  # def is_order_of(merch_id)
+  #   if self.products.find_by(merchant_id: merch_id).nil?
+  #     return false
+  #   end
     
-    return true
-  end
+  #   return true
+  # end
 end
