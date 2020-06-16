@@ -1,17 +1,27 @@
 class ProductsController < ApplicationController
   before_action :find_product, only: [:show, :update, :edit, :destroy]
+  before_action :require_login, only: [:new]
 
   def index
-    # paginate / kaminari gem will be helpful in the case there are numerous products
-    @products = Product.all
+    if params[:category_name]
+      # NOTE TO SELF DO NOT EVER USE WHERE, FIND_BY IS THE WAY TO GO
+      @products = Category.find_by(category_name: params[:category_name]).products
+      @collection_name = params[:category_name]
+    elsif params[:username]
+      @products = Merchant.find_by(username: params[:username]).products
+      @collection_name = "Products by #{params[:username]}"
+    else
+      @products = Product.all
+      @collection_name = "all products"
+    end
   end
 
   def show
     if @product.nil?
       flash[:error] = "Product has either been deleted, sold out, or not found."
-      redirect_to root_path
+      head :not_found
       return
-    end
+    end 
   end
 
   def new

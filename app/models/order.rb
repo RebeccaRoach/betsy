@@ -6,10 +6,8 @@ class Order < ApplicationRecord
   has_many :orderitems
   has_many :products, through: :orderitems
 
-  belongs_to :merchant
-
   validates :status, presence: true, inclusion: { 
-    in: %w(pending paid complete),
+    in: %w(pending paid complete cancel),
     message: "%{value} is not a valid status" 
   }
 
@@ -22,7 +20,7 @@ class Order < ApplicationRecord
   validates :cc_exp, presence: true, on: :update
   validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
-  # review after seeding
+  # custom methods
   def reduce_stock
     self.orderitems.each do |orderitem|
       orderitem.product.stock -= orderitem.quantity
@@ -49,11 +47,12 @@ class Order < ApplicationRecord
     return total_cost
   end
 
-  def mark_as_complete?
+  def mark_as_complete!
     if self.status == "paid" && self.orderitems.find_by(shipped: false).nil?
       self.status = "complete"
-      self.save
+      self.save!
     end
+    # need else statement??
   end
 
   def is_order_of(merch_id)
