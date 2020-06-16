@@ -88,12 +88,11 @@ class Order < ApplicationRecord
     self.clear_cart
   end
 
-
-  # def is_order_of(merch_id)
-  #   if self.products.find_by(merchant_id: merch_id).nil?
-  #     return false
-  #   end
+  def is_order_of(merch_id)
+    if self.products.find_by(merchant_id: merch_id).nil?
+      return false
+    end
     
-  #   return true
-  # end
+    return true
+  end
 end
