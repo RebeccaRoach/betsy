@@ -47,11 +47,12 @@ class Order < ApplicationRecord
     return total_cost
   end
 
-  def mark_as_complete?
+  def mark_as_complete!
     if self.status == "paid" && self.orderitems.find_by(shipped: false).nil?
       self.status = "complete"
-      self.save
+      self.save!
     end
+    # need else statement??
   end
 
   def is_order_of(merch_id)
