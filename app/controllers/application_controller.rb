@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user = Merchant.find_by(id: session[:uid])
+    @current_user = Merchant.find_by(id: session[:merchant_id])
   end
 
   def require_login
