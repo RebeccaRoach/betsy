@@ -21,15 +21,12 @@ class MerchantsController < ApplicationController
     merchant = Merchant.find_by(uid: auth_hash[:uid], provider: "github")
 
     if merchant
-      flash[:status] = :success
-      flash[:result_text] = "Returning merchant: #{merchant.username}."  
+      flash[:result_text] = "Returning merchant: #{merchant.username}"  
     else
       merchant = Merchant.build_from_github(auth_hash)
       if merchant.save
-        flash[:status] = :success
         flash[:result_text] = "You are logged in as new merchant: #{merchant.username}." 
       else
-        flash[:status] = :failure
         flash[:result_text] = "Failure: Could not create new merchant account"
         flash[:messages] = merchant.errors.messages
         return redirect_to root_path
