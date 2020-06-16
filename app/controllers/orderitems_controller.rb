@@ -1,30 +1,15 @@
 class OrderitemsController < ApplicationController
   before_action :find_orderitem, only: [:update, :destroy, :mark_shipped]
 
-  # create a new orderitem
-  # add to existing order if order exists; if not, create new order and add this orderitem to it
   def create
-    if session[:order_id] && Order.find_by(id: session[:order_id])
-      @order = Order.find_by(id: session[:order_id])
-    else
-      @order = Order.new(status: "pending")
-      unless @order.save
-        flash[:status] = :failure
-        flash[:result_text] = "Couldn't create order, try again later"
-        # flash[:messages] = orderitem.errors.messages
-        return
-      end
-      session[:order_id] = @order.id
-    end
-
     # Increase quantity of desired product
     @orderitem = Orderitem.find_by(order_id: session[:order_id], product_id: params[:product_id])
     if @orderitem
-      @orderitem.quantity += params[:orderitem][:quantity].to_i
+      @orderitem.quantity += params[:quantity].to_i
     else
     # need to create new Orderitem
       @orderitem = Orderitem.new(
-        quantity: params[:orderitem][:quantity],
+        quantity: params[:quantity],
         product_id: params[:product_id],
         order_id: @order.id,
         shipped: false
@@ -32,6 +17,8 @@ class OrderitemsController < ApplicationController
     end
 
     if @orderitem.save
+      # push orderitem into current order
+      @order.orderitems << @orderitem
       flash[:status] = :success
       flash[:result_text] = "Added #{@orderitem.product.product_name} to cart!"
     else
@@ -40,7 +27,6 @@ class OrderitemsController < ApplicationController
       flash[:messages] = @orderitem.errors.messages
     end
 
-    # continue shopping at same point or go back to root?
     redirect_to cart_path(id: session[:order_id])
   end
   

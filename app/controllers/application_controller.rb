@@ -9,9 +9,7 @@ class ApplicationController < ActionController::Base
   def set_current_order
     @order = Order.find_by(id: session[:order_id])
 
-    if @order && @order.status == "pending"
-      @order.id = session[:order_id]
-    else
+    unless @order && @order.status == "pending"
       # create new order 
       @order = Order.new(status: "pending")
       unless @order.save

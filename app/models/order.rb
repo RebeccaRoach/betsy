@@ -24,7 +24,7 @@ class Order < ApplicationRecord
   def reduce_stock
     self.orderitems.each do |orderitem|
       orderitem.product.stock -= orderitem.quantity
-      orderitem.product.save
+      orderitem.product.save!
     end
   end
 
@@ -32,7 +32,7 @@ class Order < ApplicationRecord
     self.orderitems.each do |orderitem|
       if !orderitem.product.retired
         orderitem.product.stock += orderitem.quantity
-        orderitem.product.save
+        orderitem.product.save!
       end
     end
   end
@@ -51,15 +51,48 @@ class Order < ApplicationRecord
     if self.status == "paid" && self.orderitems.find_by(shipped: false).nil?
       self.status = "complete"
       self.save!
+    else
+      raise Exception, "Order is not paid or all items haven't shipped"
     end
     # need else statement??
   end
 
-  # def is_order_of(merch_id)
-  #   if self.products.find_by(merchant_id: merch_id).nil?
-  #     return false
-  #   end
+  def change_to_paid!
+    # change order status to paid
+    self.status = "paid"
+    self.save!
+    # need else statement?
+  end
+
+  def clear_cart
+    session[:order_id] = nil
+  end
+
+  # order instance method or class method?
+  def checkout
+    self.orderitems.each do |orderitem|
+      if !orderitem.enough_stock
+        puts "THERE WASNT ENOUGH STOCK FOR #{orderitem.product.product_name}"
+        return false
+      end
+    end
+
+    self.reduce_stock
+    result = self.change_to_paid!
+    if !result
+      puts "CHANGE TO PAID DID NOT WORK"
+      return false
+    end
+
+    # clear cart
+    self.clear_cart
+  end
+
+  def is_order_of(merch_id)
+    if self.products.find_by(merchant_id: merch_id).nil?
+      return false
+    end
     
-  #   return true
-  # end
+    return true
+  end
 end
