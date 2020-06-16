@@ -1,0 +1,5 @@
+<% if @order.nil? %>
+  <h1>You have an empty cart!</h1>
+<% else %>
+  <h1>HERE IS YOUR ORDER: <% @order.id %></h1>
+<% end %>

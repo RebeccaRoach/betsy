@@ -70,7 +70,10 @@ class OrderitemsController < ApplicationController
       @orderitem.destroy
       flash[:status] = :success
       flash[:result_text] = "#{@orderitem.product.product_name} was removed from your cart"
-      redirect_to cart_path(order_id: session[:id])
+     
+      # TODO: choose correct redirect
+      redirect_to cart_path
+      # redirect_to cart_path(order_id: session[:id])
     else
       flash[:status] = :failure
       flash[:result_text] = "Cannot delete items"
