@@ -13,4 +13,9 @@ class Product < ApplicationRecord
   def enough_stock?(quantity)
     return self.stock >= quantity
   end
+
+  def retire!
+    self.update_attribute(:retired, true)
+   end
+
 end
