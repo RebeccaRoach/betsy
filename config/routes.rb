@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: 'pages#index'
-  resources :pages, only: :index
+  resources :pages, only: [:index]
 
   resources :products, except: [:destroy] do
     resources :orderitems, only: [:create]
@@ -21,5 +21,5 @@ Rails.application.routes.draw do
   get '/orders/:id/merchant_order', to: 'orders#merchant_order', as: 'merchant_order'
 
   resources :reviews, only: [:new, :create]
-  resources :categories, only: [:new, :create, :show, :index]
+  resources :categories, only: [:new, :create]
 end
