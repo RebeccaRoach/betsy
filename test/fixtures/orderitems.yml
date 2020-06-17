@@ -14,13 +14,13 @@ nature_valley:
   order: order2
   product: nature_valley
   shipped: false
-rainer:
+rainier:
   quantity: 1
   order: order2
-  product: rainer
+  product: rainier
   shipped: false
 discover:
   quantity: 1
   order: order2
   product: discover
-  shipped: false
+  shipped: true

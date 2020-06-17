@@ -15,28 +15,53 @@
       <%# Navigation Links %>
       <ul class="navbar-nav mb-auto mt-0 ml-auto mr-auto">
           <li class="nav-item">
-              <%= link_to "All products", products_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
+            <i class="fa fa-custom fa-th">
+              <%= link_to "All products", products_path, class: "nav-link-custom py-0 text-uppercase mr-5 ml-1" %>                        
+            </i>
           </li>
           <li class="nav-item">
-              <%= link_to "All merchants", root_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
+            <i class="fa fa-custom fa-users">
+              <%= link_to "All merchants", merchants_path, class: "nav-link-custom py-0 text-uppercase mr-5 ml-1" %>                        
+            </i>
           </li>
           <li class="nav-item dropdown">
-          <a class="nav-link-custom text-uppercase dropdown-toggle mr-5" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Categories
-          </a>
+          <i class="fa fa-custom fa-sitemap">
+            <a class="nav-link-custom text-uppercase dropdown-toggle mr-5 ml-1" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Categories
+            </a>
+          </i>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item nav-link-custom" href="#">A</a>
-              <a class="dropdown-item nav-link-custom" href="#">B</a>
-              <a class="dropdown-item nav-link-custom" href="#">C</a>
-              <a class="dropdown-item nav-link-custom" href="#">D</a>
+              <% collection.each do |category| %>
+                <%= link_to category.category_name, products_path(category_name: category.category_name), class: "dropdown-item nav-link-custom text-uppercase"  %>
+              <% end %>
+
             </div>
           </li>
+          <% if session[:merchant_id] %>
           <li class="nav-item">
-              <%= link_to "Sign-in", root_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
+            <% @current_user = Merchant.find_by(id: session[:merchant_id]) %>
+            <i class="fa fa-custom fa-user-circle">
+              <%= link_to @current_user.username, merchant_path(session[:merchant_id]), class: "nav-link-custom py-0 text-uppercase mr-5 ml-1"  %>
+            </i>
           </li>
           <li class="nav-item">
-              <%= link_to "Cart", root_path, class: "nav-link-custom py-0 text-uppercase mr-5" %>                        
+            <i class="fa fa-custom fa-arrow-circle-left">
+              <%= link_to "Logout", logout_path, method: :post, class: "nav-link-custom py-0 text-uppercase mr-5 ml-1"%>
+            </i>
           </li>
+          <% else %>
+          <li class="nav-item">
+              <i class="fa fa-custom fa-arrow-circle-right">
+                <%= link_to "Sign-in", github_login_path, method: :post, class: "nav-link-custom py-0 text-uppercase mr-5 ml-1"%>
+              </i>
+          </li>
+          <% end %>
+          <li class="nav-item">
+            <i class="fa fa-custom fa-shopping-cart">
+              <%= link_to "Cart", cart_path(@order), class: "nav-link-custom py-0 text-uppercase mr-5 ml-1" %>
+            </i>
+          </li>
+          
       </ul>
   </div>
 </section>

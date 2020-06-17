@@ -1,27 +1,22 @@
 class CategoriesController < ApplicationController
-
-  def index
-    @categories = Category.all
-  end
+  before_action :require_login, only: [:new]
 
   def new
     @category = Category.new
   end
 
   def create
-    @category = Category.new(category_params)
-    if @category.save
-      # flash[:status] = :success
-      # flash[:result_text] = "Successfully created #{@media_category.singularize} #{@work.id}"
-      # redirect_to root
+    @category = Category.create(category_params)
+    if @category.id?
+      flash[:success] = "Successfully added the #{@category.category_name} category"
+      redirect_to merchant_path(session[:merchant_id])
     else
-      flash[:status] = :failure
       flash[:result_text] = "Could not create category"
-      # flash[:messages] = @category.errors.messages
-      # render :new, status: :bad_request
     end
   end
 
-  def show
-  end
+
+  def category_params
+    params.require(:category).permit(:category_name)
+end
 end

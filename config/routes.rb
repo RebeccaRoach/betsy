@@ -1,24 +1,26 @@
 Rails.application.routes.draw do
   root to: 'pages#index'
-  resources :pages, only: :index
+  resources :pages, only: [:index]
 
-  resources :products
+  resources :products, except: [:destroy] do
+    resources :orderitems, only: [:create]
+    patch :retired, on: :member #products/1/retired
+  end
+
+  resources :orderitems, only: [:edit, :update, :destroy]
+  patch 'orderitems/:id/mark_shipped', to: 'orderitems#mark_shipped', as: 'mark_shipped'
+
+  resources :orders, only: [:new, :show, :edit, :update, :cancel]
+  get '/orders/:id/cart', to: 'orders#cart', as: 'cart'
+  get '/orders/:id/cart/success', to: 'orders#submit', as: 'confirm_submit'
+
   resources :merchants
 
-  resources :orderitems, only: [:edit, :destroy]
-  patch 'orderitems/:id', to: 'orderitems#update'
-  patch 'orderitems/:id/mark_shipped', to: 'orderitems#markshipped', as: 'mark_shipped'
-
-  resources :orders, only: [:show, :edit, :update]
-  get '/orders/:id/cart', to: 'orders#cart', as: 'cart'
-  # need custom route for place order?
+  post "/auth/github", as: "github_login"
+  get "/auth/github/callback", to: "merchants#create", as: "auth_callback"
+  post "/logout", to: "merchants#logout", as: "logout"
+  get '/orders/:id/merchant_order', to: 'orders#merchant_order', as: 'merchant_order'
 
   resources :reviews, only: [:new, :create]
-  resources :categories, only: [:new, :create, :show, :index]
-
-  resources :merchants
-  get "/auth/github", as: "github_login"
-  get "/auth/github/callback", to: "merchants#create", as: "auth_callback"
-  delete "/logout", to: "merchants#destroy", as: "logout"
-  get '/orders/:id/merchant_order', to: 'orders#merchant_order', as: 'merchant_order'
+  resources :categories, only: [:new, :create]
 end
