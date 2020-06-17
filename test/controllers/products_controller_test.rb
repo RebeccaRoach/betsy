@@ -35,6 +35,7 @@ describe ProductsController do
     it "responds with 404 with an invalid product id" do
       get "/products/#{@invalid_product_id}"
 
+      assert_equal 'Product has either been deleted, sold out, or not found.', flash[:error]
       must_respond_with :not_found
     end
   end
