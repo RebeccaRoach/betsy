@@ -34,7 +34,7 @@
         <%= f.select :quantity, options_for_select(1..@product.stock), {}, {class: "form-control"} %>
         </div>
 
-        <%= f.submit "Add to Cart" %>
+        <%= f.submit "Add to Cart", class: "catalog__add-to-cart-button"%>
       <% end %>
       </div>
     </div>
