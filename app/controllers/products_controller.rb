@@ -31,7 +31,7 @@ class ProductsController < ApplicationController
     @product = Product.create(product_params)
     if @product.id?
       flash[:success] = "#{@product.product_name} successfully added."
-      redirect_to root_path
+      redirect_to product_path(@product.id)
     else
       render :new
     end
@@ -67,6 +67,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    return params.require(:product).permit(:product_name, :price, :description, :photo_url, :stock, :merchant_id)
+    return params.require(:product).permit(:product_name, :price, :description, :photo_url, :stock, :merchant_id, category_ids: [])
   end
 end
