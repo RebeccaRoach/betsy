@@ -3,35 +3,48 @@ class OrderitemsController < ApplicationController
 
   def create
     @orderitem = Orderitem.find_by(order_id: session[:order_id], product_id: params[:product_id])
-    # increment quantity if found
+    # increment quantity if found AND if it's possible to
+
     if @orderitem
-      @orderitem.quantity += params[:quantity].to_i
+      # we need to check if we CAN increment quantity first before we do:
+      selected_item_from_order = @order.orderitems.find_by(product_id: @orderitem.product_id)
+      temp_desired_quantity = selected_item_from_order.quantity + params[:quantity].to_i
+      result = @orderitem.enough_stock?(temp_desired_quantity)
+
+      if result == false
+          flash[:status] = :failure
+          # errors.add(params:quantity, "order exceeds in-stock inventory")
+          flash[:result_text] = "Can't add another #{@orderitem.product.product_name} to cart; not enough stock"
+          flash[:messages] = @orderitem.errors.messages
+
+          return @orderitem
+      else
+        @orderitem.quantity += params[:quantity].to_i
+      end
+      
     else
     # create new Orderitem
       @orderitem = Orderitem.new(
-        quantity: params[:quantity],
-        product_id: params[:product_id],
+        quantity: params[:quantity].to_i,
+        product_id: params[:product_id].to_i,
         order_id: @order.id,
         shipped: false
       )
     end
 
-    if @orderitem.enough_stock?(params[:quantity].to_i) && @orderitem.not_retired?
-      if @orderitem.save!
-        # add orderitem to current order
-        @order.orderitems << @orderitem
-        flash[:status] = :success
-        flash[:result_text] = "Added #{ @orderitem.product.product_name } to cart!"
-        redirect_to cart_path(id: session[:order_id])
-      else
-        flash[:status] = :failure
-        flash[:result_text] = "Error adding #{ @orderitem.product.product_name } to cart."
-        flash[:messages] = @orderitem.errors.messages
-      end
+    if @orderitem.save
+      # add orderitem to current order
+      @order.orderitems << @orderitem
+      flash[:status] = :success
+      flash[:result_text] = "Added #{ @orderitem.product.product_name } to cart!"
+      redirect_to cart_path(session[:order_id])
     else
       flash[:status] = :failure
-      flash[:result_text] = "Error adding #{ @orderitem.product.product_name } to cart. Either retired or not enough items."
+      flash[:result_text] = "Error adding #{ @orderitem.product.product_name } to cart."
+      flash[:messages] = @orderitem.errors.messages
     end
+  
+    return @orderitem
   end
 
   def edit ; end
