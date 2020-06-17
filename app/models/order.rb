@@ -71,7 +71,7 @@ class Order < ApplicationRecord
   # order instance method or class method?
   def checkout
     self.orderitems.each do |orderitem|
-      if !orderitem.enough_stock
+      if !orderitem.enough_stock?(orderitem.quantity)
         puts "THERE WASNT ENOUGH STOCK FOR #{orderitem.product.product_name}"
         return false
       end

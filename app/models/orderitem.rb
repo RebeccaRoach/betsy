@@ -6,8 +6,8 @@ class Orderitem < ApplicationRecord
   # when should we call shipped validation below?
   validates :shipped, inclusion: { in: [true, false], message: "shipped status : must be true or false" }
 
-  validate :in_stock, on: [:create, :update]
-  validate :not_retired, on: [:create, :update]
+  # validate :enough_stock, on: [:create, :update]
+  # validate :not_retired, on: [:create, :update]
 
   def subtotal
     subtotal = (self.quantity) * (self.product.price)
@@ -22,10 +22,13 @@ class Orderitem < ApplicationRecord
 
   private
 
-  def enough_stock
-    # correct syntax??
+  # edited to return bools
+  def enough_stock?(quantity)
     if !self.product.enough_stock?(quantity)
       errors.add(:quantity, "order exceeds in-stock inventory")
+      return false
+    else
+      return true
     end
   end
 
