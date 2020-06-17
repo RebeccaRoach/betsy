@@ -1,29 +1,32 @@
+<section class="content">
 <% if @order.nil? %>
   <h1>You have an empty cart!</h1>
 <% else %>
   <section class='order'>
-  <h2 class="h-center-text">YOUR CART</h2>
+  <h2 class="h-center-text cart__title">YOUR CART</h2>
 
   <table class="table">
   <tbody>
 
   <% @order.orderitems.each do |orderitem| %>
   <tr>
-    <td>
-      <span class="img-cart cont-center"><%= image_tag "#{orderitem.product.photo_url}", alt: "#{orderitem.product.product_name}" %></span>
+    <td width=500px>
+      <span class="img-cart cont-center"><%= image_tag "#{orderitem.product.photo_url}", alt: "#{orderitem.product.product_name}", class: "embed-responsive embed-responsive-1by1 cart__img" %></span>
     </td>
 
+    <td id="text-just-center cart">
+      <h4 class="card__text"><%= link_to orderitem.product.product_name, product_path(orderitem.product), class: "text-dark, cart__text" %></h4>
+    </td>
     <td id="text-just-center">
-      <h4><%= link_to orderitem.product.product_name, product_path(orderitem.product) %></h4>
-      <p>Quantity: <%= orderitem.quantity %></p>
+      <p class="cart__text">Quantity: <%= orderitem.quantity %></p>
       <p>
-      <%= link_to "edit", edit_order_path(id: orderitem.id) %> | 
-      <%= link_to "delete", orderitem_path(id: orderitem.id), method: :delete, data: {confirm: "Are you sure?"} %>
+      <%= link_to "edit", edit_order_path(id: orderitem.id), class: "text-dark cart__text" %> | 
+      <%= link_to "remove from cart", orderitem_path(id: orderitem.id), method: :delete, data: {confirm: "Are you sure?"}, class: "text-dark cart__text"%>
       </p>
     </td>
 
     <td id="text-just-center">
-      <p><span class='text-bold'>$<%= number_with_precision(orderitem.subtotal, :precision => 2) %></span> ($<%= number_with_precision(orderitem.product.price, :precision => 2) %> each)</p>
+      <p class="cart__text"><span class='text-bold cart__text'>$<%= number_with_precision(orderitem.subtotal, :precision => 2, :delimiter => ',') %></span> ($<%= number_with_precision(orderitem.product.price, :precision => 2, :delimiter => ',') %> each)</p>
     </td>
   </tr>
   <% end %>
@@ -34,10 +37,11 @@
   <hr class="hr-total">
 
   <section class="align-right">  
-    <h4>TOTAL $<%= number_with_precision(@order.total, :precision => 2) %></h4>
-    <p ><%= link_to 'Checkout', edit_order_path(id: @order.id), class:"btn btn-primary" %></p>
+    <h4 class="cart__text">TOTAL $<%= number_with_precision(@order.total, :precision => 2) %></h4>
+    <p ><%= button_to 'Checkout', edit_order_path(id: @order.id), class:"cart__checkout-button" %></p>
   </section>
 
 </section>
 <% end %>
+</section>
 
