@@ -6,9 +6,8 @@ Rails.application.routes.draw do
     resources :orderitems, only: [:create]
   end
 
-  resources :orderitems, only: [:update, :destroy]
+  resources :orderitems, only: [:edit, :update, :destroy]
   patch 'orderitems/:id/mark_shipped', to: 'orderitems#mark_shipped', as: 'mark_shipped'
-  patch '/orderitems/:id', to: 'orderitems#update'
 
   resources :orders, only: [:new, :show, :edit, :update, :cancel]
   get '/orders/:id/cart', to: 'orders#cart', as: 'cart'
