@@ -16,6 +16,9 @@ class OrdersController < ApplicationController
     end
   end
 
+# methods are flipped update-submit proof viewcart hiy checkout check if enough stock if enough then show cc form
+# if true then reduce stock if valid
+
   #renders payment information form
   # enter payment details, find order_id from session
   def edit; end
@@ -28,11 +31,11 @@ class OrdersController < ApplicationController
       if !orderitem.valid?
         flash[:status] = :failure
         flash[:result_text] = "Some items in your cart are no longer available"
-        flash[:messages] = orderitem.errors.messages
+        flash[:messages] = @orderitem.errors.messages
       end
 
       if flash[:status] = :failure
-        flash[:messages] = order.errors.messages
+        flash[:messages] = @order.errors.messages
         return redirect_to cart_path
       end
     end
@@ -58,8 +61,11 @@ class OrdersController < ApplicationController
   end
 
   # we call this method when user submits payment form
+  # only checking for stock how does the submit know about validations
+  #if order.valid?
   def submit
     result = @order.checkout
+    #this will never fail
     if result
       flash[:result_text] = "Order successfully paid!"
       redirect_to order_path(@order.id)

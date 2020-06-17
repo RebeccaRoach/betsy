@@ -22,7 +22,7 @@
     <td id="text-just-center">
       <p class="cart__text">Quantity: <%= orderitem.quantity %></p>
       <p>
-      <%= link_to "edit", edit_order_path(id: orderitem.id), class: "text-dark cart__text" %> | 
+      <%= link_to "edit", edit_orderitem_path(id: orderitem.id), class: "text-dark cart__text" %> | 
       <%= link_to "remove from cart", orderitem_path(id: orderitem.id), method: :delete, data: {confirm: "Are you sure?"}, class: "text-dark cart__text"%>
       </p>
     </td>
