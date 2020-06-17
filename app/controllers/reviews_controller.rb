@@ -1,35 +1,24 @@
 class ReviewsController < ApplicationController
-
   def new
     @review = Review.new
+    @product_id = params[:product_id]
   end
 
   def create
-    # should we check for merchant_id in this action, or take care of in review validations??
-    # rescue ActionController::ParameterMissing
-    # redirect_to new_review_path
+    @review = Review.create(review_params)
 
-    if params[:product_id].nil?
-      # correct behavior?
-      redirect_to root_path, notice: 'Review unable to be created'
-      return
-    end
-
-    @review = Review.new(review_params)
-    @review.product_id = params[:product_id]
-  
     if @review.save
-      flash[:success] = "Review added successfully"
-      redirect_to product_path(params[:product_id])
+      flash[:success] = "Review successfully added."
+      redirect_to product_path(@review.product_id)
+      #  TODO: Render status codes
     else
-      # different path???
-      redirect_to root_path, notice: 'Problem: Review was not made.'
+      render :new, status: :bad_request
     end
   end
 
   private
 
   def review_params
-    return params.require(:review).permit(:content, :rating)
+    return params.require(:review).permit(:content, :rating, :product_id)
   end
 end
