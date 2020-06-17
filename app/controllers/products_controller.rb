@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   before_action :find_product, only: [:show, :update, :edit, :destroy, :retired]
-  before_action :require_login, only: [:new]
+  before_action :require_login, only: [:new, :edit]
 
   def index
     if params[:category_name]
