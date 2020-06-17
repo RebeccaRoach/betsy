@@ -1,4 +1,5 @@
 <section class="content">
+<% if !@product.retired %>
 <%# Product Description Header %>
 <section class="px-5">
   <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
@@ -17,6 +18,9 @@
 
 
 <%# Product Picture and Description %>
+
+  
+
 <section class="container-fluid px-5">
   <div class="row px-5">
     <div class="col">
@@ -37,8 +41,12 @@
         <%= f.label :quantity %>
         <%= f.select :quantity, options_for_select(1..@product.stock), {}, {class: "form-control"} %>
         </div>
-
-        <%= f.submit "Add to Cart", class: "catalog__add-to-cart-button"%>
+        <% if @product.retired %>
+        <br>
+          <h2 class="catalog__description-title">This product is retired, unable to purchase.</h2>
+            <% else %>
+          <%= f.submit "Add to Cart", class: "catalog__add-to-cart-button"%>
+        <% end %>
       <% end %>
       </div>
     </div>
@@ -55,4 +63,5 @@
   <% end %>
 </section>
 </section>
+<% end %>
 </section>
