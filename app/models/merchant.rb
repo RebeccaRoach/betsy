@@ -15,26 +15,28 @@ class Merchant < ApplicationRecord
   end
   
   def total_revenue
-    total_rev = 0
-    self.products.each do |product|
-      product.orderitems.each do |item|
-        total += item.subtotal
+    total_revenue = 0
+
+    self.order_items.each do |order_item|
+      if order_item.order.cart_status == "paid"
+        total_revenue += order_item.total
       end
     end
-    return total_rev
+
+    return total_revenue
   end
 
   # double check on edge cases i.e. nil or pending order
-  def total_revenue_by_status(status)
-    total_rev_status = 0
-    self.products.each do |product|
-      product.orderitems.each do |item|
-        if item.order.status == status
-          total += item.subtotal
-        end
+  def revenue_by_status(status)
+    total_revenue = 0
+
+    self.order_items.each do |order_item|
+      if order_item.order.cart_status == status
+        total_revenue += order_item.total
       end
     end
-    return total_rev_status
+
+    return total_revenue
   end
 
 end

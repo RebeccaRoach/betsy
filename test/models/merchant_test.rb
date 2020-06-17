@@ -1,19 +1,11 @@
 require "test_helper"
 
 describe Merchant do
-  let (:merchant) {merchant(:canoeing_chris)}
+  # let (:merchant) {merchant(:canoeing_chris)}
 
   describe "validations" do
-
     it "is valid with all fields present and valid" do
       expect(merchant.valid?).must_equal true
-    end
-
-    it 'is invalid without an email address' do
-      merchant.email = nil
-
-      expect(merchant.valid?).must_equal false
-      expect(merchant.errors.messages).must_include :email
     end
 
     it 'is invalid without a unique email address' do
@@ -30,13 +22,21 @@ describe Merchant do
         product.must_be_kind_of Product
         end
       end
-  
-      it "can have one or more order items through products" do
-        merchant.must_respond_to :order_items
-        merchant.order_items.each do |order_item|
-        order_item.must_be_kind_of OrderItem
-        end
-      end
+    end
+  end
+
+  describe "build_from_github" do
+    it "returns a merchant" do
+      auth_hash = OmniAuth::AuthHash.new(mock_auth_hash(merchants(:ubeninja77)))
+
+      merchant = Merchant.build_from_github(auth_hash)
+
+      merchant.must_be_kind_of Merchant
+      expect(merchant.uid).must_equal auth_hash[:uid]
+      expect(merchant.provider).must_equal "github"
+      expect(merchant.email).must_equal auth_hash["info"]["email"]
+      expect(merchant.nickname).must_equal auth_hash["info"]["nickname"]
+      expect(merchant.name).must_equal auth_hash["info"]["name"]
     end
   end
 
@@ -47,22 +47,22 @@ describe Merchant do
         expect(merchant(:canoeing_chris).total_revenue).must_equal 11.11
       end
 
-      it "returns 0 if the merchant has made no sales" do
-        expect(merchant(:canoeing_chris).total_revenue).must_equal 0
+      it "returns 0 if the merchant has no revenue" do
+        expect(merchant(:fishin_fiona).total_revenue).must_equal 0
       end
     end
 
     describe "revenue_by_status" do
       it "calculates the total revenue by status passed in" do
-        # verif the must_equal to the two following
+        # veriyf the must_equal to the two following
         expect(merchant(:trailin_trinity).total_revenue_by_status("paid")).must_equal 11.15
         expect(merchant(:fishin_fiona).total_revenue_by_status("pending")).must_equal 831.06
       end
 
-      it "will return 0 for a non-existing status" do
-        # verify the n/a message
-        expect(merchant(:canoeing_chris).total_revenue_by_status("n/a")).must_equal 0.0
-      end
+      # it "will return 0 for a non-existing status" do
+      #   # verify the n/a message
+      #   expect(merchant(:canoeing_chris).total_revenue_by_status("n/a")).must_equal 0.0
+      # end
     end
   end
 end
