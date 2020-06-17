@@ -1,5 +1,5 @@
 class OrderitemsController < ApplicationController
-  before_action :find_orderitem, only: [:update, :destroy, :mark_shipped]
+  before_action :find_orderitem, only: [:edit, :update, :destroy, :mark_shipped]
 
   def create
     # Increase quantity of desired product
@@ -29,6 +29,8 @@ class OrderitemsController < ApplicationController
 
     redirect_to cart_path(id: session[:order_id])
   end
+
+  def edit ; end
   
   def update
     if @orderitem.order.status == "pending"
