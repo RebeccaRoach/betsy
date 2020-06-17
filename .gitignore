@@ -39,4 +39,6 @@ yarn-debug.log*
 
 # Ignore client id and secret
 .env
-/coverage
+
+# Ignore simplecov coverage
+coverage
