@@ -207,7 +207,7 @@ body {
   color: #000000;
 }
 
-.catalog__add-to-cart-button, .cart__checkout-button {
+.catalog__add-to-cart-button, .cart__checkout-button, .product__new-button {
   background-color: #fff;
   color: #000000;
   padding: 5px;
@@ -220,7 +220,7 @@ body {
   min-width: 25%;
 }
 
-.catalog__add-to-cart-button:hover, .cart__checkout-button:hover {
+.catalog__add-to-cart-button:hover, .cart__checkout-button:hover, .product__new-button:hover {
   background-color: #161616;
   color: #fff;
 }
