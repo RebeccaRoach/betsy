@@ -34,7 +34,7 @@ class OrderitemsController < ApplicationController
   
   def update
     if @orderitem.order.status == "pending"
-      if @orderitem.update(quantity: params[:quantity])
+      if @orderitem.update(quantity: params[:orderitem][:quantity])
         flash[:status] = :success
         flash[:result_text] = "Update successful"
         redirect_to cart_path(session[:order_id])
