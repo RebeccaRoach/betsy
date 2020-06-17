@@ -15,7 +15,7 @@
     </td>
 
     <td id="text-just-center cart">
-      <h4 class="card__text"><%= link_to orderitem.product.product_name, product_path(orderitem.product), class: "text-dark, cart__text" %></h4>
+      <h4 class="cart__text"><%= link_to orderitem.product.product_name, product_path(orderitem.product), class: "text-dark, cart__text" %></h4>
     </td>
     <td id="text-just-center">
       <p class="cart__text">Quantity: <%= orderitem.quantity %></p>
