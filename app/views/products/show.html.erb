@@ -6,7 +6,7 @@
   <h6><%= link_to "< ALL PRODUCTS", products_path, class: "local-navigation" %></h6>
   <h1 class="catalog__header"><%= @product.product_name %></h1>
   <h4 class="catalog__detail-header">RATING: ##/5 (# of reviews)</h4>
-  <h4 class="catalog__detail-header">Sold by: <span><%= link_to "MERCHANT MOTHER NATURE", root_path, class: "catalog__detail-header" %></span></h4>
+  <h4 class="catalog__detail-header">Sold by: <span><%= link_to @product.merchant.username, merchant_path(@product.merchant), class: "catalog__detail-header" %></span></h4>
   <h6 class="catalog__secondary-header">Categories: 
   <% @product.categories.each do |category| %>
     <%= category.category_name %> |
