@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :products, except: [:destroy] do
     resources :orderitems, only: [:create]
+    patch :retired, on: :member #products/1/retired
   end
 
   resources :orderitems, only: [:edit, :update, :destroy]
