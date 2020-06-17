@@ -11,6 +11,6 @@ class Product < ApplicationRecord
   has_many :orders, through: :orderitems
 
   def enough_stock?(quantity)
-    return self.quantity >= quantity
+    return self.stock >= quantity
   end
 end

@@ -2,12 +2,12 @@ class OrderitemsController < ApplicationController
   before_action :find_orderitem, only: [:update, :destroy, :mark_shipped]
 
   def create
-    # Increase quantity of desired product
     @orderitem = Orderitem.find_by(order_id: session[:order_id], product_id: params[:product_id])
+    # increment quantity if found
     if @orderitem
       @orderitem.quantity += params[:quantity].to_i
     else
-    # need to create new Orderitem
+    # create new Orderitem
       @orderitem = Orderitem.new(
         quantity: params[:quantity],
         product_id: params[:product_id],
@@ -17,13 +17,13 @@ class OrderitemsController < ApplicationController
     end
 
     if @orderitem.save
-      # push orderitem into current order
+      # add orderitem to current order
       @order.orderitems << @orderitem
       flash[:status] = :success
-      flash[:result_text] = "Added #{@orderitem.product.product_name} to cart!"
+      flash[:result_text] = "Added #{ @orderitem.product.product_name } to cart!"
     else
       flash[:status] = :failure
-      flash[:result_text] = "Error adding #{@orderitem.product.product_name} to cart."
+      flash[:result_text] = "Error adding #{ @orderitem.product.product_name } to cart."
       flash[:messages] = @orderitem.errors.messages
     end
 
@@ -32,16 +32,16 @@ class OrderitemsController < ApplicationController
   
   def update
     if @orderitem.order.status == "pending"
-      if @orderitem.update(quantity: params[:orderitem][:quantity])
+      if @orderitem.update(quantity: params[:quantity])
         flash[:status] = :success
         flash[:result_text] = "Update successful"
-        redirect_to cart_path
+        redirect_to cart_path(session[:order_id])
         return
       else
         flash.now[:status] = :failure
         flash.now[:result_text] = "Error updating the item"
         flash.now[:messages] = @orderitem.errors.messages
-        redirect_to cart_path
+        redirect_to cart_path(session[:order_id])
         return
       end
     else
@@ -53,13 +53,10 @@ class OrderitemsController < ApplicationController
 
   def destroy
     if @orderitem.order.status == "pending"
-      @orderitem.destroy
+      @orderitem.destroy!
       flash[:status] = :success
       flash[:result_text] = "#{@orderitem.product.product_name} was removed from your cart"
-     
-      # TODO: choose correct redirect
-      redirect_to cart_path
-      # redirect_to cart_path(order_id: session[:id])
+      redirect_to cart_path(session[:order_id])
     else
       flash[:status] = :failure
       flash[:result_text] = "Cannot delete items"
@@ -67,21 +64,16 @@ class OrderitemsController < ApplicationController
     end
   end
 
-
   def mark_shipped
-    # put into model test
     if @orderitem.order.status == "paid" && @orderitem.shipped == false
-      @orderitem.shipped = true
-      @orderitem.save
+      @orderitem.mark_item_shipped!
       flash[:status] = :success
-      flash[:result_text] = "#{ @orderitem.product.product_name } - shipped"
+      flash[:result_text] = "#{ @orderitem.product.product_name } has shipped!"
       # @orderitem.order.mark_as_complete!
-
       redirect_back fallback_location: root_path
-
     elsif @orderitem.order.status == "paid" && @orderitem.shipped == true
       flash[:status] = :failure
-      flash[:result_text] = "#{@orderitem.shipped}- shipped"
+      flash[:result_text] = "#{ @orderitem.product.product_name } has already shipped."
       redirect_back fallback_location: root_path
     else
       flash[:status] = :failure
@@ -91,6 +83,7 @@ class OrderitemsController < ApplicationController
   end
 
   private
+  
   def find_orderitem
     @orderitem = Orderitem.find_by(id: params[:id])
     head :not_found unless @orderitem
