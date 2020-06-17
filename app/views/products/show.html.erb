@@ -19,9 +19,6 @@
 
 
 <%# Product Picture and Description %>
-
-  
-
 <section class="container-fluid px-5">
   <div class="row px-5">
     <div class="col">
@@ -63,10 +60,9 @@
   <% end %>
     <% if !@product.reviews.empty? %>
       <% @product.reviews.each do |review| %>
-        <%= review.created_at.strftime("%B %d, %Y") %>
-        <h4>Rating: <%= review.rating %></h4> 
-        <br>
-          <p><%= review.content %></p>
+        <h5 class="catalog__detail-header"> <%= review.created_at.strftime("%B %d, %Y") %></h5>
+        <h4 class="catalog__detail-header">Rating: <%= review.rating %></h4> 
+          <p class="catalog__review-text"><%= review.content %></p>
         <hr>
       <% end %>
     <% else %>
