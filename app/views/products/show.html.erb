@@ -5,7 +5,7 @@
   <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
   <h6><%= link_to "< ALL PRODUCTS", products_path, class: "local-navigation" %></h6>
   <h1 class="catalog__header"><%= @product.product_name %></h1>
-  <h4 class="catalog__detail-header">RATING: ##/5 (# of reviews)</h4>
+  <h4 class="catalog__detail-header">RATING: ##/5 (<%= @product.reviews.count %> review(s))</h4>
   <h4 class="catalog__detail-header">Sold by: <span><%= link_to @product.merchant.username, merchant_path(@product.merchant), class: "catalog__detail-header" %></span></h4>
   <h6 class="catalog__secondary-header">Categories: 
   <% @product.categories.each do |category| %>
@@ -56,8 +56,16 @@
 <section class="container-fluid p-5 mb-5">
   <h2 class="catalog__review-title">Reviews</h2>
   <hr>
+  <%# Yo! if you want to pass up params don't use that button_to, plz use link_to %>
+  <%= link_to "Review this product", new_review_path(product_id: @product.id), method: :get, class: "catalog__add-to-cart-button" %> <br> <br>
   <% if !@product.reviews.empty? %>
-    <h6 class="catalog__review-text">Reviews exist you just haven't put a loop to place the reviews here</h6>
+    <% @product.reviews.each do |review| %>
+      <%= review.created_at.strftime("%B %d, %Y") %>
+      <h4>Rating: <%= review.rating %></h4> 
+      <br>
+        <p><%= review.content %></p>
+      <hr>
+    <% end %>
   <% else %>
     <h6 class="catalog__review-text">No reviews yet</h6>
   <% end %>
