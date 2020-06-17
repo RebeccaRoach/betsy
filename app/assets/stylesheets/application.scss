@@ -63,7 +63,7 @@ header {
   filter: brightness(75%);
 }
 
-.browse-by-category__link {
+.browse-by-category__link, .retired-product {
   text-transform: uppercase;
   text-align: center;
   font-weight: 300;
@@ -149,7 +149,6 @@ body {
 .catalog__secondary-header {
   color: rgb(206, 206, 206);
 }
-
 
 .catalog__description-text, .catalog__review-text {
   font-weight: 300;
