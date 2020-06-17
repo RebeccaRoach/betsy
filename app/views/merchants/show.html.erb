@@ -44,12 +44,14 @@
                                   <h5> <%= button_to product.product_name, product_path(product.id), method: :get, class: "catalog__card-title-button text-left"%> </h5>
                               </section>
                           <div class="catalog__body-text">
-                          $<%= product.price%>
+                            $<%= number_with_precision(product.price, :precision => 2, :delimiter => ',') %>
                           </div>
                           <div class="catalog__body-text">
                           Rating: ##/5 (# of reviews)
-                          </div>
-
+                          </div> <br>
+                            <% if product.merchant_id == session[:merchant_id] %>
+                              <%= link_to "Retire Product", retired_product_path(product), method: :patch, data: {confirm: "Are you sure you want to retire #{product.product_name}?"}, class: "product__new-button" %>
+                            <% end %>
                           </div>
                       </div>
                   </div>
