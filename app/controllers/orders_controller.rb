@@ -23,23 +23,37 @@ class OrdersController < ApplicationController
   # enter payment details, find order_id from session
   def edit; end
 
-  # this is called when user clicks the "checkout" button on cart page
+  # UPDATE should be called when user tries to submit payment (edit is new)
   def update
-    # all fields must be valid; validations run on save to db - need extra code for this?
     @order.orderitems.each do |orderitem|
       # check enough_stock from product model***
-      if !orderitem.valid?
+      if orderitem.save!
+        # we update the order somehow
+      else
         flash[:status] = :failure
-        flash[:result_text] = "Some items in your cart are no longer available"
-        flash[:messages] = @orderitem.errors.messages
-      end
-
-      if flash[:status] = :failure
+        flash[:result_text] = "heeyyyyyy y no validations"
         flash[:messages] = @order.errors.messages
-        return redirect_to cart_path
+        return
       end
     end
+
+    result = @order.checkout
+    if result == true
+        flash[:result_text] = "Order successfully paid!"
+        redirect_to order_path(@order.id)
+    else
+      render :edit, status: :bad_request
+      flash[:status] = :failure
+      flash[:result_text] = "submit line 76 in orders_controller"
+      flash[:messages] = @order.errors.messages
+    end
   end
+
+    # flash[:status] = :failure
+    # flash[:result_text] = "Some items in your cart are no longer available"
+    # flash[:messages] = @orderitem.errors.messages
+    # end
+
 
   # Confirmation page for order : for all statuses ?
   def show
@@ -63,18 +77,19 @@ class OrdersController < ApplicationController
   # we call this method when user submits payment form
   # only checking for stock how does the submit know about validations
   #if order.valid?
-  def submit
-    result = @order.checkout
-    #this will never fail
-    if result
-      flash[:result_text] = "Order successfully paid!"
-      redirect_to order_path(@order.id)
-    else
-      render :edit, status: :bad_request
-      flash[:status] = :failure
-      flash[:messages] = @order.errors.messages
-    end
-  end
+  # def submit
+  #   result = @order.checkout
+  #   #this will never fail
+  #   if result
+  #     flash[:result_text] = "Order successfully paid!"
+  #     redirect_to order_path(@order.id)
+  #   else
+  #     render :edit, status: :bad_request
+  #     flash[:status] = :failure
+  #     flash[:result_text] = "submit line 76 in orders_controller"
+  #     flash[:messages] = @order.errors.messages
+  #   end
+  # end
 
   # need to add route for this to work
   def merchant_order

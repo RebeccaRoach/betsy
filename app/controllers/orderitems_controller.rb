@@ -16,41 +16,47 @@ class OrderitemsController < ApplicationController
       )
     end
 
-    if @orderitem.save
-      # add orderitem to current order
-      @order.orderitems << @orderitem
-      flash[:status] = :success
-      flash[:result_text] = "Added #{ @orderitem.product.product_name } to cart!"
+    if @orderitem.enough_stock?(params[:quantity].to_i) && @orderitem.not_retired?
+      if @orderitem.save!
+        # add orderitem to current order
+        @order.orderitems << @orderitem
+        flash[:status] = :success
+        flash[:result_text] = "Added #{ @orderitem.product.product_name } to cart!"
+        redirect_to cart_path(id: session[:order_id])
+      else
+        flash[:status] = :failure
+        flash[:result_text] = "Error adding #{ @orderitem.product.product_name } to cart."
+        flash[:messages] = @orderitem.errors.messages
+      end
     else
       flash[:status] = :failure
-      flash[:result_text] = "Error adding #{ @orderitem.product.product_name } to cart."
-      flash[:messages] = @orderitem.errors.messages
+      flash[:result_text] = "Error adding #{ @orderitem.product.product_name } to cart. Either retired or not enough items."
     end
-
-    redirect_to cart_path(id: session[:order_id])
   end
 
   def edit ; end
   
   def update
-    if @orderitem.order.status == "pending"
-      if @orderitem.update(quantity: params[:quantity])
-        flash[:status] = :success
-        flash[:result_text] = "Update successful"
-        redirect_to cart_path(session[:order_id])
-        return
+    # if @orderitem.enough_stock?(params[:quantity].to_i) && @orderitem.not_retired?
+      if @orderitem.order.status == "pending"
+        if @orderitem.update(quantity: params[:orderitem][:quantity])
+          flash[:status] = :success
+          flash[:result_text] = "Update successful"
+          redirect_to cart_path(session[:order_id])
+          return
+        else
+          flash.now[:status] = :failure
+          flash.now[:result_text] = "Error updating the item"
+          flash.now[:messages] = @orderitem.errors.messages
+          redirect_to cart_path(session[:order_id])
+          return
+        end
       else
-        flash.now[:status] = :failure
-        flash.now[:result_text] = "Error updating the item"
-        flash.now[:messages] = @orderitem.errors.messages
-        redirect_to cart_path(session[:order_id])
-        return
+        flash[:status] = :failure
+        flash[:result_text] = "Cannot update a #{@orderitem.order.status} order"
+        redirect_to root_path
       end
-    else
-      flash[:status] = :failure
-      flash[:result_text] = "Cannot update a #{@orderitem.order.status} order"
-      redirect_to root_path
-    end
+    # end
   end
 
   def destroy
