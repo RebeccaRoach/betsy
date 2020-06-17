@@ -1,10 +1,12 @@
 <section class="content">
-<% if @order.nil? %>
-  <h1>You have an empty cart!</h1>
-<% else %>
   <section class='order'>
   <h2 class="h-center-text cart__title">YOUR CART</h2>
-
+<% if @order.orderitems.empty? %>
+  <hr>
+  <h2 class="cart__text">Your cart is empty. </h1>
+  </section>
+  </section>
+<% else %>
   <table class="table">
   <tbody>
 
