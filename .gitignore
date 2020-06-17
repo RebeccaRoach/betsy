@@ -39,3 +39,4 @@ yarn-debug.log*
 
 # Ignore client id and secret
 .env
+coverage
