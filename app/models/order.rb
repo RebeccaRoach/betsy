@@ -13,12 +13,12 @@ class Order < ApplicationRecord
 
   validates :orderitems, length: { minimum: 1, message: "Your cart is empty" }, on: :update
   validates :email, presence: true, on: :update
-  validates :address, presence: true, on: :update
-  validates :cc_name, presence: true, on: :update
-  validates :cc_num, presence: true, numericality: { only_integer: true }, length: { minimum: 4 }, on: :update
-  validates :cvv, presence: true, numericality: { only_integer: true }, on: :update
-  validates :cc_exp, presence: true, on: :update
-  validates :zip, presence: true, numericality: { only_integer: true }, on: :update
+  # validates :address, presence: true, on: :update
+  # validates :cc_name, presence: true, on: :update
+  # validates :cc_num, presence: true, numericality: { only_integer: true }, length: { minimum: 4 }, on: :update
+  # validates :cvv, presence: true, numericality: { only_integer: true }, on: :update
+  # validates :cc_exp, presence: true, on: :update
+  # validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
   # custom methods
   def reduce_stock
@@ -60,8 +60,11 @@ class Order < ApplicationRecord
   def change_to_paid!
     # change order status to paid
     self.status = "paid"
-    self.save!
-    # need else statement?
+    if !self.save
+      # warn the user
+      return false
+    end
+    return true
   end
 
   def clear_cart
@@ -70,19 +73,20 @@ class Order < ApplicationRecord
 
   # order instance method or class method?
   def checkout
-    self.orderitems.each do |orderitem|
-      if !orderitem.enough_stock?(orderitem.quantity)
-        puts "THERE WASNT ENOUGH STOCK FOR #{orderitem.product.product_name}"
-        return false
-      end
+    # self.orderitems.each do |orderitem|
+    #   if !orderitem.enough_stock?(orderitem.quantity)
+    #     puts "THERE WASNT ENOUGH STOCK FOR #{orderitem.product.product_name}"
+    #     return false
+    #   end
+    # end
+
+    result = self.change_to_paid!
+
+    if !result
+      return false
     end
 
     self.reduce_stock
-    result = self.change_to_paid!
-    if !result
-      puts "CHANGE TO PAID DID NOT WORK"
-      return false
-    end
 
     # clear cart
     self.clear_cart

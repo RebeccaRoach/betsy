@@ -63,12 +63,13 @@ class OrdersController < ApplicationController
 
     if @order.status == "pending"
       flash[:status] = :failure
-      flash[:result_text] = "Your order is being process"
+      flash[:result_text] = "Your order is being processed"
       flash[:messages] = @order.errors.messages
       redirect_to root_path
       return
     elsif @order.status == "paid"
       flash[:status] = :success
+      flash[:result_text] = "Your order was paid!!!!!"
       # maybe add result text, maybe not?
       redirect_to order_path(@order.id)
     end
