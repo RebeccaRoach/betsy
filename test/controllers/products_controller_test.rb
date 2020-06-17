@@ -25,7 +25,7 @@ describe ProductsController do
 
   describe "show" do
     it "responds with success when showing an existing valid product" do
-      valid_product_id = products(:rainier).id
+      valid_product_id = products(:snow_pass).id
 
       get "/products/#{valid_product_id}"
 
@@ -35,7 +35,16 @@ describe ProductsController do
     it "responds with 404 with an invalid product id" do
       get "/products/#{@invalid_product_id}"
 
+      assert_equal 'Product has either been deleted, sold out, or not found.', flash[:error]
       must_respond_with :not_found
+    end
+  end
+
+  describe "new" do
+    it "responds with success" do
+      get new_product_path
+
+      must_redirect_to root_path
     end
   end
 end

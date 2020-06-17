@@ -70,7 +70,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  # comment here
+  # need to add route for this to work
   def merchant_order
     unless @order.is_order_of(session[:merchant_id]) && @order.status != 'pending'
       flash[:status] = :failure

@@ -2,14 +2,15 @@ Rails.application.routes.draw do
   root to: 'pages#index'
   resources :pages, only: :index
 
-  resources :products do
+  resources :products, except: [:destroy] do
     resources :orderitems, only: [:create]
   end
 
   resources :orderitems, only: [:update, :destroy]
   patch 'orderitems/:id/mark_shipped', to: 'orderitems#mark_shipped', as: 'mark_shipped'
+  patch '/orderitems/:id', to: 'orderitems#update'
 
-  resources :orders, only: [:new, :show, :edit, :update]
+  resources :orders, only: [:new, :show, :edit, :update, :cancel]
   get '/orders/:id/cart', to: 'orders#cart', as: 'cart'
   get '/orders/:id/cart/success', to: 'orders#submit', as: 'confirm_submit'
 

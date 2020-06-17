@@ -1,0 +1,13 @@
+<section id="merchant-order">
+  <h2 class="h-center-text">Order Information</h2>
+
+  <section class="merch-order-ul">
+    <ul>
+      <li><span class="bolded">Name:   </span> <%= @order.cc_name %></li>
+      <li><span class="bolded">Email Address:   </span> <%= @order.email %></li>
+      <li><span class="bolded">Mailing Address:   </span> <%= @order.address %></li>
+      <li><span class="bolded">Credit Card:   </span> **** **** ****<%= @order.cc_num[-4..-1] %></li>
+      <li><span class="bolded">Expiration Date:   </span> <%= @order.cc_exp %></li>
+    </ul>
+  </section>
+</section>

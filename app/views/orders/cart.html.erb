@@ -1,5 +1,49 @@
-<% if @order.nil? %>
-  <h1>You have an empty cart!</h1>
+<section class="content">
+  <section class='order'>
+  <h2 class="h-center-text cart__title">YOUR CART</h2>
+<% if @order.orderitems.empty? %>
+  <hr>
+  <h2 class="cart__text">Your cart is empty. </h1>
+  </section>
+  </section>
 <% else %>
-  <h1>HERE IS YOUR ORDER: <%= @order.id %></h1>
+  <table class="table">
+  <tbody>
+
+  <% @order.orderitems.each do |orderitem| %>
+  <tr>
+    <td width=500px>
+      <span class="img-cart cont-center"><%= image_tag "#{orderitem.product.photo_url}", alt: "#{orderitem.product.product_name}", class: "embed-responsive embed-responsive-1by1 cart__img" %></span>
+    </td>
+
+    <td id="text-just-center cart">
+      <h4 class="cart__text"><%= link_to orderitem.product.product_name, product_path(orderitem.product), class: "text-dark, cart__text" %></h4>
+    </td>
+    <td id="text-just-center">
+      <p class="cart__text">Quantity: <%= orderitem.quantity %></p>
+      <p>
+      <%= link_to "edit", edit_order_path(id: orderitem.id), class: "text-dark cart__text" %> | 
+      <%= link_to "remove from cart", orderitem_path(id: orderitem.id), method: :delete, data: {confirm: "Are you sure?"}, class: "text-dark cart__text"%>
+      </p>
+    </td>
+
+    <td id="text-just-center">
+      <p class="cart__text"><span class='text-bold cart__text'>$<%= number_with_precision(orderitem.subtotal, :precision => 2, :delimiter => ',') %></span> ($<%= number_with_precision(orderitem.product.price, :precision => 2, :delimiter => ',') %> each)</p>
+    </td>
+  </tr>
+  <% end %>
+
+  </tbody>
+  </table>
+
+  <hr class="hr-total">
+
+  <section class="align-right">  
+    <h4 class="cart__text">TOTAL $<%= number_with_precision(@order.total, :precision => 2, :delimiter => ',') %></h4>
+    <p ><%= button_to 'Checkout', edit_order_path(id: @order.id), class:"cart__checkout-button" %></p>
+  </section>
+
+</section>
 <% end %>
+</section>
+
