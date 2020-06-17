@@ -15,4 +15,13 @@ describe OrdersController do
       },
     }
   }
+  it "returns not found for the show action with an invalid id" do
+    get order_path(id: -1)
+    must_respond_with :not_found
+  end
+
+  decribe "update" do 
+    it "can update an order with valid order information"
+    end
+  end
 end
