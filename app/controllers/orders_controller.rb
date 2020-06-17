@@ -28,11 +28,11 @@ class OrdersController < ApplicationController
       if !orderitem.valid?
         flash[:status] = :failure
         flash[:result_text] = "Some items in your cart are no longer available"
-        flash[:messages] = orderitem.errors.messages
+        flash[:messages] = @orderitem.errors.messages
       end
 
       if flash[:status] = :failure
-        flash[:messages] = order.errors.messages
+        flash[:messages] = @order.errors.messages
         return redirect_to cart_path
       end
     end
