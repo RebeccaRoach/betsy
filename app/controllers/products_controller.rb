@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :find_product, only: [:show, :update, :edit, :destroy]
+  before_action :find_product, only: [:show, :update, :edit, :destroy, :retired]
   before_action :require_login, only: [:new]
 
   def index
@@ -57,6 +57,13 @@ class ProductsController < ApplicationController
     if @product.nil?
       redirect_to products_path(@product)
       return
+    end
+  end
+
+  def retired
+    if @product.retire!
+    flash[:success] = "#{@product.product_name} successfully retired!"
+    redirect_to merchant_path(session[:merchant_id]) #or wherever you want to redirect to
     end
   end
 
