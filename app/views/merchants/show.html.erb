@@ -18,8 +18,10 @@
     </div>
     <div class="col">
       <h2 class="catalog__description-text">On Outdoorsy since: <%= @merchant.created_at.strftime("%B %d, %Y") %></h2> <br>
-      <%= button_to "Add New Product", new_product_path, method: :get, class: "product__new-button" %> <br>
-      <%= button_to "Add New Category", new_category_path, method: :get, class: "product__new-button" %>
+      <% if @current_user %>
+        <%= button_to "Add New Product", new_product_path, method: :get, class: "product__new-button" %> <br>
+        <%= button_to "Add New Category", new_category_path, method: :get, class: "product__new-button" %>
+      <% end %>
     </div>
   </div>
 </section>
@@ -37,6 +39,9 @@
                       <div class="card mb-3 rounded-0 border-0">
                           <div class="embed-responsive embed-responsive-1by1">
                               <img class="card-img-top embed-responsive-item rounded-0" src=<%= product.photo_url %> alt=<%= product.product_name%>>
+                                <% if product.retired %>
+                                  <h3 class="retired-product"> RETIRED </h3>
+                                <% end %>
                           </div>
 
                           <div class="card-title text-uppercase pt-3">
@@ -50,7 +55,9 @@
                           Rating: ##/5 (# of reviews)
                           </div> <br>
                             <% if product.merchant_id == session[:merchant_id] %>
-                              <%= link_to "Retire Product", retired_product_path(product), method: :patch, data: {confirm: "Are you sure you want to retire #{product.product_name}?"}, class: "product__new-button" %>
+                              <% if !product.retired %>
+                                <%= link_to "Retire Product", retired_product_path(product), method: :patch, data: {confirm: "Are you sure you want to retire #{product.product_name}?"}, class: "product__new-button" %>
+                              <% end %>
                             <% end %>
                           </div>
                       </div>
