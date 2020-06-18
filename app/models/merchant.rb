@@ -33,12 +33,18 @@ class Merchant < ApplicationRecord
   end
 
   def all_orders
+    # finds merchant's orders and also checks if they can be marked complete (sorry Chris)
     merchant_orders = []
     
     Order.all.each do |order|
       order.orderitems.each do |item|
         if item.product.merchant_id == self.id
           order = Order.find_by(id: item.order_id)
+
+          if order.orderitems.find_by(shipped: false).nil?
+            order.mark_as_complete!
+          end
+
           merchant_orders << order
           break
         end
