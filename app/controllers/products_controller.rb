@@ -66,8 +66,9 @@ class ProductsController < ApplicationController
     end
 
     if @product.retire!
-    flash[:success] = "#{@product.product_name} successfully retired!"
-    redirect_to merchant_path(session[:merchant_id]) #or wherever you want to redirect to
+      flash[:success] = "#{@product.product_name} successfully retired!"
+      redirect_back(fallback_location: root_path)
+      # redirect_to merchant_path(session[:merchant_id]) #or wherever you want to redirect to
     end
   end
 
@@ -84,3 +85,26 @@ class ProductsController < ApplicationController
     return params.require(:product).permit(:product_name, :price, :description, :photo_url, :stock, :merchant_id, category_ids: [])
   end
 end
+
+
+
+# describe "edit" do
+#   before do
+#     @passenger = Passenger.create(name: 'Bojack', phone_num: '27')
+#   end
+
+#   it "responds with success when getting the edit page for an existing, valid passenger" do
+#     valid_passenger_id = @passenger.id
+    
+#     get "/passengers/#{valid_passenger_id}/edit"
+
+#     must_respond_with :success
+#   end
+
+#   it "responds with redirect when getting the edit page for a non-existing passenger" do
+#     get "/passengers/#{@invalid_passenger_id}/edit"
+
+#     must_respond_with :redirect
+#     must_redirect_to passengers_path
+#   end
+# end
