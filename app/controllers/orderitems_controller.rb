@@ -34,10 +34,10 @@ class OrderitemsController < ApplicationController
       if @orderitem.save
         # add orderitem to current order
         @order.orderitems << @orderitem
-        flash[:result_text] = "Added #{ @orderitem.product.product_name } to cart!"
+        flash[:result_text] = "Added #{ @orderitem.product.product_name } to cart"
         redirect_to cart_path(session[:order_id])
       else
-        flash[:result_text] = "Error adding #{ @orderitem.product.product_name } to cart."
+        flash[:result_text] = "Error adding #{ @orderitem.product.product_name } to cart"
         flash[:messages] = @orderitem.errors.messages
         return
       end
