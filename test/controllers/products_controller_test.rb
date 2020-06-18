@@ -6,17 +6,17 @@ describe ProductsController do
   end
 
   describe "index" do
-    it "responds with success when there are many passengers saved" do
+    it "responds with success when there are many products saved" do
       Product.create(product_name: 'Smartwool Socks', price: 20.00)
       Product.create(product_name: 'Cliff Coffee Bar', price: 2.00)
 
-      get "/products"
+      get products_path
 
       must_respond_with :success
     end
 
     it "responds with success when there are no passengers saved" do
-      get "/products"
+      get products_path
 
       must_respond_with :success
     end
@@ -25,17 +25,21 @@ describe ProductsController do
 
   describe "show" do
     it "responds with success when showing an existing valid product" do
+      # TODO
+      products(:snow_pass).merchant = merchants(:diana)
+      products(:snow_pass).save
+
       valid_product_id = products(:snow_pass).id
 
-      get "/products/#{valid_product_id}"
+
+      get product_path(valid_product_id)
 
       must_respond_with :success
     end
 
     it "responds with 404 with an invalid product id" do
-      get "/products/#{@invalid_product_id}"
+      get product_path(@invalid_product_id)
 
-      assert_equal 'Product has either been deleted, sold out, or not found.', flash[:error]
       must_respond_with :not_found
     end
   end
@@ -46,5 +50,21 @@ describe ProductsController do
 
       must_redirect_to root_path
     end
+  end
+
+  describe "create" do
+    
+  end
+
+  describe "update" do
+    
+  end
+
+  describe "edit" do
+    
+  end
+
+  describe "retired" do
+    
   end
 end
