@@ -7,9 +7,9 @@ class MerchantsController < ApplicationController
   end
 
   def show
-    @merchant = Merchant.find_by(id: params[:id])
+    @merchants = Merchant.find_by(id: params[:id])
     @url = "http://thecatapi.com/api/images/get?format=src&type=gif&timestamp="
-    if @merchant.nil?
+    if @merchants.nil?
       head :not_found
       return
     end 
@@ -37,7 +37,7 @@ class MerchantsController < ApplicationController
 
   def logout
     session[:merchant_id] = nil
-    flash[:success] = "Successfully logged out"
+    flash[:result_text] = "Successfully logged out"
     redirect_to root_path
     return
   end
@@ -46,11 +46,9 @@ class MerchantsController < ApplicationController
     @current_merchant = Merchant.find_by(id: session[:merchant_id])
   end
 
-  #need to track OrderItems
-
   private
 
-  def merchant_params
+  # def merchant_params
     
-  end
+  # end
 end
