@@ -1,7 +1,6 @@
 require "test_helper"
 
 describe Merchant do
-  # let (:merchant) {merchant(:canoeing_chris)}
   let(:merchant) {
     Merchant.new(
       username: "Hollerin Harriet",
@@ -15,6 +14,12 @@ describe Merchant do
       expect(merchant.valid?).must_equal true
     end
 
+    it "is invalid without a username" do
+      merchant.username = nil
+
+      expect(merchant.valid?).must_equal false
+      expect(merchant.errors.messages).must_include :username
+    end
 
     it 'is invalid without a unique email address' do
       invalid_merchant = Merchant.create(username: "new merchant", email: " ")
@@ -30,6 +35,15 @@ describe Merchant do
         product.must_be_kind_of Product
         end
       end
+
+
+      it "can have one or more order items through products" do
+        merchant.must_respond_to :order_items
+        merchant.order_items.each do |order_item|
+          order_item.must_be_kind_of OrderItem
+        end
+      end
+
     end
   end
 
