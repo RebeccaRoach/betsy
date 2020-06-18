@@ -7,9 +7,9 @@ class MerchantsController < ApplicationController
   end
 
   def show
-    @merchants = Merchant.find_by(id: params[:id])
+    @merchant = Merchant.find_by(id: params[:id])
     @url = "http://thecatapi.com/api/images/get?format=src&type=gif&timestamp="
-    if @merchants.nil?
+    if @merchant.nil?
       head :not_found
       return
     end 

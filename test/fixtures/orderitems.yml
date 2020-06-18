@@ -39,3 +39,8 @@ rainier2:
   order: order4
   product: rainier
   shipped: false
+rainier3:
+  quantity: 1
+  order: order5
+  product: rainier
+  shipped: false
