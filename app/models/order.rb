@@ -16,6 +16,17 @@ class Order < ApplicationRecord
   validates :cc_exp, presence: true, on: :update
   validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
+  def cancel_order
+    # return_stock
+    self.return_stock
+
+    # delete order items from this order
+    self.orderitems.destroy_all
+
+    # mark order :status as cancelled
+    self.update_attribute(:status, "cancelled")
+  end
+
   def reduce_stock
     self.orderitems.each do |orderitem|
       orderitem.product.stock -= orderitem.quantity
@@ -23,7 +34,6 @@ class Order < ApplicationRecord
     end
   end
 
-  # TODO: delete this method if we never end up using for cancelling orders
   def return_stock
     self.orderitems.each do |orderitem|
       if !orderitem.product.retired
@@ -45,12 +55,8 @@ class Order < ApplicationRecord
 
   def mark_as_complete!
     if self.status == "paid" && self.orderitems.find_by(shipped: false).nil?
-      self.status = "complete"
-      self.save!
-    else
-      raise Exception, "Order is not paid or all items haven't shipped"
+      self.update_attribute(:status, "complete")
     end
-    # need else statement??
   end
 
   def change_to_paid!
@@ -82,12 +88,4 @@ class Order < ApplicationRecord
     # self.clear_cart
     return true
   end
-
-  # def is_order_of(merch_id)
-  #   if self.products.find_by(merchant_id: merch_id).nil?
-  #     return false
-  #   end
-    
-  #   return true
-  # end
 end
