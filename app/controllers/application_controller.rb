@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :set_categories
-  before_action :set_current_order
+  before_action :set_categories, :set_current_order, :current_user
 
   def set_categories
     @categories = Category.all
