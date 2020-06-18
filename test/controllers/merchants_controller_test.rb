@@ -13,7 +13,7 @@ describe MerchantsController do
   describe 'show action' do
     it 'responds with a success when id given exists' do
 
-      get merchants_path((:id).uid)
+      get merchants_path((:id))
       must_respond_with :success
     end
   end
@@ -21,16 +21,26 @@ describe MerchantsController do
   
   describe "create with build_from_github" do
     it "returns a merchant" do
-      auth_hash = OmniAuth::AuthHash.new(mock_auth_hash(merchant(:ubeninja)))
+      #binding.pry
+      #auth_hash = OmniAuth::AuthHash.new(mock_auth_hash(merchants(:ubeninja)))
+      # need to define merchants
 
+      auth_hash = {
+        uid: 123,
+        info: {
+          email: "email@mail.com",
+          username: "randomname",
+          # name: "jolly"
+        }
+      }
       merchant = Merchant.build_from_github(auth_hash)
 
       merchant.must_be_kind_of Merchant
       expect(merchant.uid).must_equal auth_hash[:uid]
       expect(merchant.provider).must_equal "github"
-      expect(merchant.email).must_equal auth_hash["info"]["email"]
-      expect(merchant.nickname).must_equal auth_hash["info"]["nickname"]
-      expect(merchant.name).must_equal auth_hash["info"]["name"]
+      expect(merchant.email).must_equal auth_hash[:info][:email]
+      expect(merchant.username).must_equal auth_hash[:info][:username]
+      # expect(merchant.name).must_equal auth_hash[:info][:name]
     end
   end
 
