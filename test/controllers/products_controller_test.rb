@@ -89,7 +89,40 @@ describe ProductsController do
   end
 
   describe "update" do
+    let(:update_hash) {
+      {
+        product: {
+        merchant_id: merchants(:diana).id
+        }
+      }
+    }
     
+    it "can update an existing product with valid info and redirect" do
+      @product_id = products(:snow_pass).id
+      expect { 
+        patch product_path(@product_id), params: update_hash
+      }.wont_change Product.count
+      
+      updated_item = products(:snow_pass).reload
+      must_redirect_to product_path(products(:snow_pass))
+      expect(updated_item.merchant_id).must_equal update_hash[:product][:merchant_id]
+    end
+
+    it "does not update product when given bad data" do
+      update_hash[:product][:merchant_id] = nil
+
+      @product_id = products(:snow_pass).id
+
+      expect {
+        patch product_path(@product_id), params: update_hash
+      }.wont_change Product.count
+
+      expect {
+        patch product_path(@product_id), params: update_hash
+      }.wont_change products(:snow_pass).merchant_id
+
+    end
+
   end
 
   describe "edit" do
