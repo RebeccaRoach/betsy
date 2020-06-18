@@ -5,31 +5,37 @@ describe ReviewsController do
 
   describe Review do
     describe "new" do
-      it "" do
+      it "successfully retrieve new review page for valid product id" do
         get new_review_path(product_id: Product.first.id)
         assert_response :success
       end
     end
 
-    def create
-      @review = Review.create(review_params)
-  
-      if @review.save
-        flash[:success] = "Review successfully added."
-        redirect_to product_path(@review.product_id)
-        #  TODO: Render status codes
-      else
-        render :new, status: :bad_request
-      end
-    end
     describe "create" do
-      it "can create a review" do
-        assert_difference('Review.count') do
-          post new_review_path, params: { review:{ product: 'rx_bar', rate: '5', content: "great"}}
+      let(:product) { products(:rx_bar) }
+      it "can create a valid review and redirects to product page" do
+        valid_hash = {
+          review: {
+            rating: 5,
+            product_id: product.id
+          },
+        } 
+
+        assert_difference("Review.count") do
+          post reviews_path(product.id), params: valid_hash 
         end
-        assert_redirect_to 
+
+        new_review = Review.last
+        
+        expect(new_review.rating).must_equal 5
+        expect(new_review.product_id).must_equal products(:rx_bar).id
+        expect
+        
+        must_redirect_to product_path(products(:rx_bar).id)
       end
     end
+    # describe "review_params" do
+    # end
   end
   
 end
