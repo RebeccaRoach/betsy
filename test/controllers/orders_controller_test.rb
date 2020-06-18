@@ -2,9 +2,9 @@ require "test_helper"
 require "pry"
 
 describe OrdersController do
-  let(:valid_params){
+  let(:valid_params) {
     {
-      order:{
+      order: {
         email: "test@gmail.com",
         address: "123  test avenue",
         cc_name: "Jane Doe",
@@ -12,9 +12,10 @@ describe OrdersController do
         cvv: 123,
         cc_exp: "06/2020",
         zip: 987654,
-      },
+      }
     }
   }
+
   describe "cart" do
     it "redirects to root path and provides a message if cart is empty" do
       get cart_path
@@ -43,20 +44,17 @@ describe OrdersController do
     #   expect(@order.id).must_equal session[:order_id]
     # end
   end
-  describe "show" do
-    it "returns not found for the show action with an invalid id" do
-      get order_path(id: -1)
-      must_respond_with :not_found
-    end
 
-    it "redirects for orders with a valid id" do
-      order_id = orders(:order1).id
-      puts "ORDER ID: #{order_id}"
+  
 
-      get order_path(id: order_id)
-      must_redirect_to order_path(order_id)
-      expect(flash[:status]).must_equal :success
-    end
+    # it "redirects for orders with a valid id" do
+    #   order_id = orders(:order1).id
+    #   puts "ORDER ID: #{order_id}"
+
+    #   get order_path(id: order_id)
+    #   must_redirect_to order_path(order_id)
+    #   expect(flash[:status]).must_equal :success
+    # end
 
     #ActionController::MissingExactTemplate: OrdersController#show is missing a template for request formats: text/html
     # it "responds with success for valid orders with paid status" do
@@ -64,5 +62,35 @@ describe OrdersController do
     #   must_respond_with :success
     # end
 
+
+  describe "update" do
+    it "updates data given valid order data, and redirects" do
+      # check email nil before
+      # provide email as params calling patch, params
+      # check email not nil
+      # check value == params value
+
+    end
+
+    it "renders edit and bad_request status if order fails to update" do
+    end
   end
+
+  describe "edit" do
+    it "responds with success" do
+      order = orders(:order1)
+      get edit_order_path(order.id)
+      must_respond_with :success
+    end
+  end
+
+  describe "show" do
+    it "responds with success" do
+      order = orders(:order1)
+      get order_path(order.id)
+      must_respond_with :success
+    end
+  end
+
+
 end
