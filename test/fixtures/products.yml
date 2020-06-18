@@ -40,3 +40,10 @@ snow_pass:
   photo_url:
   stock: 15
   retired: false
+zero_stock_product:
+  product_name: Smores
+  description: Deliciousness in a cookie sandwich
+  price: 25
+  photo_url:
+  stock: 0
+  retired: false
