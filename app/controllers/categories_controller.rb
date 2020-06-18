@@ -15,10 +15,7 @@ class CategoriesController < ApplicationController
       # flash[:result_text] = "Successfully created #{@media_category.singularize} #{@work.id}"
       # redirect_to root
     else
-      flash[:status] = :failure
       flash[:result_text] = "Could not create category"
-      # flash[:messages] = @category.errors.messages
-      # render :new, status: :bad_request
     end
   end
 
