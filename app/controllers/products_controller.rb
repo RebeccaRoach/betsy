@@ -44,7 +44,8 @@ class ProductsController < ApplicationController
       head :not_found
       return
     elsif @product.update(product_params)
-      redirect_to products_path(@product)
+      flash[:success] = "#{@product.product_name} successfully updated"
+      redirect_to product_path(@product)
       return
     else
       render :edit
@@ -54,7 +55,7 @@ class ProductsController < ApplicationController
 
   def edit
     if @product.nil?
-      redirect_to products_path(@product)
+      redirect_back(fallback: root_path)
       return
     end
   end
