@@ -6,7 +6,7 @@ class Merchant < ApplicationRecord
 
   # method to create new merchant using github login
   def self.build_from_github(auth_hash)
-    merchant = Merchant.news
+    merchant = Merchant.new
     merchant.uid = auth_hash[:uid]
     merchant.provider = "github"
     merchant.username = auth_hash[:info][:username]

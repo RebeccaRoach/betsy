@@ -34,7 +34,7 @@ describe Order do
   end
 
   it "can update an Order" do
-    expect{ Orderitem.create(quantity: 1, order: pending_order, product: products(:rainer), shipped: false) }.must_change "pending_order.orderitems.count", 1
+    expect{ Orderitem.create(quantity: 1, order: pending_order, product: products(:rainier), shipped: false) }.must_change "pending_order.orderitems.count", 1
 
     expect{ 
       pending_order.update(
@@ -107,7 +107,7 @@ describe Order do
   #low hanging fruit :P
   describe "All attributes must be present when updating" do
     before do
-      expect{ Orderitem.create(quantity: 1, order: pending_order, product: products(:rainer), shipped: false) }.must_change "pending_order.orderitems.count", 1
+      expect{ Orderitem.create(quantity: 1, order: pending_order, product: products(:rainier), shipped: false) }.must_change "pending_order.orderitems.count", 1
       
       @updated_order = pending_order.update(
         status: "paid"
