@@ -26,7 +26,7 @@
                                 $<%= number_with_precision(product.price, :precision => 2, :delimiter => ',')%>
                                 </div>
                                 <div class="catalog__body-text">
-                                Rating: ##/5 (# of reviews)
+                                Rating: ##/5 (<%= product.reviews.count %> reviews)
                                 </div>
 
                                 </div>
