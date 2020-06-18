@@ -14,4 +14,12 @@ class Product < ApplicationRecord
   def retire!
     self.update_attribute(:retired, true)
    end
+
+  def average_rating
+    if reviews.count == 0
+      return 0
+    else
+      return self.reviews.map {|review| review.rating}.sum/self.reviews.count
+    end
+  end
 end
