@@ -43,7 +43,6 @@
     </td>
 
 
-
     <td class="text-just-center">
       <p class="cart__text">$<%= number_with_precision(orderitem.subtotal, :precision => 2, :delimiter => ',') %></p>
     </td>
@@ -59,6 +58,8 @@
     <div class="mb-auto p-2">
     <h4 class="cart__text">ORDER TOTAL: $<%= number_with_precision(@order.total, :precision => 2, :delimiter => ',') %></h4>
     </div>
+    <br>
+    <%= link_to "Cancel Order", cancel_path(@order), method: :patch, data: {confirm: "Are you sure you want to cancel this order?"}, class: "cart__remove-button" %>
 
   </section>
 
