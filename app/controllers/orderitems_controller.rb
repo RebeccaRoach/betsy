@@ -85,17 +85,14 @@ class OrderitemsController < ApplicationController
   def mark_shipped
     if @orderitem.order.status == "paid" && @orderitem.shipped == false
       @orderitem.mark_item_shipped!
-      flash[:status] = :success
-      flash[:result_text] = "#{ @orderitem.product.product_name } has shipped!"
+      flash[:success] = "#{ @orderitem.product.product_name } has shipped!"
       # @orderitem.order.mark_as_complete!
       redirect_back fallback_location: root_path
     elsif @orderitem.order.status == "paid" && @orderitem.shipped == true
-      flash[:status] = :failure
-      flash[:result_text] = "#{ @orderitem.product.product_name } has already shipped."
+      flash[:failure] = "#{ @orderitem.product.product_name } has already shipped."
       redirect_back fallback_location: root_path
     else
-      flash[:status] = :failure
-      flash[:result_text] = "Cannot perform this action for a #{@orderitem.order.status} order"
+      flash[:failure] = "Cannot perform this action for a #{@orderitem.order.status} order"
       redirect_to root_path
     end
   end
