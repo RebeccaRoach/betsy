@@ -1,11 +1,15 @@
 <section class="content">
   <section class="order-forms">
-    <h2 class="h-center-text-no-pad">Checkout</h2>
-      <ul class="errors alert alert-danger" role="alert">
-        <% @order.errors.each do |column, message| %>
-            <strong><%= column.capitalize %></strong> <%= message %>
-        <% end %>
-      </ul>
+    <h2 class="h-center-text-no-pad cart__title">Checkout</h2>
+      <% if @order.errors.any? %>
+        <ul class="errors list-group list-group-flush" role="alert">
+          <% @order.errors.each do |column, message| %>
+              <li class="list-group-item list-group-item-danger">
+                <strong><%= column.capitalize %></strong> <%= message %>
+              </li>
+          <% end %>
+        </ul>
+      <% end %>
     <section class='form-container'>
       <%= form_with model: @order do |f| %>
 
@@ -45,7 +49,7 @@
         </div>
 
         <div class="form-group submit">
-        <%= f.submit "Confirm", class:"btn btn-primary" %>
+        <%= f.submit "Confirm", class:"cart__checkout-button" %>
         </div>
       <% end %>
     </section>
