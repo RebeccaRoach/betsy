@@ -34,5 +34,14 @@ order4:
   cc_exp: 01/23
   zip: 006434
   status: cancelled
+order5:
+  email: lifeisgood@good.com
+  address: 47 Life Ave
+  cc_name: Angela Kinsey
+  cc_num: 58483828282
+  cvv: 564
+  cc_exp: 11/29
+  zip: 73999
+  status: complete
 pending_order:
   status: pending
