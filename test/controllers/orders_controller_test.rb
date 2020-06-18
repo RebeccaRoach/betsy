@@ -35,7 +35,7 @@ describe OrdersController do
     end
 
     it "responds with success for valid orders with paid status" do
-      get order_path(id: orders(:order2))
+      get order_path(orders(:order2).id)
       must_respond_with :success
     end
   end
@@ -91,8 +91,7 @@ describe OrdersController do
 
     it "renders edit and bad_request status if order fails to update" do
       order = orders(:pending_order)
-    
-      puts "OUR ORDER FROM SESSION IS::::::: #{session[:order_id]}"
+      puts "OUR ID IS::::::: #{order.id}"
 
       expect(order.email).must_be_nil
 
@@ -107,7 +106,7 @@ describe OrdersController do
 
       expect { 
         patch order_path(order.id), params: valid_params}
-      .wont_change Order.count
+      .wont_change "Order.count"
 
       expect(order.email).must_be_nil
       must_respond_with :redirect
