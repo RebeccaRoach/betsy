@@ -8,10 +8,9 @@ class Product < ApplicationRecord
   has_many :reviews
 
   has_many :orderitems
-  # product.orders => all the orders that a product has been attached to
   has_many :orders, through: :orderitems
 
   def retire!
     self.update_attribute(:retired, true)
-   end
+  end
 end
