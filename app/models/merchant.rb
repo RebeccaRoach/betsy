@@ -14,17 +14,35 @@ class Merchant < ApplicationRecord
     return merchant
   end
 
-  def total_revenue
-    # TODO: remove cancelled order from consideration
-    revenue = 0
-    orders = self.all_orders
-    
-    orders.each do |order|
+  def revenue_by_status(status)
+    revenue_by_status = 0
+    orders_of_a_status = self.order_status(status)
+
+    orders_of_a_status.each do |order|
       order.orderitems.each do |item|
         if item.product.merchant_id == self.id
           product = Product.find_by(id: item.product_id)
           price = product.price
-          revenue += price
+          revenue_by_status += price
+        end
+      end
+    end
+
+    return revenue_by_status
+  end
+
+  def total_revenue
+    revenue = 0
+    orders = self.all_orders
+
+    orders.each do |order|
+      if (order.status != "cancelled") && (order.status != "pending")
+        order.orderitems.each do |item|
+          if item.product.merchant_id == self.id
+            product = Product.find_by(id: item.product_id)
+            price = product.price
+            revenue += price
+          end
         end
       end
     end
@@ -33,7 +51,7 @@ class Merchant < ApplicationRecord
   end
 
   def all_orders
-    # finds merchant's orders and also checks if they can be marked complete (sorry Chris)
+    # finds merchant's orders and checks if they can be marked complete
     merchant_orders = []
     
     Order.all.each do |order|
@@ -55,7 +73,6 @@ class Merchant < ApplicationRecord
   end
 
   def order_status(status)
-    # return all of the merchant's orders with a certain status
     orders = self.all_orders
     status_orders = []
     
@@ -66,23 +83,5 @@ class Merchant < ApplicationRecord
     end
 
     return status_orders
-  end
-
-
-  def revenue_by_status(status)
-    revenue_by_status = 0
-    orders_of_a_status = self.order_status(status)
-
-    orders_of_a_status.each do |order|
-      order.orderitems.each do |item|
-        if item.product.merchant_id == self.id
-          product = Product.find_by(id: item.product_id)
-          price = product.price
-          revenue_by_status += price
-        end
-      end
-    end
-
-    return revenue_by_status
   end
 end

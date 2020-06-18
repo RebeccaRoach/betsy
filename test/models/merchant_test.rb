@@ -39,9 +39,9 @@ describe Merchant do
       end
     end
 
-    # test products ***
+    # ASK ABOUT TESTING PRODUCTS???
     it "can have one or more order items through products" do
-      merchant.must_respond_to :orderitems
+      merchant.must_respond_to :orderitem
 
       merchant.orderitems.each do |order_item|
         order_item.must_be_kind_of OrderItem
@@ -74,12 +74,54 @@ describe Merchant do
     end
   end
 
+  describe "revenue_by_status" do
+    it "returns the correct total revenue for a merchant's products sold in an order of a given status" do
+      merchant = merchants(:greta)
+
+      expect(merchant.revenue_by_status("complete")).must_be_kind_of Float
+      expect(merchant.revenue_by_status("complete")).must_equal 25
+      expect(merchant.revenue_by_status("pending")).must_equal 25
+      expect(merchant.revenue_by_status("cancelled")).must_equal 0
+    end
+
+    it "returns 0 if there is no revenue associated with merchant orders of a certain status" do
+      merchant = merchants(:greta)
+
+      expect(merchant.revenue_by_status("cancelled")).must_equal 0
+    end
+
+    it "will return 0 for a non-existing status" do 
+      merchant = merchants(:greta)
+
+      expect(merchant.revenue_by_status("n/a")).must_be_kind_of Integer
+      expect(merchant.revenue_by_status("n/a")).must_equal 0
+    end
+  end
+
   describe "total_revenue" do
     it "correctly calculates the total revenue for a merchant" do
       merchant = merchants(:greta)
-      # 2.45 for rxbar in order3 + 5,000 for rainier in order4 + 5,000 for rainier in order5
-      # formatting for money correct???
-      expect(merchant.total_revenue).must_equal 10002.45
+      expect(merchant.total_revenue).must_equal 25
+    end
+
+    it "does not include revenue from orders that are pending or cancelled" do
+      merchant = merchants(:bob)
+
+      paid_total = merchant.revenue_by_status("paid")
+      complete_total = merchant.revenue_by_status("complete")
+      projected_total = complete_total + paid_total
+
+      # Bob has 5 orders, 2 of which are pending or cancelled
+      expect(merchant.all_orders.count).must_equal 5
+      expect(merchant.order_status("pending").length).must_equal 1
+      expect(merchant.order_status("cancelled").length).must_equal 1
+      
+      # Bob would have earned $5,002.45 on his pending and cancelled orders
+      expect(merchant.revenue_by_status("pending")).must_equal 2.45
+      expect(merchant.revenue_by_status("cancelled")).must_equal 5000
+
+      # expect Bob's total to match calculated total for only relevant orders
+      expect(merchant.total_revenue).must_equal projected_total
     end
 
     it "returns 0 if a merchant has not sold any products" do
@@ -93,12 +135,14 @@ describe Merchant do
     it "finds all the orders containing at least one item from a merchant" do
       merchant = merchants(:greta)
       merchant2 = merchants(:bob)
+      merchant3 = merchants(:no_products_merchant)
 
-      # from fixtures, greta's products (snow_pass) are in 3 separate orders
-      # while bob's products are in 4 orders
+      # from fixtures, Greta's products (snow_pass) are in 2 separate orders
+      # while Bob's products are in 5 orders
       expect(merchant.all_orders).must_be_kind_of Array
-      expect(merchant.all_orders.length).must_equal 3
-      expect(merchant2.all_orders.length).must_equal 4
+      expect(merchant.all_orders.length).must_equal 2
+      expect(merchant2.all_orders.length).must_equal 5
+      expect(merchant3.all_orders.length).must_equal 0
     end
 
     it "returns an empty array if there are no items from that merchant in any order" do
@@ -113,38 +157,15 @@ describe Merchant do
       merchant = merchants(:greta)
 
       expect(merchant.order_status("complete")).must_be_kind_of Array
-      expect(merchant.order_status("complete").length).must_equal 2
-      expect(merchant.order_status("cancelled").length).must_equal 1
+      expect(merchant.order_status("complete").length).must_equal 1
+      expect(merchant.order_status("pending").length).must_equal 1
     end
 
     it "returns an empty collection if there are no merchant orders of a certain status" do
       merchant = merchants(:greta)
-      # greta does not have any pending orders...
-      expect(merchant.order_status("pending")).must_be_kind_of Array
-      expect(merchant.order_status("pending").length).must_equal 0
-    end
-  end
-
-  describe "revenue_by_status" do
-    it "returns the correct total revenue for a merchant's products sold in an order of a given status" do
-      merchant = merchants(:greta)
-
-      expect(merchant.revenue_by_status("complete")).must_equal 5002.45
-
-  # NOT SURE IF THIS IS CORRECT FOR CANCELLED ORDER REVENUE???? (DELETE IF UNSURE)
-      expect(merchant.revenue_by_status("cancelled")).must_equal 5000
-    end
-
-    it "returns 0 if there is no revenue associated with merchant orders of a certain status" do
-      merchant = merchants(:greta)
-      # greta does not have any pending orders... (?)
-      expect(merchant.revenue_by_status("pending")).must_equal 0
-    end
-
-    it "will return 0 for a non-existing status" do 
-      merchant = merchants(:greta)
-      expect(merchant.total_revenue_by_status("n/a")).must_be_kind_of Array
-      expect(merchant.total_revenue_by_status("n/a")).must_equal 0
+      # greta does not have any cancelled orders
+      expect(merchant.order_status("cancelled")).must_be_kind_of Array
+      expect(merchant.order_status("cancelled").length).must_equal 0
     end
   end
 end

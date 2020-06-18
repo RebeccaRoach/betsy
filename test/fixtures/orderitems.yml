@@ -1,7 +1,6 @@
 rxbar:
   quantity: 3
   order: order1
-  # if we have trouble, change product to product_id to mirror the table for orderitems
   product: rx_bar
   shipped: false
 snow:
