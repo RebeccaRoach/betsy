@@ -1,15 +1,31 @@
 <section class="content">
+<% if !@product.retired %>
 <%# Product Description Header %>
 <section class="px-5">
   <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
   <h6><%= link_to "< ALL PRODUCTS", products_path, class: "local-navigation" %></h6>
   <h1 class="catalog__header"><%= @product.product_name %></h1>
-  <h4 class="catalog__detail-header">RATING: ##/5 (# of reviews)</h4>
-  <h4 class="catalog__detail-header">Sold by: <span><%= link_to "MERCHANT MOTHER NATURE", root_path, class: "catalog__detail-header" %></span></h4>
-  <h6 class="catalog__secondary-header">Categories: TODO-LOOP TO LIST CATEGORIES </h6>
+  <h4 class="catalog__detail-header">RATING: ##/5 </h4>
+  <h4 class="catalog__detail-header">Reviews: <%= @product.reviews.count %></h4>
+  <h4 class="catalog__detail-header">Sold by: <span><%= link_to @product.merchant.username, merchant_path(@product.merchant), class: "catalog__detail-header" %></span></h4>
+  <h6 class="catalog__secondary-header">Categories: 
+  <% @product.categories.each do |category| %>
+    <%= category.category_name %> |
+   <% end %>
+  </h6>
   
   <hr>
 </section>
+<%# DANGEROUS TRICK BUT AMAZING: NIL CHECK &. %>
+<% if @order.orderitems.find_by(product_id: @product.id)&.errors&.any? %>
+  <ul class="errors alert alert-danger" role="alert">
+    <% @order.orderitems.find_by(product_id: @product.id).each do |column, message| %>
+      <li>
+        <strong><%= column.capitalize %></strong> <%= message %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
 
 
 <%# Product Picture and Description %>
@@ -21,15 +37,25 @@
       </div>
     </div>
     <div class="col">
-      <h2 class="catalog__description-title">$<%= @product.price %></h2>
+      <h2 class="catalog__description-title">$<%= number_with_precision(@product.price, :precision => 2, :delimiter => ',') %></h2>
       <h2 class="text-uppercase catalog__description-title">Description</h2>
       <div class="catalog__description-text"><%= @product.description %></div>
 
       <div class="py-3">
       <%# mini form to "add to card", link to order, and send up params of current product to be an orderitem %>
-      <h2 class="catalog__description-title">Quantity <span>▭</span></h2> 
-      <%= button_to "add to cart", root_path, method: :get, class: "catalog__add-to-cart-button"   %>
-
+      <h2 class="catalog__description-title">Quantity</h2> 
+      <%= form_with model: @orderitem, url: product_orderitems_path(@product.id) do |f| %>
+       <div class="form-group">
+        <%= f.label :quantity %>
+        <%= f.select :quantity, options_for_select(1..@product.stock), {}, {class: "form-control"} %>
+        </div>
+        <% if @product.retired %>
+        <br>
+          <h2 class="catalog__description-title">This product is retired, unable to purchase.</h2>
+            <% else %>
+          <%= f.submit "Add to Cart", class: "catalog__add-to-cart-button"%>
+        <% end %>
+      <% end %>
       </div>
     </div>
   </div>
@@ -38,11 +64,22 @@
 <section class="container-fluid p-5 mb-5">
   <h2 class="catalog__review-title">Reviews</h2>
   <hr>
-  <% if !@product.reviews.empty? %>
-    <h6 class="catalog__review-text">Reviews exist you just haven't put a loop to place the reviews here</h6>
-  <% else %>
-    <h6 class="catalog__review-text">No reviews yet</h6>
+  
+  <% if @product.merchant_id != session[:merchant_id] %>
+    <%= link_to "Review this product", new_review_path(product_id: @product.id), method: :get, class: "catalog__add-to-cart-button" %> <br> <br>
   <% end %>
+    <% if !@product.reviews.empty? %>
+      <% @product.reviews.each do |review| %>
+        <h5 class="catalog__detail-header"> <%= review.created_at.strftime("%B %d, %Y") %></h5>
+        <h4 class="catalog__detail-header">Rating: <%= review.rating %></h4> 
+          <p class="catalog__review-text"><%= review.content %></p>
+        <hr>
+      <% end %>
+    <% else %>
+      <h6 class="catalog__review-text">No reviews yet</h6>
+    <% end %>  
+  
 </section>
 </section>
+<% end %>
 </section>

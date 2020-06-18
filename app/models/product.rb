@@ -1,6 +1,7 @@
 class Product < ApplicationRecord
   validates :product_name, presence: true, uniqueness: true
   validates :price, numericality: { greater_than_or_equal_to: 0 }
+  validates :stock, numericality: { greater_than_or_equal_to: 0 }
 
   belongs_to :merchant
   has_and_belongs_to_many :categories
@@ -10,7 +11,7 @@ class Product < ApplicationRecord
   # product.orders => all the orders that a product has been attached to
   has_many :orders, through: :orderitems
 
-  def enough_stock?(quantity)
-    return self.quantity >= quantity
-  end
+  def retire!
+    self.update_attribute(:retired, true)
+   end
 end

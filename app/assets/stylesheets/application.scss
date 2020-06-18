@@ -63,7 +63,7 @@ header {
   filter: brightness(75%);
 }
 
-.browse-by-category__link {
+.browse-by-category__link, .retired-product {
   text-transform: uppercase;
   text-align: center;
   font-weight: 300;
@@ -150,7 +150,6 @@ body {
   color: rgb(206, 206, 206);
 }
 
-
 .catalog__description-text, .catalog__review-text {
   font-weight: 300;
   font-size: 18px;
@@ -165,10 +164,29 @@ body {
   color: #000;
 }
 
-.catalog__body-text, .catalog__description-title, .catalog__review-title {
+.catalog__body-text, .catalog__description-title, .catalog__review-title, .cart__title, .cart__text {
   font-weight: 300;
   text-transform: uppercase;
 }
+
+.cart__text a {
+  color: #000;
+}
+
+.light-text {
+  font-weight: 300;
+}
+
+.cart__img {
+  max-width: 20%;
+  max-height: 20%;
+}
+
+.product__img {
+  max-width: 60%;
+  max-height: 60%;
+}
+
 
 /* Auto Crop Photos */
 .embed-responsive .card-img-top {
@@ -193,7 +211,7 @@ body {
   color: #000000;
 }
 
-.catalog__add-to-cart-button {
+.catalog__add-to-cart-button, .cart__checkout-button, .product__new-button {
   background-color: #fff;
   color: #000000;
   padding: 5px;
@@ -206,7 +224,7 @@ body {
   min-width: 25%;
 }
 
-.catalog__add-to-cart-button:hover {
+.catalog__add-to-cart-button:hover, .cart__checkout-button:hover, .product__new-button:hover {
   background-color: #161616;
   color: #fff;
 }
@@ -246,6 +264,10 @@ body {
   border-radius: 50%;
 }
 
+.fa-custom {
+  padding: 0px
+}
+
 .fa-snapchat-ghost:hover {
   text-decoration: none;
   background: #fffc00;
@@ -275,4 +297,11 @@ body {
   min-height: 100%;
   display: grid;
   grid-template-rows: auto 1fr auto;
+}
+
+// Forms
+
+.form-group {
+  width: 50%;
+  height: max-content;
 }

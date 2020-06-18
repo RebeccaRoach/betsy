@@ -24,16 +24,22 @@
     </header>
 
     <%# Content %>
-    <section class="alert__container flash-msg__section">
+    <section class="px-5 text-uppercase">
           <% flash.each do |name, message| %>
             <% if name == "success" %>
-              <div class="alert alert-success light-text" role="alert">
+              <div class="alert alert-success light-text rounded-0" role="alert">
+                  <strong class="<%= name %>">
+                    <%= message %>
+                  </strong>
+              </div>
+            <% elsif name == "result_text" %>
+              <div class="alert alert-warning light-text rounded-0" role="alert">
                   <strong class="<%= name %>">
                     <%= message %>
                   </strong>
               </div>
             <% else %>
-              <div class="alert alert-danger light-text" role="alert">
+              <div class="alert alert-danger light-text rounded-0" role="alert">
                   <strong class="<%= name %>">
                     <%= message %>
                   </strong>

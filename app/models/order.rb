@@ -1,7 +1,3 @@
-#todo
-# create a shipped column (bool) maybe product needs that 'retired' column on it's side
-# create a table with orders info and migrate
-
 class Order < ApplicationRecord
   has_many :orderitems
   has_many :products, through: :orderitems
@@ -20,19 +16,19 @@ class Order < ApplicationRecord
   validates :cc_exp, presence: true, on: :update
   validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
-  # custom methods
   def reduce_stock
     self.orderitems.each do |orderitem|
       orderitem.product.stock -= orderitem.quantity
-      orderitem.product.save
+      orderitem.product.save!
     end
   end
 
+  # TODO: delete this method if we never end up using for cancelling orders
   def return_stock
     self.orderitems.each do |orderitem|
       if !orderitem.product.retired
         orderitem.product.stock += orderitem.quantity
-        orderitem.product.save
+        orderitem.product.save!
       end
     end
   end
@@ -51,15 +47,47 @@ class Order < ApplicationRecord
     if self.status == "paid" && self.orderitems.find_by(shipped: false).nil?
       self.status = "complete"
       self.save!
+    else
+      raise Exception, "Order is not paid or all items haven't shipped"
     end
     # need else statement??
   end
 
-  # def is_order_of(merch_id)
-  #   if self.products.find_by(merchant_id: merch_id).nil?
-  #     return false
-  #   end
-    
-  #   return true
+  def change_to_paid!
+    # change order status to paid
+    self.status = "paid"
+
+    if !self.save
+      return false
+    else
+      return true
+    end
+  end
+
+  # def clear_cart
+  #   session[:order_id] = nil
+  #   set_current_order
   # end
+
+  def checkout
+    result = self.change_to_paid!
+
+    if !result
+      return false
+    end
+
+    self.reduce_stock
+
+    # clear cart
+    # self.clear_cart
+    return true
+  end
+
+  def is_order_of(merch_id)
+    if self.products.find_by(merchant_id: merch_id).nil?
+      return false
+    end
+    
+    return true
+  end
 end

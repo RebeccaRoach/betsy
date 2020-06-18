@@ -10,7 +10,6 @@ class MerchantsController < ApplicationController
     @merchant = Merchant.find_by(id: params[:id])
     @url = "http://thecatapi.com/api/images/get?format=src&type=gif&timestamp="
     if @merchant.nil?
-      flash[:error] = "Merchant not found."
       head :not_found
       return
     end 
@@ -21,15 +20,12 @@ class MerchantsController < ApplicationController
     merchant = Merchant.find_by(uid: auth_hash[:uid], provider: "github")
 
     if merchant
-      flash[:status] = :success
-      flash[:result_text] = "Returning merchant: #{merchant.username}."  
+      flash[:result_text] = "Returning merchant: #{merchant.username}"  
     else
       merchant = Merchant.build_from_github(auth_hash)
       if merchant.save
-        flash[:status] = :success
         flash[:result_text] = "You are logged in as new merchant: #{merchant.username}." 
       else
-        flash[:status] = :failure
         flash[:result_text] = "Failure: Could not create new merchant account"
         flash[:messages] = merchant.errors.messages
         return redirect_to root_path
@@ -45,14 +41,6 @@ class MerchantsController < ApplicationController
     redirect_to root_path
     return
   end
-
-  # def destroy
-  #   session[:uid] = nil
-  #   flash[:status] = :success
-  #   flash[:result_text] = "You've successfully logged out as #{merchant.username}."
-  #   redirect_to root_path
-  #   return 
-  # end
 
   def current
     if session[:merchant_id] == nil

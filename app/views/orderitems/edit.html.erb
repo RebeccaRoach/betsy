@@ -1,0 +1,29 @@
+<section class="container">
+  <h2 class="h-center-text">Update Quantity</h2>
+    <span class="img"><%= image_tag "#{@orderitem.product.photo_url}", alt: "#{@orderitem.product.product_name}", class: "embed-responsive embed-responsive-1by1 product__img"%></span>
+    <div class="col-md-6 product-info">
+      <div class="col-md-12">
+        <h3><%= @orderitem.product.product_name %></h3>
+        <small class="prod-description product-show"><%= @orderitem.product.description %></small>
+        <p>$<%= '%.2f' % @orderitem.product.price %></p>
+
+        <% if @orderitem.product.retired %>
+          <p>Not currently for sale</p>
+        <% end %>
+
+        <div class="new_order_product" id="new_order_product">
+          <%= form_with model: @orderitem do |f| %>
+            <div class="form-group">
+            <%= f.label :quantity %>
+            <%= f.select :quantity, (1..@orderitem.product.stock) %>
+            </div>
+            
+            <div class="form-group">
+            <%= f.submit "Update Quantity", class:"btn btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </tr>
+</section>

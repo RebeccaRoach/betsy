@@ -1,10 +1,9 @@
 class ProductsController < ApplicationController
-  before_action :find_product, only: [:show, :update, :edit, :destroy]
-  before_action :require_login, only: [:new]
+  before_action :find_product, only: [:show, :update, :edit, :destroy, :retired]
+  before_action :require_login, only: [:new, :edit]
 
   def index
     if params[:category_name]
-      # NOTE TO SELF DO NOT EVER USE WHERE, FIND_BY IS THE WAY TO GO
       @products = Category.find_by(category_name: params[:category_name]).products
       @collection_name = params[:category_name]
     elsif params[:username]
@@ -18,7 +17,6 @@ class ProductsController < ApplicationController
 
   def show
     if @product.nil?
-      flash[:error] = "Product has either been deleted, sold out, or not found."
       head :not_found
       return
     end 
@@ -31,7 +29,8 @@ class ProductsController < ApplicationController
   def create
     @product = Product.create(product_params)
     if @product.id?
-      redirect_to root_path
+      flash[:success] = "#{@product.product_name} successfully added."
+      redirect_to product_path(@product.id)
     else
       render :new
     end
@@ -60,16 +59,11 @@ class ProductsController < ApplicationController
     end
   end
 
-  def destroy
-    if @product.nil?
-      redirect_to products_path
-      return
+  def retired
+    if @product.retire!
+    flash[:success] = "#{@product.product_name} successfully retired!"
+    redirect_to merchant_path(session[:merchant_id]) #or wherever you want to redirect to
     end
-
-    @product.destroy
-
-    redirect_to products_path
-    return
   end
 
   private
@@ -79,6 +73,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    return params.require(:product).permit(:product_name, :price, :description, :photo_url, :stock, :merchant_id)
+    return params.require(:product).permit(:product_name, :price, :description, :photo_url, :stock, :merchant_id, category_ids: [])
   end
 end
