@@ -69,9 +69,5 @@ class MerchantsController < ApplicationController
     end
   end
 
-  private
-
-  def merchant_params
-    
-  end
+ 
 end
