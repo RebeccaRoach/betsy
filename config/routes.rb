@@ -10,8 +10,9 @@ Rails.application.routes.draw do
   patch 'orderitems/:id/mark_shipped', to: 'orderitems#mark_shipped', as: 'mark_shipped'
 
   resources :orders, only: [:new, :show, :edit, :update, :cancel]
+  # # below for checkout success confirmation page
+  get '/orders/:id/cart/success', to: 'orders#success', as: 'success'
   get '/orders/:id/cart', to: 'orders#cart', as: 'cart'
-  get '/orders/:id/cart/success', to: 'orders#submit', as: 'confirm_submit'
 
   resources :merchants
 
@@ -19,7 +20,6 @@ Rails.application.routes.draw do
   get "/auth/github/callback", to: "merchants#create", as: "auth_callback"
   post "/logout", to: "merchants#logout", as: "logout"
   get '/orders/:id/merchant_order', to: 'orders#merchant_order', as: 'merchant_order'
-
   resources :reviews, only: [:new, :create]
   resources :categories, only: [:new, :create, :show, :index]
 end
