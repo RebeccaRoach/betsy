@@ -224,6 +224,25 @@ body {
   min-width: 25%;
 }
 
+.cart__remove-button {
+  background-color: #fff;
+  color: #c21b1b;
+  padding: 5px;
+  border: solid;
+  border-width: thin;
+  border-color: #c21b1b;
+  text-transform: uppercase;
+  font-weight: 300;  
+  white-space: normal;
+  min-width: 25%;
+}
+
+.cart__remove-button:hover {
+  color: #fff;
+  background-color: #c21b1b;
+ 
+}
+
 .catalog__add-to-cart-button:hover, .cart__checkout-button:hover, .product__new-button:hover {
   background-color: #161616;
   color: #fff;
