@@ -2,9 +2,9 @@ require "test_helper"
 require "pry"
 
 describe OrdersController do
-  let(:valid_params){
+  let(:valid_params) {
     {
-      order:{
+      order: {
         email: "test@gmail.com",
         address: "123  test avenue",
         cc_name: "Jane Doe",
@@ -12,57 +12,117 @@ describe OrdersController do
         cvv: 123,
         cc_exp: "06/2020",
         zip: 987654,
-      },
+      }
     }
   }
-  describe "cart" do
-    it "redirects to root path and provides a message if cart is empty" do
-      get cart_path
-      must_respond_with :redirect
-      must_redirect_to root_path
-      expect(flash[:status]).must_equal :failure
-    end
 
-    it "returns not found when trying to edit" do
-      get edit_order_path(id: Order.first.id)
-      must_respond_with :not_found
-    end
-
-    it "returns not found when trying to update" do
-      expect { patch order_path(id: Order.first.id), params: valid_params }.wont_change "Order.count"
-      must_respond_with :not_found
-    end
-
-    # it "finds the correct order id for a valid cart" do
-    #   # make an order
-    #   valid_order = make_order
-    #   # we can check the session[order_id] to be set
+  # TODO: FILL THIS OUT IF POSSIBLE *****
+  describe "set_current_order" do
+    # it "finds the correct order id for session" do
+    #   we can check the session[order_id] to be set
     #   puts "HERE IS VALID_ORDER: #{valid_order.status}"
     #   expect(session[:order_id]).wont_be_nil
     #   expect(@order).wont_be_nil
     #   expect(@order.id).must_equal session[:order_id]
     # end
   end
+
   describe "show" do
-    it "returns not found for the show action with an invalid id" do
-      get order_path(id: -1)
-      must_respond_with :not_found
+    it "responds with success" do
+      order = orders(:order1)
+      get order_path(order.id)
+      must_respond_with :success
     end
 
-    it "redirects for orders with a valid id" do
-      order_id = orders(:order1).id
-      puts "ORDER ID: #{order_id}"
+    it "responds with success for valid orders with paid status" do
+      get order_path(id: orders(:order2))
+      must_respond_with :success
+    end
+  end
 
-      get order_path(id: order_id)
-      must_redirect_to order_path(order_id)
-      expect(flash[:status]).must_equal :success
+  describe "edit" do
+    it "responds with success" do
+      order = orders(:order1)
+      get edit_order_path(order.id)
+      must_respond_with :success
+    end
+  end
+
+  describe "update" do
+    # TODO: RETURN TO THIS TEST ONCE WE KNOW WHERE TO REDIRECT
+    it "updates data given valid order data, and redirects" do
+      order = orders(:pending_order)
+      # fields = [:email, :address, :cc_name, :cc_num, :cvv, :cc_exp, :zip]
+
+      # fields.each do |field|
+      #   expect(order.field).must_be_nil
+      # end
+
+      expect(order.email).must_be_nil
+
+      valid_params = {
+        order: {
+          email: "nature@gmail.com",
+          address: "1234 pine dr.",
+          cc_name: "squirrel pinenut",
+          cc_num: 4140837365242638,
+          cvv: 123,
+          cc_exp: 02/22,
+          zip: 90210
+        }
+      }
+
+      patch order_path(order.id), params: valid_params
+
+      # fields.each do |field|
+      #   expect(order.field).wont_be_nil
+      #   expect(order.field).must_equal valid_params[:field]
+      # end
+
+      expect { 
+        patch order_path(order.id), params: valid_params
+      }.wont_change Order.count
+
+      expect{order.email}.wont_be_nil
+      expect(order.email).must_equal valid_params[:email]
+      # must_respond_with :redirect
+      # must_redirect_to
     end
 
-    #ActionController::MissingExactTemplate: OrdersController#show is missing a template for request formats: text/html
-    # it "responds with success for valid orders with paid status" do
-    #   get order_path(id: orders(:order2))
-    #   must_respond_with :success
-    # end
+    it "renders edit and bad_request status if order fails to update" do
+      order = orders(:pending_order)
+    
+      puts "OUR ORDER FROM SESSION IS::::::: #{session[:order_id]}"
 
+      expect(order.email).must_be_nil
+
+      invalid_params = {
+        order: {
+          id: -1,
+          zip: 90210
+        }
+      }
+
+      patch order_path(order.id), params: invalid_params
+
+      expect { 
+        patch order_path(order.id), params: valid_params}
+      .wont_change Order.count
+
+      expect(order.email).must_be_nil
+      must_respond_with :redirect
+      # TODO: COME BACK AND FIX THIS IS POSSIBLE ***********
+      must_redirect_to edit_order_path(session[:order_id])
+    end
+  end
+
+  describe "cart" do
+    # Add item to cart:
+#  -  product is retired, quantity too high, or something like that (error)
+    it "responds with success" do
+      order = orders(:order1)
+      get cart_path(order.id)
+      must_respond_with :success
+    end
   end
 end

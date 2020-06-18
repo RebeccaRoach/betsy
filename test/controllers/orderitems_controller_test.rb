@@ -10,7 +10,6 @@ describe OrderitemsController do
   }
 
   describe "create" do
-
     # Reasonable to check set_current_order here and one other place
     it "creates an order automatically" do
       post product_orderitems_path(products(:snow_pass).id), params: update_hash
@@ -58,11 +57,12 @@ describe OrderitemsController do
       expect(Orderitem.last.quantity).must_equal 3
     end
 
-    # THIS is the one failure case test for the controller:
-    it "does something if the product is out of stock????" do
-      # create product with 0 stock
-      # expect create post will have correct error behavior
-      # should not create orderitem (check same count)
+    it "does not create an orderitem for products with 0 stock" do
+      zero_stock_product = products(:zero_stock_product)
+
+      expect {
+        post product_orderitems_path(products(:zero_stock_product).id), params: update_hash
+      }.wont_change "Orderitem.count"
     end
   end
 
@@ -97,7 +97,7 @@ describe OrderitemsController do
       existing_orderitem.order.update!(status: "complete")
 
       valid_params = {
-          quantity: 1
+        quantity: 1
       }
 
       expect {

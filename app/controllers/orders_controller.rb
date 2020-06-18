@@ -1,92 +1,64 @@
 class OrdersController < ApplicationController
   # todo -product model made then collab for update order quantity
-  before_action :require_login, only: [:merchant_order]
-  before_action :find_order_from_session, only: [:edit, :update]
-  before_action :find_order_from_params, only: [:show, :merchant_order]
+  # before_action :require_login, only: [:merchant_order]
+  before_action :find_order_from_session, only: [:edit, :update, :cart]
+  # delete merch order from 6 if not used eventually *****
+  before_action :find_order_from_params, only: [:show, :merchant_order, :success]
 
-  # Find order or display message if cart is empty
-  # route triggers 
-  def cart
-    if session[:order_id]
-      @order = Order.find_by(id: session[:order_id])
-      session[:order_id] = @order.id
-    else
-      flash[:result_text] = "Couldn't create order, try again later"
-      flash[:messages] = @order.errors.messages
-    end
-  end
+  # Renders details page for order already paid for (or cancelled?)
+  # if we want other redirect behavior, edit later******
+  def show ; end
 
-# methods are flipped update-submit proof viewcart hiy checkout check if enough stock if enough then show cc form
-# if true then reduce stock if valid
+  # Renders payment information form
+  def edit ; end
 
-  #renders payment information form
-  # enter payment details, find order_id from session
-  def edit; end
-
-  # this is called when user clicks the "checkout" button on cart page
+  # Called when user tries to submit payment
   def update
-    # all fields must be valid; validations run on save to db - need extra code for this?
-    @order.orderitems.each do |orderitem|
-      # check enough_stock from product model***
-      if !orderitem.valid?
-        flash[:status] = :failure
-        flash[:result_text] = "Some items in your cart are no longer available"
-        flash[:messages] = @orderitem.errors.messages
+    if @order.update(order_params)
+
+      result = @order.checkout
+
+      if result == true
+        flash.now[:result_text] = "(1) Order successfully paid!"
+        # redirect_back(fallback_location: root_path)
+        # redirect_to order_path(@order.id)
+        redirect_to success_path(id: @order.id)
+        reset_session
+        return
+      else
+        # Maybe don't sweat testing this else block: 38 - 43
+        # render :edit, status: :bad_request
+        flash[:result_text] = "Order failed to checkout."
+        redirect_back(fallback_location: root_path)
+        return
       end
 
-      if flash[:status] = :failure
-        flash[:messages] = @order.errors.messages
-        return redirect_to cart_path
-      end
-    end
-  end
-
-  # Confirmation page for order : for all statuses ?
-  def show
-    if @order.id < 0
-      head :not_found
-    end
-
-    if @order.status == "pending"
-      flash[:status] = :failure
-      flash[:result_text] = "Your order is being process"
-      flash[:messages] = @order.errors.messages
-      redirect_to root_path
-      return
-    elsif @order.status == "paid"
-      flash[:status] = :success
-      # maybe add result text, maybe not?
-      redirect_to order_path(@order.id)
-    end
-  end
-
-  # we call this method when user submits payment form
-  # only checking for stock how does the submit know about validations
-  #if order.valid?
-  def submit
-    result = @order.checkout
-    #this will never fail
-    if result
-      flash[:result_text] = "Order successfully paid!"
-      redirect_to order_path(@order.id)
+      # redirect_to success_path(session[:order_id])
+      # return
     else
-      render :edit, status: :bad_request
-      flash[:status] = :failure
-      flash[:messages] = @order.errors.messages
+      # redirect_to edit_order_path(session[:order_id])
+      render :edit
     end
   end
 
-  # need to add route for this to work
-  def merchant_order
-    unless @order.is_order_of(session[:merchant_id]) && @order.status != 'pending'
-      flash[:status] = :failure
-      flash[:result_text] = "You do not have access to this page"
-      redirect_back fallback_location: root_path
-      return
-    end
-  end
+  # Shows cart currently in progress
+  def cart ; end
+
+  # Shows confirmation page for recently placed order
+  def success ; end
+
+  # deleted view file and route
+  # def merchant_order
+  #   unless @order.is_order_of(session[:merchant_id]) && @order.status != 'pending'
+  #     flash[:status] = :failure
+  #     flash[:result_text] = "You do not have access to this page"
+  #     redirect_back fallback_location: root_path
+  #     return
+  #   end
+  # end
 
   private
+
   def order_params
     params.require(:order).permit(:email, :address, :cc_name, :cc_num, :cvv, :cc_exp, :zip)
   end
