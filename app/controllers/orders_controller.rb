@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
   before_action :require_login, only: [:index]
   before_action :find_order_from_session, only: [:edit, :update, :cart]
   # delete merch order from 6 if not used eventually *****
-  before_action :find_order_from_params, only: [:show, :merchant_order, :success]
+  before_action :find_order_from_params, only: [:show, :merchant_order, :success, :cancel]
 
 
   # Renders details page for order already paid for (or cancelled?)
@@ -14,7 +14,9 @@ class OrdersController < ApplicationController
     @total_revenue = @merchant.total_revenue
   end
 
-  def show ; end
+  def show
+    @order.mark_as_complete!
+  end
 
   # Renders payment information form
   def edit ; end
@@ -53,6 +55,21 @@ class OrdersController < ApplicationController
 
   # Shows confirmation page for recently placed order
   def success ; end
+
+  # Marks order as cancelled
+  def cancel
+    if @order.status == "paid" && @order.orderitems.find_by(shipped: true).nil?
+      @order.cancel_order
+      flash[:success] = "Your order, #{ @order.id }, has been cancelled!"
+      redirect_back fallback_location: root_path
+    elsif @order.status == "paid" && @order.orderitems.find_by(shipped: false).nil?
+      flash[:failure] = "Cannot cancel an order that has already been shipped"
+      redirect_back fallback_location: root_path
+    else
+      flash[:failure] = "Cannot perform this action"
+      redirect_to root_path
+    end
+  end
 
   # deleted view file and route
   # def merchant_order
