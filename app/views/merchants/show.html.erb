@@ -3,7 +3,13 @@
 <section class="px-5">
   <h6><%= link_to "< HOME", root_path, class: "local-navigation" %></h6>
   <h6><%= link_to "< ALL MERCHANTS", merchants_path, class: "local-navigation" %></h6>
-  <h1 class="catalog__header"><%= @merchant.username %></h1>  
+  
+  <% if @merchant.id == session[:merchant_id] %>
+    <h1 class="catalog__header"><%= @merchant.username %> Dashboard</h1>
+  <% else %>  
+    <h1 class="catalog__header"><%= @merchant.username %> Information</h1>
+  <% end %>
+  
   <hr>
 </section>
 
@@ -54,7 +60,7 @@
                           <div class="catalog__body-text">
                           Rating: ##/5 (# of reviews)
                           <div> <br>
-                            <%= link_to "Edit product", edit_product_path, method: :get, class: "product__new-button" %>
+                            <%= link_to "Edit product", edit_product_path(product.id), method: :get, class: "product__new-button" %>
                           </div>
                           </div> <br>
                             <% if product.merchant_id == session[:merchant_id] %>
