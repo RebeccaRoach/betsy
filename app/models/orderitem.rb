@@ -15,9 +15,7 @@ class Orderitem < ApplicationRecord
   end
 
   def mark_item_shipped!
-  # change shipped status for single orderitem
-    self.shipped = true
-    self.save!
+    self.update_attribute(:shipped, true)
   end
 
   # private
