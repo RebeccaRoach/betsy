@@ -23,8 +23,10 @@ describe OrderitemsController do
       before_count = Orderitem.count
 
       item_params = {
-        quantity: 3,
-        shipped: false
+        orderitem: {
+          quantity: 3,
+          shipped: false
+        }
       }
 
       post product_orderitems_path(products(:discover).id), params: item_params
@@ -44,8 +46,10 @@ describe OrderitemsController do
       before_count_orderitem = Orderitem.count
       
       params = {
-        quantity: 1,
-        shipped: false
+        orderitem: {
+          quantity: 1,
+          shipped: false
+        }
       }
 
       post product_orderitems_path(products(:snow_pass).id), params: params
@@ -81,7 +85,9 @@ describe OrderitemsController do
 
     it "redirects to cart path without updating when given bad data" do
       bogus_update_hash = {
-        quantity: -1
+        orderitem: {
+          quantity: -1
+        }
       }
 
       expect {
@@ -97,7 +103,9 @@ describe OrderitemsController do
       existing_orderitem.order.update!(status: "complete")
 
       valid_params = {
+        orderitem: {
           quantity: 1
+        }
       }
 
       expect {
