@@ -53,8 +53,7 @@ class OrderitemsController < ApplicationController
     # TODO: MAKE SURE ORDERITEM MODEL TESTS NOT_RETIRED *********
       if @orderitem.order.status == "pending"
         if @orderitem.update(quantity: params[:orderitem][:quantity].to_i)
-          flash[:status] = :success
-          flash[:result_text] = "Item was updated successfully!"
+          flash[:result_text] = "#{@orderitem.product.product_name} was updated successfully!"
           redirect_to cart_path(session[:order_id])
           return
         else
