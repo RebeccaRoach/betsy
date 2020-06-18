@@ -4,7 +4,7 @@ describe Order do
   let(:paid_order) { orders(:order2) }
   let(:pending_order) { orders(:pending_order) }
 
-  describe "validation" do
+  describe "validations" do
     it "will not allow Orders to have no status" do
       paid_order.status = nil
 
@@ -14,7 +14,7 @@ describe Order do
     end
   end
 
-  it "cannot have a status other than pending, paid, cancel or complete" do
+  it "cannot have a status other than pending, paid, cancelled or complete" do
     paid_order.status = "pending"
     expect(paid_order.valid?).must_equal true
 
@@ -24,7 +24,7 @@ describe Order do
     paid_order.status = "complete"
     expect(paid_order.valid?).must_equal true
 
-    paid_order.status = "cancel"
+    paid_order.status = "cancelled"
     expect(paid_order.valid?).must_equal true
 
     paid_order.status = "gretchen"
@@ -33,8 +33,8 @@ describe Order do
     expect(paid_order.errors.messages[:status]).must_include "gretchen is not a valid status"
   end
 
-  it "can update an Order" do
-    expect{ Orderitem.create(quantity: 1, order: pending_order, product: products(:rainer), shipped: false) }.must_change "pending_order.orderitems.count", 1
+  it "can update an Order with valid order data" do
+    expect{ Orderitem.create(quantity: 1, order: pending_order, product: products(:rainier), shipped: false) }.must_change "pending_order.orderitems.count", 1
 
     expect{ 
       pending_order.update(
@@ -60,6 +60,7 @@ describe Order do
     expect(pending_order.orderitems.length).must_equal 1
   end
 
+  # DO WE NEED THIS ONE? OR TEST INVALID DATA?
   it "cannot update an Order" do
     expect(pending_order.orderitems.count).must_equal 0
 
@@ -76,6 +77,7 @@ describe Order do
       )
     ).must_equal false
 
+    # Does this pending order need to be referenced from fixtures differently?
     updated_order = Order.find_by(id: pending_order.id)
 
     expect(updated_order.email).must_be_nil
@@ -88,7 +90,7 @@ describe Order do
     expect(updated_order.status).must_equal "pending"
   end
 
-  it "will outputs errors if updating Orders without orderitems" do
+  it "will output errors if updating Orders without orderitems" do
     updated_order = pending_order.update(
       email: "lady@gmail.com",
       address: "2020 my house street",
@@ -232,6 +234,18 @@ describe Order do
   end
 
   describe "custom methods" do
+
+    # def mark_as_complete!
+    #   if self.status == "paid" && self.orderitems.find_by(shipped: false).nil?
+    #     self.status = "complete"
+    #     self.save!
+    #     return true
+    #   else
+    #     return false
+    #   end
+    # end
+    
+
     # describe "reduce_stock" do
     #   it "will reduce the number of product stock by orderitem quantity" do
     #     expect(products(:rx_bar).stock).must_equal 3
