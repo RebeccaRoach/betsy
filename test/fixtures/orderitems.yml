@@ -24,3 +24,18 @@ discover:
   order: order2
   product: discover
   shipped: true
+rxbar2:
+  quantity: 1
+  order: order3
+  product: rx_bar
+  shipped: true
+snow2:
+  quantity: 1
+  order: order3
+  product: snow_pass
+  shipped: false
+rainier2:
+  quantity: 1
+  order: order4
+  product: rainier
+  shipped: false

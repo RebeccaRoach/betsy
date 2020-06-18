@@ -5,6 +5,7 @@ rx_bar:
   photo_url:
   stock: 3
   retired: false
+  merchant: bob
 kind:
   product_name: KIND bar
   description: GF bar
@@ -12,6 +13,7 @@ kind:
   photo_url:
   stock: 5
   retired: true
+  merchant: bob
 nature_valley:
   product_name: Nature Valley
   description: Crunchy Granola Oats n Honey
@@ -19,6 +21,7 @@ nature_valley:
   photo_url:
   stock: 8
   retired: false
+  merchant: bob
 rainier:
   product_name: Mount Rainer
   description: Volcano
@@ -26,6 +29,7 @@ rainier:
   photo_url:
   stock: 1
   retired: false
+  merchant: bob
 discover:
   product_name: Discover Pass
   description: Parking pass for local parks
@@ -33,6 +37,7 @@ discover:
   photo_url:
   stock: 30
   retired: false
+  merchant: bob
 snow_pass:
   product_name: Snow Pass
   description: Parking pass for local parks in winter
@@ -40,6 +45,7 @@ snow_pass:
   photo_url:
   stock: 15
   retired: false
+  merchant: greta
 zero_stock_product:
   product_name: Smores
   description: Deliciousness in a cookie sandwich
