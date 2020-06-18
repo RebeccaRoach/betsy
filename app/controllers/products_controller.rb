@@ -15,12 +15,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  def show
-    if @product.nil?
-      head :not_found
-      return
-    end 
-  end
+  def show ; end
 
   def new
     @product = Product.new
@@ -36,14 +31,11 @@ class ProductsController < ApplicationController
     end
 
     rescue ActionController::ParameterMissing
-      redirect_to new_product_path
+    redirect_to new_product_path
   end
 
   def update
-    if @product.nil?
-      head :not_found
-      return
-    elsif @product.update(product_params)
+    if @product.update(product_params)
       flash[:success] = "#{@product.product_name} successfully updated"
       redirect_to product_path(@product)
       return
@@ -54,13 +46,25 @@ class ProductsController < ApplicationController
   end
 
   def edit
+    if @product.merchant != @current_user
+      flash[:error] = "You cannot edit a product that you do not sell"
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
     if @product.nil?
-      redirect_back(fallback: root_path)
+      redirect_back(fallback_location: root_path)
       return
     end
   end
 
   def retired
+    if @product.merchant_id != @current_user
+      flash[:error] = "You cannot retire a product that you do not sell"
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
     if @product.retire!
     flash[:success] = "#{@product.product_name} successfully retired!"
     redirect_to merchant_path(session[:merchant_id]) #or wherever you want to redirect to
@@ -69,8 +73,11 @@ class ProductsController < ApplicationController
 
   private
   def find_product
-    # TODO: need to add case for when product cannot be found, to DRY up code
     @product = Product.find_by(id: params[:id])
+    if @product.nil?
+      head :not_found
+      return
+    end
   end
 
   def product_params
