@@ -1,9 +1,7 @@
 class Merchant < ApplicationRecord
   has_many :products
 
-  #validates :username, presence: true, uniqueness: true
-  # remove?
-  # validates :merchant_id, uniqueness: true, presence: true
+  validates :username, presence: true, uniqueness: true
   validates :email, uniqueness: true, presence: true
 
   # custom mthod to create new merchant
@@ -21,10 +19,20 @@ class Merchant < ApplicationRecord
 
   end
 
-  # def find.all_orders
+  def all_orders
+    merchant_orders = []
+    
+    Order.all.each do |order|
+      order.orderitems.each do |item|
+        if item.product.merchant_id == self.id
+          merchant_orders << item.order_id
+          break
+        end
+      end
+    end
 
-
-  # end
+    return merchant_orders
+  end
 
   # need to work with OrderItem
   def revenue_by_status(status)
