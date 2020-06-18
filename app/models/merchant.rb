@@ -15,6 +15,7 @@ class Merchant < ApplicationRecord
   end
 
   def total_revenue
+    # TODO: remove cancelled order from consideration
     revenue = 0
     orders = self.all_orders
     
