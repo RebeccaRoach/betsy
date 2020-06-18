@@ -1,12 +1,19 @@
 class OrdersController < ApplicationController
   # todo -product model made then collab for update order quantity
-  # before_action :require_login, only: [:merchant_order]
+  before_action :require_login, only: [:index]
   before_action :find_order_from_session, only: [:edit, :update, :cart]
   # delete merch order from 6 if not used eventually *****
   before_action :find_order_from_params, only: [:show, :merchant_order, :success]
 
+
   # Renders details page for order already paid for (or cancelled?)
   # if we want other redirect behavior, edit later******
+  def index
+    @merchant = Merchant.find_by(id: session[:merchant_id])
+    @order_collection = @merchant.all_orders
+    @total_revenue = @merchant.total_revenue
+  end
+
   def show ; end
 
   # Renders payment information form
