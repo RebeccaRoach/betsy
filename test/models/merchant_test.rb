@@ -33,21 +33,6 @@ describe Merchant do
     end
   end
 
-  # describe "build_from_github" do
-  #   it "returns a merchant" do
-  #     auth_hash = OmniAuth::AuthHash.new(mock_auth_hash)
-
-  #     merchant = Merchant.build_from_github(auth_hash)
-
-  #     merchant.must_be_kind_of Merchant
-  #     expect(merchant.uid).must_equal auth_hash[:uid]
-  #     expect(merchant.provider).must_equal "github"
-  #     expect(merchant.email).must_equal auth_hash["info"]["email"]
-  #     expect(merchant.nickname).must_equal auth_hash["info"]["nickname"]
-  #     expect(merchant.name).must_equal auth_hash["info"]["name"]
-  #   end
-  # end
-
   describe "build_from_github" do 
     it "creates a new merchant" do 
       auth_hash = {
@@ -70,7 +55,6 @@ describe Merchant do
       expect(merchant.email).must_equal auth_hash["info"]["email"]
     end
   end
-
 
   describe "custom methods made" do
     describe "total_revenue" do
