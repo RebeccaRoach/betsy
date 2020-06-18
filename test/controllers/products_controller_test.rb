@@ -3,6 +3,7 @@ require "test_helper"
 describe ProductsController do
   before do
     @invalid_product_id = -1
+    @valid_product_id = products(:snow_pass).id
   end
 
   describe "index" do
@@ -29,10 +30,7 @@ describe ProductsController do
       products(:snow_pass).merchant = merchants(:diana)
       products(:snow_pass).save
 
-      valid_product_id = products(:snow_pass).id
-
-
-      get product_path(valid_product_id)
+      get product_path(@valid_product_id)
 
       must_respond_with :success
     end
@@ -98,9 +96,8 @@ describe ProductsController do
     }
     
     it "can update an existing product with valid info and redirect" do
-      @product_id = products(:snow_pass).id
       expect { 
-        patch product_path(@product_id), params: update_hash
+        patch product_path(@valid_product_id), params: update_hash
       }.wont_change Product.count
       
       updated_item = products(:snow_pass).reload
@@ -111,25 +108,53 @@ describe ProductsController do
     it "does not update product when given bad data" do
       update_hash[:product][:merchant_id] = nil
 
-      @product_id = products(:snow_pass).id
-
       expect {
-        patch product_path(@product_id), params: update_hash
+        patch product_path(@valid_product_id), params: update_hash
       }.wont_change Product.count
 
       expect {
-        patch product_path(@product_id), params: update_hash
+        patch product_path(@valid_product_id), params: update_hash
       }.wont_change products(:snow_pass).merchant_id
-
     end
-
   end
 
   describe "edit" do
-    
+    it "prevents editing a product and flashes the correct message when not logged in" do
+      get edit_product_path(@valid_product_id)
+      assert_equal 'A problem occurred: You must log in to do that', flash[:error]
+    end
+
+    # TODO: testing out login functionality
+    # it "redirects if the user editing a product's merchant is not the merchant" do
+    #   perform_login
+    #   @current_user = 1
+    #   get edit_product_path(@valid_product_id)
+
+    #   assert_equal 'User was successfully created.', flash[:error]
+    # end
+
+    it "responds with success when getting the edit page for an existing, valid product" do
+      get edit_product_path(@valid_product_id)
+
+      must_redirect_to root_path
+    end
+
+    it "responds with redirect when getting the edit page for a non-existing product" do
+      get edit_product_path(@invalid_product_id)
+
+      must_respond_with :not_found
+    end
   end
 
   describe "retired" do
-    
+    # TODO: Login permissions
+    # it "marks a product as retired" do
+      
+    #   expect {
+    #     patch patch retired_product_path(@valid_product_id)
+    #   }.wont_change Product.count
+
+    #   products(:snow_pass).retired.must_equal true
+    # end
   end
 end
