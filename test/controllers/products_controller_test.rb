@@ -76,44 +76,17 @@ describe ProductsController do
       expect(Product.last.product_name).must_equal product_hash[:product][:product_name]
     end
 
-    it "does not create a product if given bad data, and responds with a redirect" do
-      
+    it "does not create a product if given bad/insufficient data, and responds with a redirect" do
+      invalid_product_hash = product_hash[:product][:merchant_id] = nil
+
+      expect {
+        post products_path, params: invalid_product_hash
+      }.must_differ 'Product.count', 0
+
+      must_respond_with  :redirect
+      must_redirect_to new_product_path
     end
-
   end
-
-
-  # describe "create" do
-  #   let (:passenger_hash) {
-  #     {
-  #       passenger: {
-  #         name: "Cookie Monster", 
-  #         phone_num: "9999"
-  #       }
-  #     }
-  #   }
-
-    # it "can create a new passenger with valid information accurately, and redirect" do
-    #   expect {
-    #     post passengers_path, params: passenger_hash
-    #   }.must_differ 'Passenger.count', 1
-
-    #   must_redirect_to root_path
-    #   expect(Passenger.last.name).must_equal passenger_hash[:passenger][:name]
-    #   expect(Passenger.last.phone_num).must_equal passenger_hash[:passenger][:phone_num]
-    # end
-
-    # it "does not create a passenger if the form if the form has invalid name, and responds with a redirect" do
-    #   no_name = passenger_hash[:passenger][:name] = nil
-
-    #   expect {
-    #     post passengers_path, params: no_name
-    #   }.must_differ 'Passenger.count', 0
-
-    #   must_respond_with  :redirect
-    #   must_redirect_to new_passenger_path
-    # end
-  # end
 
   describe "update" do
     
