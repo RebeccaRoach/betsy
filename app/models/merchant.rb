@@ -9,7 +9,7 @@ class Merchant < ApplicationRecord
     merchant = Merchant.new
     merchant.uid = auth_hash[:uid]
     merchant.provider = "github"
-    merchant.username = auth_hash["info"]["nickname"]
+    merchant.username = auth_hash["info"]["username"]
     merchant.email = auth_hash["info"]["email"]
     return merchant
   end
@@ -17,9 +17,9 @@ class Merchant < ApplicationRecord
   def total_revenue
     total_revenue = 0
 
-    self.order_items.each do |order_item|
-      if order_item.order.cart_status == "paid"
-        total_revenue += order_item.total
+    self.orderitems.each do |orderitem|
+      if orderitem.order.cart_status == "paid"
+        total_revenue += orderitem.total
       end
     end
 
@@ -30,9 +30,9 @@ class Merchant < ApplicationRecord
   def revenue_by_status(status)
     total_revenue = 0
 
-    self.order_items.each do |order_item|
-      if order_item.order.cart_status == status
-        total_revenue += order_item.total
+    self.orderitems.each do |orderitem|
+      if orderitem.order.cart_status == status
+        total_revenue += orderitem.total
       end
     end
 

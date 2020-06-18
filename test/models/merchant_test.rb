@@ -2,7 +2,14 @@ require "test_helper"
 
 describe Merchant do
   # let (:merchant) {merchant(:canoeing_chris)}
-
+  let(:new_merchant) {
+    Merchant.new(
+      username: "Hollerin Harriet",
+      email: "Holler@harriet.com",
+      uid: "1115",
+      provider: "github"
+    )
+  }
   describe "validations" do
     it "is valid with all fields present and valid" do
       expect(merchant.valid?).must_equal true
