@@ -43,10 +43,11 @@
 
       <div class="py-3">
       <%# mini form to "add to card", link to order, and send up params of current product to be an orderitem %>
-      <h2 class="catalog__description-title">Quantity</h2> 
       <%= form_with model: @orderitem, url: product_orderitems_path(@product.id) do |f| %>
        <div class="form-group">
-        <%= f.label :quantity %>
+        <h2>
+          <%= f.label :quantity, class: "catalog__description-title"%>
+        </h2>
         <%= f.select :quantity, options_for_select(1..@product.stock), {}, {class: "form-control"} %>
         </div>
         <% if @product.retired %>
