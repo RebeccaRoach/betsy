@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     patch :retired, on: :member #products/1/retired
   end
 
-  resources :orderitems, only: [:edit, :update, :destroy]
+  resources :orderitems, only: [:update, :destroy]
   patch 'orderitems/:id/mark_shipped', to: 'orderitems#mark_shipped', as: 'mark_shipped'
 
   resources :orders, only: [:new, :show, :edit, :update, :cancel]
