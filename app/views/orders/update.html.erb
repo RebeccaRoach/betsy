@@ -1,0 +1,16 @@
+<h1>update page</h1>
+<h2><%= Order.last.orderitems.inspect %></h2>
+
+<section class="confirm-info">
+  <ul>
+    <li><span class="bolded">Name:  </span> <%= @order.cc_name %></li>
+    <li><span class="bolded">Shipping Address:  </span> <%= @order.address %></li>
+    <li><span class="bolded">Email:  </span> <%= @order.email %></li>
+  </ul>
+
+  <ul>
+    <li><span class="bolded">Order Number:  </span> <%= @order.id %></li>
+    <li><span class="bolded">Purchased On:  </span> <%= @order.created_at.to_date %></li>
+    <li><span class="bolded">Order Status:  </span> <%= @order.status %></li>
+  </ul>
+</section>

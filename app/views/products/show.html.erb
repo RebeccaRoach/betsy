@@ -10,6 +10,16 @@
   
   <hr>
 </section>
+<%# DANGEROUS TRICK BUT AMAZING: NIL CHECK &. %>
+<% if @order.orderitems.find_by(product_id: @product.id)&.errors&.any? %>
+  <ul class="errors alert alert-danger" role="alert">
+    <% @order.orderitems.find_by(product_id: @product.id).each do |column, message| %>
+      <li>
+        <strong><%= column.capitalize %></strong> <%= message %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
 
 
 <%# Product Picture and Description %>
