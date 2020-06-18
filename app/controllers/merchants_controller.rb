@@ -43,8 +43,32 @@ class MerchantsController < ApplicationController
   end
 
   def current
-    @current_merchant = Merchant.find_by(id: session[:merchant_id])
+    if session[:merchant_id] == nil
+      flash[:error] = "No merchant logged in."
+      redirect_to root_path
+      return
+    else
+      @merchant = Merchant.find_by(id: session[:merchant_id])
+      redirect_to merchant_path(session[:merchant_id])
+      return
+    end
   end
+
+  #to do!!!
+  # def show
+  #   @merchant = Merchant.find_by(id: params[:id])
+  #   if @merchant.nil?
+  #     flash[:error] = "Invaid merchant credentials."
+  #     redirect_to root_path
+  #     return
+  #   end
+
+  #   if @merchant.id != (session[:merchant_id])
+  #     flash[:error] = "You must log in to view the merchant dashboard."
+  #     redirect_to root_path
+  #     return
+  #   end
+  # end
 
  
 end
