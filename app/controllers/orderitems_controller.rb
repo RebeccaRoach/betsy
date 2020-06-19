@@ -11,7 +11,6 @@ class OrderitemsController < ApplicationController
 
       if result == false
         flash[:result_text] = "Can't add another #{@orderitem.product.product_name} to cart; not enough stock"
-        flash[:messages] = @orderitem.errors.messages
         redirect_back(fallback_location: root_path) && return
       else
         @orderitem.quantity += params[:quantity].to_i
