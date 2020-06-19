@@ -2,9 +2,7 @@ class OrdersController < ApplicationController
   # todo -product model made then collab for update order quantity
   before_action :require_login, only: [:index]
   before_action :find_order_from_session, only: [:edit, :update, :cart]
-  # delete merch order from 6 if not used eventually *****
-  before_action :find_order_from_params, only: [:show, :merchant_order, :success, :cancel]
-
+  before_action :find_order_from_params, only: [:show, :success, :cancel]
 
   # Renders details page for order already paid for (or cancelled?)
   # if we want other redirect behavior, edit later******
@@ -70,16 +68,6 @@ class OrdersController < ApplicationController
       redirect_to root_path
     end
   end
-
-  # deleted view file and route
-  # def merchant_order
-  #   unless @order.is_order_of(session[:merchant_id]) && @order.status != 'pending'
-  #     flash[:status] = :failure
-  #     flash[:result_text] = "You do not have access to this page"
-  #     redirect_back fallback_location: root_path
-  #     return
-  #   end
-  # end
 
   private
 

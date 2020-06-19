@@ -4,8 +4,9 @@ describe OrderitemsController do
   let(:existing_orderitem) { orderitems(:rxbar) }
 
   let(:update_hash) {
-    {
+    { orderitem: {
       quantity: 1
+    }
     }
   }
 
@@ -80,7 +81,9 @@ describe OrderitemsController do
 
     it "redirects to cart path without updating when given bad data" do
       bogus_update_hash = {
-        quantity: -1
+        orderitem: {
+          quantity: -1
+        }
       }
 
       expect {
@@ -148,40 +151,58 @@ describe OrderitemsController do
 
   describe "mark_shipped" do
     it "responds with 404 when orderitem does not exist" do
-      # WHAT IS GOING ON HERE??
       orderitem = orderitems(:rxbar)
       orderitem.destroy!
-      puts "ORDERITEM::::: #{orderitem}"
     
-      delete orderitem_path(orderitem)
-      # puts "orderitem::::: #{orderitem.id}"
+      # delete orderitem_path(orderitem)
+  
       patch mark_shipped_path(orderitem)
       must_respond_with :not_found
     end
 
-    # WHY CURRENTLY FAILING ????? :(
     it "can change shipped status for an existing, non-shipped orderitem in a paid order" do
-      # it updates, flashes success, redirects back
       orderitem = orderitems(:nature_valley)
+
+      expect(orderitem.order.status).must_equal "paid"
       expect(orderitem.shipped).must_equal false
 
-      patch mark_shipped_path(orderitem.id)
+      patch mark_shipped_path(id: orderitem.id)
 
+      # NEED TO RELOAD MANUALLY
+      orderitem.reload
+      
       expect(orderitem.shipped).must_equal true
-
-      # assert flash stuff
-      # other more specific redirect??
+      assert_equal "#{ orderitem.product.product_name } has shipped!", flash[:success]
       must_respond_with :redirect
     end
 
     it "does not update shipped status when the orderitem on a paid order has already been shipped, and redirects" do
-      # flash[:failure] = "#{ @orderitem.product.product_name } has already shipped."
-      # redirect_back fallback_location: root_path
+      orderitem = orderitems(:discover)
+      expect(orderitem.shipped).must_equal true
+      expect(orderitem.order.status).must_equal "paid"
+
+      patch mark_shipped_path(id: orderitem.id)
+
+      orderitem.reload
+      
+      expect(orderitem.shipped).must_equal true
+      
+      assert_equal "#{ orderitem.product.product_name } has already shipped.", flash[:failure]
+      must_respond_with :redirect
     end
 
     it "does not update shipped status when the order status is not paid" do
-      # flash[:failure] = "Cannot perform this action for a #{@orderitem.order.status} order"
-      # redirect_back fallback_location: root_path
+      orderitem = orderitems(:snow)
+
+      expect(orderitem.order.status).must_equal "pending"
+      expect(orderitem.shipped).must_equal false
+
+      patch mark_shipped_path(id: orderitem.id)
+
+      orderitem.reload
+
+      assert_equal "Cannot perform this action for a #{orderitem.order.status} order", flash[:failure]
+      must_respond_with :redirect
     end
   end
 end

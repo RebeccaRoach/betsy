@@ -125,13 +125,13 @@ describe ProductsController do
     end
 
     # TODO: testing out login functionality
-    # it "redirects if the user editing a product's merchant is not the merchant" do
-    #   perform_login
-    #   @current_user = 1
-    #   get edit_product_path(@valid_product_id)
+    it "redirects if the user editing a product's merchant is not the merchant" do
+      perform_login
+      @current_user = 1
+      get edit_product_path(@valid_product_id)
 
-    #   assert_equal 'User was successfully created.', flash[:error]
-    # end
+      assert_equal 'User was successfully created.', flash[:error]
+    end
 
     it "responds with success when getting the edit page for an existing, valid product" do
       get edit_product_path(@valid_product_id)

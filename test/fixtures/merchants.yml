@@ -2,12 +2,18 @@ diana:
   email: wowtestingissofun@nightowl.edu
   username: dnguye2
   uid: 2
+  provider: "github"
 bob:
   username: "Bob Hicok"
   email: bob@university.com
+  uid: 5
+  provider: "github"
 greta:
   username: "Greta the Unstoppable"
   email: "stike4climate@earth.org"
+  provider: "github"
 no_products_merchant:
   username: "Lazy Lou"
   email: samIam@email.com
+  uid: 7
+  provider: "github"

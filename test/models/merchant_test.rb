@@ -32,19 +32,44 @@ describe Merchant do
   end
 
   describe "relations" do
+    before do
+      @merchant = merchants(:bob)
+      @orderitem = orderitems(:nature_valley)
+      @product = products(:nature_valley)
+    end
+
     it "can have one or many products" do
-      merchant.must_respond_to :products
-      merchant.products.each do |product|
-      product.must_be_kind_of Product
+      @merchant.must_respond_to :products
+
+      @merchant.products.each do |product|
+        product.must_be_kind_of Product
+      end
+
+      expect(@merchant.products.count).must_equal 5
+    end
+
+      it "can set the merchant id through product" do
+      # @new_product
+      # @merchant.products << @product
+
+      # expect
+           # @product.merchant_id = @merchant.id
+      end
+
+# NOT NEEDED IN THIS MODEL:
+      it "can set the product_id through merchant" do
+      # @product.merchant = Merch
       end
     end
 
     # ASK ABOUT TESTING PRODUCTS???
-    it "can have one or more order items through products" do
+    it "can have one or more orderitems through products" do
+      @merchant 
+      
       merchant.must_respond_to :orderitem
 
-      merchant.orderitems.each do |order_item|
-        order_item.must_be_kind_of OrderItem
+      merchant.orderitems.each do |item|
+        item.must_be_kind_of Orderitem
       end
     end
   end

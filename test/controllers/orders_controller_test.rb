@@ -27,6 +27,17 @@ describe OrdersController do
     # end
   end
 
+  describe "index" do
+    # CHECK REDIRECT BEHAVIOR HERE??
+    it "responds with success" do
+      # order = orders(:order1)
+      get orders_path
+      must_respond_with :redirect
+
+      # how to test the merchant, order_collection, and total_revenue????
+    end
+  end
+
   describe "show" do
     it "responds with success" do
       order = orders(:order1)
@@ -37,6 +48,9 @@ describe OrdersController do
     it "responds with success for valid orders with paid status" do
       get order_path(orders(:order2).id)
       must_respond_with :success
+    end
+
+    it "MARKS AS COMPLETE???? how to test this" do
     end
   end
 
@@ -116,12 +130,28 @@ describe OrdersController do
   end
 
   describe "cart" do
-    # Add item to cart:
-#  -  product is retired, quantity too high, or something like that (error)
     it "responds with success" do
       order = orders(:order1)
       get cart_path(order.id)
       must_respond_with :success
+      # expect order id must be current from session
+      # HOW TO TEST????
+    end
+  end
+
+  describe "success" do
+    it "responds with success" do
+      order = orders(:order3)
+      get cart_path(order.id)
+      must_respond_with :success
+       # expect order 3 won't be the same as current session order
+      # HOW TO TEST????
+    end
+  end
+
+  # LOTS TO DO HERE:::::
+  describe "cancel" do
+    it "does stuff" do
     end
   end
 end

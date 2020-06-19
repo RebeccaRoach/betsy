@@ -20,7 +20,7 @@ describe MerchantsController do
 
     it "returns head :not_found when merchant_id isn't found" do
       # NOT SURE WHY THIS IS NOT WORKING???
-      get merchant_path(nil)
+      get merchant_path(-1)
 
       must_respond_with :not_found
     end
@@ -52,20 +52,6 @@ describe MerchantsController do
       expect(flash[:result_text]).must_equal "Successfully logged out"
       must_respond_with :redirect
       must_redirect_to root_path
-    end
-  end
-
-  describe "current" do
-    it "responds with success when a merchant is currently logged in, and redirects" do
-      # CHECK SESSION ID
-      get merchants_path
-      must_respond_with :success
-      # FLASH ERROR
-      must_redirect_to merchant_path(session[:merchant_id])
-    end
-
-    it "flashes an error and redirects to root_path when no merchant is logged in" do
-      # TODO: THIS ONE.
     end
   end
 end
