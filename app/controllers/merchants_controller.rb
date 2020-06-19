@@ -39,16 +39,4 @@ class MerchantsController < ApplicationController
     redirect_to root_path
     return
   end
-
-  def current
-    if session[:merchant_id] == nil
-      flash[:error] = "No merchant logged in."
-      redirect_to root_path
-      return
-    else
-      @merchant = Merchant.find_by(id: session[:merchant_id])
-      redirect_to merchant_path(session[:merchant_id])
-      return
-    end
-  end
 end
