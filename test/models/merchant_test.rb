@@ -47,29 +47,24 @@ describe Merchant do
       expect(@merchant.products.count).must_equal 5
     end
 
-
     it "can set the merchant id through product" do
-    # @new_product
-    # @merchant.products << @product
+      before_count = Product.count
+      bob_products_before = @merchant.products.count
 
-    # expect
-          # @product.merchant_id = @merchant.id
-    end
+      new_product = Product.new(
+        product_name: "Thelma thermos",
+        description: "Parking pass for local parks in winter",
+        price: 25,
+        stock: 15,
+        retired: false
+      )
 
-# NOT NEEDED IN THIS MODEL:
-    it "can set the product_id through merchant" do
-      # @product.merchant = Merch
-    end
-
-    # ASK ABOUT TESTING PRODUCTS???
-    it "can have one or more orderitems through products" do
-      @merchant 
-      
-      merchant.must_respond_to :orderitem
-
-      merchant.orderitems.each do |item|
-        item.must_be_kind_of Orderitem
-      end
+      @merchant.products << new_product
+      expect(new_product.valid?).must_equal true
+      expect(Product.count).must_equal before_count + 1
+      expect(@merchant.products.count).must_equal bob_products_before + 1
+      expect(@merchant.products.last.merchant_id).must_equal @merchant.id
+      expect(new_product.merchant_id).must_equal @merchant.id
     end
   end
 
@@ -156,38 +151,41 @@ describe Merchant do
   end
 
   describe "all_orders" do
+    before do
+      @merchant = merchants(:greta)
+    end
+
     it "finds all the orders containing at least one item from a merchant" do
-      merchant = merchants(:greta)
       merchant2 = merchants(:bob)
       merchant3 = merchants(:no_products_merchant)
 
-      # from fixtures, Greta's products (snow_pass) are in 2 separate orders
+      # Greta's products (snow_pass) are in 2 separate orders
       # while Bob's products are in 5 orders
-      expect(merchant.all_orders).must_be_kind_of Array
-      expect(merchant.all_orders.length).must_equal 2
+      expect(@merchant.all_orders).must_be_kind_of Array
+      expect(@merchant.all_orders.length).must_equal 2
       expect(merchant2.all_orders.length).must_equal 5
       expect(merchant3.all_orders.length).must_equal 0
     end
 
     it "returns an empty array if there are no items from that merchant in any order" do
       merchant = merchants(:no_products_merchant)
-   
       expect(merchant.all_orders.count).must_equal 0
     end
   end
   
   describe "order_status" do
     it "finds all of a merchant's orders of a certain status" do
-      merchant = merchants(:greta)
+      @merchant = merchants(:greta)
 
-      expect(merchant.order_status("complete")).must_be_kind_of Array
-      expect(merchant.order_status("complete").length).must_equal 1
-      expect(merchant.order_status("pending").length).must_equal 1
+      expect(@merchant.order_status("complete")).must_be_kind_of Array
+      expect(@merchant.order_status("complete").length).must_equal 1
+      expect(@merchant.order_status("pending").length).must_equal 1
     end
 
     it "returns an empty collection if there are no merchant orders of a certain status" do
-      merchant = merchants(:greta)
       # greta does not have any cancelled orders
+      @merchant = merchants(:greta)
+
       expect(merchant.order_status("cancelled")).must_be_kind_of Array
       expect(merchant.order_status("cancelled").length).must_equal 0
     end

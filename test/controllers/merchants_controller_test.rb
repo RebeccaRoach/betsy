@@ -49,7 +49,7 @@ describe MerchantsController do
   describe "logout" do
     it "logs a merchant out of their session when they click logout" do
       post logout_path
-      expect(flash[:result_text]).must_equal "Successfully logged out"
+      expect(flash[:result_text]).must_equal "Get Outdoorsy, catch ya later alligator"
       must_respond_with :redirect
       must_redirect_to root_path
     end
