@@ -137,6 +137,29 @@ body {
   font-family: 'Rubik', sans-serif;
 }
 
+.order__info {
+  color: #fff;
+}
+
+.order__product-link {
+
+}
+
+.order__shipped {
+  color: rgb(21, 143, 21);
+}
+
+.order__not-shipped {
+  color:#c21b1b;
+}
+
+
+.order__highlight {
+  background-color: #16161696;
+  padding: 1px;
+}
+
+
 .catalog__header, .catalog__secondary-header, .catalog__detail-header  {
   text-transform: uppercase;
   font-weight: 300;
