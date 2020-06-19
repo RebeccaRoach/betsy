@@ -29,13 +29,12 @@ describe ReviewsController do
         
         expect(new_review.rating).must_equal 5
         expect(new_review.product_id).must_equal products(:rx_bar).id
-        expect
         
+        must_redirect_to product_path(new_review.product_id)
         must_redirect_to product_path(products(:rx_bar).id)
+
+        assert_equal "Review successfully added.", flash[:success]
       end
     end
-    # describe "review_params" do
-    # end
   end
-  
 end
