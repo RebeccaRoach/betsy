@@ -17,6 +17,7 @@ class Order < ApplicationRecord
   validates :zip, presence: true, numericality: { only_integer: true }, on: :update
 
   def cancel_order
+    # TODO: Testing - Diana
     # return_stock
     self.return_stock
 
@@ -60,7 +61,6 @@ class Order < ApplicationRecord
   end
 
   def change_to_paid!
-    # change order status to paid
     self.status = "paid"
 
     if !self.save
@@ -69,11 +69,6 @@ class Order < ApplicationRecord
       return true
     end
   end
-
-  # def clear_cart
-  #   session[:order_id] = nil
-  #   set_current_order
-  # end
 
   def checkout
     result = self.change_to_paid!
@@ -84,8 +79,6 @@ class Order < ApplicationRecord
 
     self.reduce_stock
 
-    # clear cart
-    # self.clear_cart
     return true
   end
 end
