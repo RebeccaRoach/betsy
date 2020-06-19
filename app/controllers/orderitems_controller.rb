@@ -46,8 +46,6 @@ class OrderitemsController < ApplicationController
     # might not need this?
     return @orderitem
   end
-
-  def edit ; end
   
   def update
     # TODO: MAKE SURE ORDERITEM MODEL TESTS NOT_RETIRED *********
