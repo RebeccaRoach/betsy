@@ -47,7 +47,7 @@ class OrderitemsController < ApplicationController
     return @orderitem
   end
 
-  def edit ; end
+  # def edit ; end
   
   def update
     # TODO: MAKE SURE ORDERITEM MODEL TESTS NOT_RETIRED *********
@@ -93,7 +93,8 @@ class OrderitemsController < ApplicationController
       redirect_back fallback_location: root_path
     else
       flash[:failure] = "Cannot perform this action for a #{@orderitem.order.status} order"
-      redirect_to root_path
+      # IS THIS OKAY????
+      redirect_back fallback_location: root_path
     end
   end
 

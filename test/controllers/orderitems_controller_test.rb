@@ -10,7 +10,6 @@ describe OrderitemsController do
   }
 
   describe "create" do
-    # Reasonable to check set_current_order here and one other place
     it "creates an order automatically" do
       post product_orderitems_path(products(:snow_pass).id), params: update_hash
 
@@ -148,14 +147,41 @@ describe OrderitemsController do
   end
 
   describe "mark_shipped" do
-    it "can correctly change shipped status for existing orderitem" do
+    it "responds with 404 when orderitem does not exist" do
+      # WHAT IS GOING ON HERE??
+      orderitem = orderitems(:rxbar)
+      orderitem.destroy!
+      puts "ORDERITEM::::: #{orderitem}"
+    
+      delete orderitem_path(orderitem)
+      # puts "orderitem::::: #{orderitem.id}"
+      patch mark_shipped_path(orderitem)
+      must_respond_with :not_found
     end
 
-    # it "responds with 404 when orderitem does not exist" do
-    #   orderitem = orderitems(:rxbar)
-    #   orderitem.destroy!
-    #   # change to right path::: delete orderitem_path(orderitem)
-    #   must_respond_with :not_found
-    # end
+    # WHY CURRENTLY FAILING ????? :(
+    it "can change shipped status for an existing, non-shipped orderitem in a paid order" do
+      # it updates, flashes success, redirects back
+      orderitem = orderitems(:nature_valley)
+      expect(orderitem.shipped).must_equal false
+
+      patch mark_shipped_path(orderitem.id)
+
+      expect(orderitem.shipped).must_equal true
+
+      # assert flash stuff
+      # other more specific redirect??
+      must_respond_with :redirect
+    end
+
+    it "does not update shipped status when the orderitem on a paid order has already been shipped, and redirects" do
+      # flash[:failure] = "#{ @orderitem.product.product_name } has already shipped."
+      # redirect_back fallback_location: root_path
+    end
+
+    it "does not update shipped status when the order status is not paid" do
+      # flash[:failure] = "Cannot perform this action for a #{@orderitem.order.status} order"
+      # redirect_back fallback_location: root_path
+    end
   end
 end
