@@ -93,7 +93,7 @@ class OrderitemsController < ApplicationController
       redirect_back fallback_location: root_path
     else
       flash[:failure] = "Cannot perform this action for a #{@orderitem.order.status} order"
-      redirect_to root_path
+      redirect_back fallback_location: root_path
     end
   end
 
