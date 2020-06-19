@@ -141,10 +141,6 @@ body {
   color: #fff;
 }
 
-.order__product-link {
-
-}
-
 .order__shipped {
   color: rgb(21, 143, 21);
 }
@@ -289,6 +285,24 @@ body {
 .order__button:hover {
   color: #fff;
   background-color: #007bff;
+}
+
+.homepage__jumbotron-button {
+  background-color: transparent;
+  color: #fff;
+  padding: 5px;
+  border: solid;
+  border-width: thin;
+  border-color: #fff;
+  text-transform: uppercase;
+  font-weight: 300;  
+  white-space: normal;
+  min-width: 25%;
+}
+
+.homepage__jumbotron-button:hover {
+  background-color: #fff;
+  color: #e8b0b1;
 }
 
 
