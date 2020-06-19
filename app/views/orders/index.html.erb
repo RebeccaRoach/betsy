@@ -1,25 +1,25 @@
 <section class="content">
-  <h1 class="cart__text text-danger">ORDER FULFILLMENT PAGE</h1>
+  <h1 class="cart__text text-primary">ORDER FULFILLMENT PAGE</h1>
   <h3 class="cart__text"> TOTAL REVENUE: $<%= number_with_precision(@total_revenue, :precision => 2, :delimiter => ',') %></h1>
   <hr>
 
 <p>
-  <button class="cart__remove-button btn-sm rounded-0" type="button" data-toggle="collapse" data-target="#paid" aria-expanded="false" aria-controls="paid">
+  <button class="order__button btn-sm rounded-0" type="button" data-toggle="collapse" data-target="#paid" aria-expanded="false" aria-controls="paid">
     In Progress orders
   </button>
-  <button class="cart__remove-button btn-sm rounded-0" type="button" data-toggle="collapse" data-target="#complete" aria-expanded="false" aria-controls="shipped">
+  <button class="order__button btn-sm rounded-0" type="button" data-toggle="collapse" data-target="#complete" aria-expanded="false" aria-controls="shipped">
     Complete orders
   </button>
-  <button class="cart__remove-button btn-sm rounded-0" type="button" data-toggle="collapse" data-target="#cancelled" aria-expanded="false" aria-controls="cancelled">
+  <button class="order__button btn-sm rounded-0" type="button" data-toggle="collapse" data-target="#cancelled" aria-expanded="false" aria-controls="cancelled">
     Cancelled orders
   </button>
 </p>
 <div class="collapse" id="paid">
   <%# @paid_collection %>
   <% if @paid_collection.empty? %>
-    <h2 class="cart__text text-danger"> No orders </h2>
+    <h2 class="cart__text text-primary"> No orders </h2>
   <% else %>
-    <h2 class="cart__text text-danger">In Progress Orders</h2>
+    <h2 class="cart__text text-primary">In Progress Orders</h2>
     <h2 class="cart__text">Revenue: $<%= number_with_precision(@paid_revenue, :precision => 2, :delimiter => ',') %> </h2>
     <%= render partial: "order-collection", locals: { collection: @paid_collection  } %>
   <% end %>
@@ -27,9 +27,9 @@
 <div class="collapse" id="complete">
   <%# @complete %>
   <% if @complete_collection.empty? %>
-    <h2 class="cart__text text-danger"> No orders </h2>
+    <h2 class="cart__text text-primary"> No orders </h2>
   <% else %>
-    <h2 class="cart__text text-danger">Complete Orders</h2>
+    <h2 class="cart__text text-primary">Complete Orders</h2>
     <h2 class="cart__text"> Revenue: $<%= number_with_precision(@complete_revenue, :precision => 2, :delimiter => ',') %> </h2>
     <%= render partial: "order-collection", locals: { collection: @complete_collection  } %>
   <% end %>
@@ -37,9 +37,9 @@
 <div class="collapse" id="cancelled">
   <%# @cancelled %>
   <% if @cancelled_collection.empty? %>
-    <h2 class="cart__text text-danger"> No orders </h2>
+    <h2 class="cart__text text-primary"> No orders </h2>
   <% else %>
-  <h2 class="cart__text text-danger">Cancelled Orders</h2>
+  <h2 class="cart__text text-primary">Cancelled Orders</h2>
   <h2 class="cart__text"> Revenue: $<%= number_with_precision(@cancelled_revenue, :precision => 2, :delimiter => ',') %> </h2>
   <%= render partial: "order-collection", locals: { collection: @cancelled_collection  } %>
   <% end %>

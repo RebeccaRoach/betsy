@@ -271,6 +271,26 @@ body {
   color: #fff;
 }
 
+
+.order__button {
+  background-color: #fff;
+  color: #007bff;
+  padding: 5px;
+  border: solid;
+  border-width: thin;
+  border-color: #007bff;
+  text-transform: uppercase;
+  font-weight: 300;  
+  white-space: normal;
+  min-width: 25%;
+}
+
+.order__button:hover {
+  color: #fff;
+  background-color: #007bff;
+}
+
+
 /* Footer */
 .footer {
   padding: 20px 0px 10px 0px;
