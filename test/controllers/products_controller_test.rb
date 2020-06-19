@@ -130,7 +130,7 @@ describe ProductsController do
       @current_user = 1
       get edit_product_path(@valid_product_id)
 
-      assert_equal 'User was successfully created.', flash[:error]
+      assert_equal 'You cannot edit a product that you do not sell', flash[:error]
     end
 
     it "responds with success when getting the edit page for an existing, valid product" do

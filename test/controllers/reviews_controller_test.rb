@@ -5,7 +5,7 @@ describe ReviewsController do
 
   describe Review do
     describe "new" do
-      it "successfully retrieve new review page for valid product id" do
+      it "can successfully retrieve new review page for valid product id" do
         get new_review_path(product_id: Product.first.id)
         assert_response :success
       end

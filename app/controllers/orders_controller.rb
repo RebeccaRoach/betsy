@@ -40,7 +40,7 @@ class OrdersController < ApplicationController
         reset_session
         return
       else
-        # Maybe don't sweat testing this else block: 38 - 43
+        # Don't sweat testing this else block
         # render :edit, status: :bad_request
         flash[:result_text] = "Order failed to checkout."
         redirect_back(fallback_location: root_path)
