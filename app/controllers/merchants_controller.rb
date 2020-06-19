@@ -1,4 +1,6 @@
 class MerchantsController < ApplicationController
+   before_action :find_merchant_from_params, only: [:show]
+   before_action :find_merchant_from_session, only: [:current]
   # before_action :require_login, except: [:index, :destroy, :create]
 
   def index
@@ -7,12 +9,13 @@ class MerchantsController < ApplicationController
   end
 
   def show
-    @merchant = Merchant.find_by(id: params[:id])
+    # @merchant = Merchant.find_by(id: params[:id])
     @url = "http://thecatapi.com/api/images/get?format=src&type=gif&timestamp="
-    if @merchant.nil?
-      head :not_found
-      return
-    end 
+
+    # if @merchant.nil?
+    #   return head :not_found
+    #   # return
+    # end 
   end
 
   def create
@@ -31,6 +34,7 @@ class MerchantsController < ApplicationController
         return redirect_to root_path
       end 
     end
+
     session[:merchant_id] = merchant.id
     return redirect_to root_path
   end
@@ -48,7 +52,6 @@ class MerchantsController < ApplicationController
       redirect_to root_path
       return
     else
-      @merchant = Merchant.find_by(id: session[:merchant_id])
       redirect_to merchant_path(session[:merchant_id])
       return
     end
@@ -70,5 +73,15 @@ class MerchantsController < ApplicationController
   #   end
   # end
 
- 
+  private
+
+  def find_merchant_from_params
+    @merchant = Merchant.find_by(id: params[:id])
+    head :not_found unless @merchant
+  end
+
+  def find_merchant_from_session
+    @merchant = Merchant.find_by(id: session[:merchant_id])
+    head :not_found unless @merchant
+  end
 end
