@@ -1,5 +1,4 @@
 require "test_helper"
-require "pry"
 
 describe Merchant do
   let(:merchant) {
@@ -44,22 +43,22 @@ describe Merchant do
       @merchant.products.each do |product|
         product.must_be_kind_of Product
       end
-
+      
       expect(@merchant.products.count).must_equal 5
     end
 
-      it "can set the merchant id through product" do
-      # @new_product
-      # @merchant.products << @product
 
-      # expect
-           # @product.merchant_id = @merchant.id
-      end
+    it "can set the merchant id through product" do
+    # @new_product
+    # @merchant.products << @product
+
+    # expect
+          # @product.merchant_id = @merchant.id
+    end
 
 # NOT NEEDED IN THIS MODEL:
-      it "can set the product_id through merchant" do
+    it "can set the product_id through merchant" do
       # @product.merchant = Merch
-      end
     end
 
     # ASK ABOUT TESTING PRODUCTS???
