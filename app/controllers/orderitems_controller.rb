@@ -73,12 +73,15 @@ class OrderitemsController < ApplicationController
   end
 
   def mark_shipped
-    if @orderitem.order.status == "paid" && @orderitem.shipped == false
+    if @orderitem.order.status == "paid" && @orderitem.shipped == false && @orderitem.product.merchant_id == session[:merchant_id]
       @orderitem.mark_item_shipped!
       flash[:success] = "#{ @orderitem.product.product_name } has shipped!"
       redirect_back fallback_location: root_path
     elsif @orderitem.order.status == "paid" && @orderitem.shipped == true
       flash[:failure] = "#{ @orderitem.product.product_name } has already shipped."
+      redirect_back fallback_location: root_path
+    elsif @orderitem.order.status == "paid" && @orderitem.shipped == false && @orderitem.product.merchant_id != session[:merchant_id]
+      flash[:failure] = "Cannot ship another merchant's item."
       redirect_back fallback_location: root_path
     else
       flash[:failure] = "Cannot perform this action for a #{@orderitem.order.status} order"
