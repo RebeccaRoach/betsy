@@ -9,7 +9,7 @@
   </section>
 <% else %>
   <h3 class="cart__text">Your Order's Current status: <%= @order.status %> </h2>
-  <h3 class="cart__text">Purchase made on: <%= @order.created_at %></h2>
+  <h3 class="cart__text">Purchase made on: <%= @order.created_at.to_date  %></h2>
   <table class="table" cellspacing="0" width="100%">
     <thead>
       <tr>
