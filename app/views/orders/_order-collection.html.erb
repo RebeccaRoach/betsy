@@ -35,6 +35,7 @@
 
       <%# Orderitems Table Content %>
       <% order.orderitems.each do |orderitem| %>
+      <% if orderitem.product.merchant_id == session[:merchant_id] %>
         <tr>
           <td class="text-just-center cart">
             <h6 class="cart__text"><%= link_to orderitem.product.product_name, product_path(orderitem.product.id), class: "text-dark, cart__text" %></h6>
@@ -62,6 +63,7 @@
             <%= link_to "Ship Item", mark_shipped_path(orderitem), method: :patch, data: {confirm: "Are you sure you want to mark #{orderitem.product.product_name} as shipped?"}, class: "cart__remove-button" %>
           </td>
         <tr>
+        <% end %>
       <% end %>
        </table>
     </td>
