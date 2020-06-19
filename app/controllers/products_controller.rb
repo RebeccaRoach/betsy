@@ -59,7 +59,7 @@ class ProductsController < ApplicationController
   end
 
   def retired
-    if @product.merchant_id != @current_user
+    if @product.merchant != @current_user
       flash[:error] = "You cannot retire a product that you do not sell"
       redirect_back(fallback_location: root_path)
       return
