@@ -16,7 +16,6 @@ class ReviewsController < ApplicationController
     if @review.save
       flash[:success] = "Review successfully added."
       redirect_to product_path(@review.product_id)
-      #  TODO: Render status codes
     else
       render :new, status: :bad_request
     end

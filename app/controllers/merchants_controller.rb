@@ -1,6 +1,4 @@
 class MerchantsController < ApplicationController
-  # before_action :require_login, except: [:index, :destroy, :create]
-
   def index
     @merchants = Merchant.all
     @url = "http://thecatapi.com/api/images/get?format=src&type=gif&timestamp="
@@ -53,22 +51,4 @@ class MerchantsController < ApplicationController
       return
     end
   end
-
-  #to do!!!
-  # def show
-  #   @merchant = Merchant.find_by(id: params[:id])
-  #   if @merchant.nil?
-  #     flash[:error] = "Invaid merchant credentials."
-  #     redirect_to root_path
-  #     return
-  #   end
-
-  #   if @merchant.id != (session[:merchant_id])
-  #     flash[:error] = "You must log in to view the merchant dashboard."
-  #     redirect_to root_path
-  #     return
-  #   end
-  # end
-
- 
 end

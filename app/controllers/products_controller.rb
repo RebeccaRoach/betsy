@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :find_product, only: [:show, :update, :edit, :destroy, :retired]
+  before_action :find_product, only: [:show, :update, :edit, :retired]
   before_action :require_login, only: [:new, :edit]
 
   def index
@@ -85,26 +85,3 @@ class ProductsController < ApplicationController
     return params.require(:product).permit(:product_name, :price, :description, :photo_url, :stock, :merchant_id, category_ids: [])
   end
 end
-
-
-
-# describe "edit" do
-#   before do
-#     @passenger = Passenger.create(name: 'Bojack', phone_num: '27')
-#   end
-
-#   it "responds with success when getting the edit page for an existing, valid passenger" do
-#     valid_passenger_id = @passenger.id
-    
-#     get "/passengers/#{valid_passenger_id}/edit"
-
-#     must_respond_with :success
-#   end
-
-#   it "responds with redirect when getting the edit page for a non-existing passenger" do
-#     get "/passengers/#{@invalid_passenger_id}/edit"
-
-#     must_respond_with :redirect
-#     must_redirect_to passengers_path
-#   end
-# end
