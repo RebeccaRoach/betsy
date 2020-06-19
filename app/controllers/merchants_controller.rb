@@ -1,7 +1,4 @@
 class MerchantsController < ApplicationController
-   before_action :find_merchant_from_params, only: [:show]
-   before_action :find_merchant_from_session, only: [:current]
-  # before_action :require_login, except: [:index, :destroy, :create]
 
   def index
     @merchants = Merchant.all
@@ -9,13 +6,12 @@ class MerchantsController < ApplicationController
   end
 
   def show
-    # @merchant = Merchant.find_by(id: params[:id])
+    @merchant = Merchant.find_by(id: params[:id])
     @url = "http://thecatapi.com/api/images/get?format=src&type=gif&timestamp="
 
-    # if @merchant.nil?
-    #   return head :not_found
-    #   # return
-    # end 
+    if @merchant.nil?
+      return head :not_found
+    end 
   end
 
   def create
@@ -44,44 +40,5 @@ class MerchantsController < ApplicationController
     flash[:result_text] = "Successfully logged out"
     redirect_to root_path
     return
-  end
-
-  def current
-    if session[:merchant_id] == nil
-      flash[:error] = "No merchant logged in."
-      redirect_to root_path
-      return
-    else
-      redirect_to merchant_path(session[:merchant_id])
-      return
-    end
-  end
-
-  #to do!!!
-  # def show
-  #   @merchant = Merchant.find_by(id: params[:id])
-  #   if @merchant.nil?
-  #     flash[:error] = "Invaid merchant credentials."
-  #     redirect_to root_path
-  #     return
-  #   end
-
-  #   if @merchant.id != (session[:merchant_id])
-  #     flash[:error] = "You must log in to view the merchant dashboard."
-  #     redirect_to root_path
-  #     return
-  #   end
-  # end
-
-  private
-
-  def find_merchant_from_params
-    @merchant = Merchant.find_by(id: params[:id])
-    head :not_found unless @merchant
-  end
-
-  def find_merchant_from_session
-    @merchant = Merchant.find_by(id: session[:merchant_id])
-    head :not_found unless @merchant
   end
 end

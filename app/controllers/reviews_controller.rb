@@ -16,7 +16,6 @@ class ReviewsController < ApplicationController
     if @review.save
       flash[:success] = "Review successfully added."
       redirect_to product_path(@review.product_id)
-      #  TODO: Render status codes
     else
       render :new, status: :bad_request
     end
@@ -24,7 +23,7 @@ class ReviewsController < ApplicationController
 
   private
 
-  def review_params1
+  def review_params
     return params.require(:review).permit(:content, :rating, :product_id)
   end
 end

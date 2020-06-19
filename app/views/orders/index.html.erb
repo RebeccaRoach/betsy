@@ -1,92 +1,56 @@
 <section class="content">
-  <h1 class="cart__text">ORDER FULFILLMENT PAGE</h1>
-  <h1 class="cart__text"> TOTAL REVENUE: $<%= number_with_precision(456789, :precision => 2, :delimiter => ',') %></h1>
+  <h1 class="cart__text text-danger">ORDER FULFILLMENT PAGE</h1>
+  <h3 class="cart__text"> TOTAL REVENUE: $<%= number_with_precision(@total_revenue, :precision => 2, :delimiter => ',') %></h1>
   <hr>
 
-  <h2 class="cart__text">All orders</h1>
-  <table class="table" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <%# TODO: add column names %>
-      </tr>
-    </thead>
-  <tbody>
-
-<%# On the order fulfillment page:
-
-    Total Revenue - √
-    Total Revenue by status
-    Total number of orders by status 
-    Filter orders displayed by status
-    Link to each individual order - √
-    A list of orders including at least one of my products:
-        DateTime the order was placed - √
-        Each order item sold by me with a quantity and  - √
-        line-item subtotal - √
-        A link to the item description page - √
-        Link to transition the order item to marked as shipped - √
-        The current status of the order ("pending", "paid", "complete", "cancelled") - √ %>
-
-  
-  <% @order_collection.each do |order| %>
-  <tr>
-
-    <td class="text-just-center">
-      <h3 class="cart__text"><span class='text-bold cart__text'> Order ID: <%= order.id %> </span></h2>
-      <p class="cart__text"><span class='text-bold cart__text'> Created: <%= order.created_at.strftime("%m/%d/%Y at %I:%M%p")  %> <br> Status: <%= order.status %> </span></p>
-    </td>
-
-    <tr>
-    <td>
-      <table cellspacing="0" width="100%">
-      <%# Orderitems Table Header %>
-      <thead>
-        <tr>
-          <th scope="col", class="th-sm cart__text">product name</th>
-          <th scope="col", class="th-sm cart__text">quantity</th>
-          <th scope="col", class="th-sm cart__text">subtotal</th>
-          <th scope="col", class="th-sm cart__text">Status</th>
-          <th scope="col", class="th-sm cart__text">Ship product</th>
-        </tr>
-      </thead>
-
-      <%# Orderitems Table Content %>
-      <% order.orderitems.each do |orderitem| %>
-        <tr>
-          <td class="text-just-center cart">
-            <h6 class="cart__text"><%= link_to orderitem.product.product_name, product_path(orderitem.product.id), class: "text-dark, cart__text" %></h6>
-          </td>
-          <td width=10% class="mr-4 pr-4">
-            <h6 class = "cart__text">
-              <%= orderitem.quantity %>
-            </h6>
-          </td>
-          <td class="text-just-center">
-            <h6 class="cart__text">$<%= number_with_precision(orderitem.subtotal, :precision => 2, :delimiter => ',') %></h6>
-          </td>
-          <td class="text-just-center cart">
-            <% if orderitem.shipped %>
-              <h6 class = "cart__text">
-                shipped
-              </h6>
-            <% else %>
-              <h6 class = "cart__text">
-                not shipped
-              </h6>
-            <% end %>
-          </td>
-          <td class="text-just-center cart">
-            <%= link_to "Ship Item", mark_shipped_path(orderitem), method: :patch, data: {confirm: "Are you sure you want to mark #{orderitem.product.product_name} as shipped?"}, class: "cart__remove-button" %>
-          </td>
-        <tr>
-      <% end %>
-       </table>
-    </td>
-  </tr>
-  </tr>
+<p>
+  <button class="cart__remove-button btn-sm rounded-0" type="button" data-toggle="collapse" data-target="#paid" aria-expanded="false" aria-controls="paid">
+    In Progress orders
+  </button>
+  <button class="cart__remove-button btn-sm rounded-0" type="button" data-toggle="collapse" data-target="#complete" aria-expanded="false" aria-controls="shipped">
+    Complete orders
+  </button>
+  <button class="cart__remove-button btn-sm rounded-0" type="button" data-toggle="collapse" data-target="#cancelled" aria-expanded="false" aria-controls="cancelled">
+    Cancelled orders
+  </button>
+</p>
+<div class="collapse" id="paid">
+  <%# @paid_collection %>
+  <% if @paid_collection.empty? %>
+    <h2 class="cart__text text-danger"> No orders </h2>
+  <% else %>
+    <h2 class="cart__text text-danger">In Progress Orders</h2>
+    <h2 class="cart__text">Revenue: $<%= number_with_precision(@paid_revenue, :precision => 2, :delimiter => ',') %> </h2>
+    <%= render partial: "order-collection", locals: { collection: @paid_collection  } %>
   <% end %>
+</div>
+<div class="collapse" id="complete">
+  <%# @complete %>
+  <% if @complete_collection.empty? %>
+    <h2 class="cart__text text-danger"> No orders </h2>
+  <% else %>
+    <h2 class="cart__text text-danger">Complete Orders</h2>
+    <h2 class="cart__text"> Revenue: $<%= number_with_precision(@complete_revenue, :precision => 2, :delimiter => ',') %> </h2>
+    <%= render partial: "order-collection", locals: { collection: @complete_collection  } %>
+  <% end %>
+</div>
+<div class="collapse" id="cancelled">
+  <%# @cancelled %>
+  <% if @cancelled_collection.empty? %>
+    <h2 class="cart__text text-danger"> No orders </h2>
+  <% else %>
+  <h2 class="cart__text text-danger">Cancelled Orders</h2>
+  <h2 class="cart__text"> Revenue: $<%= number_with_precision(@cancelled_revenue, :precision => 2, :delimiter => ',') %> </h2>
+  <%= render partial: "order-collection", locals: { collection: @cancelled_collection  } %>
+  <% end %>
+</div>
 
-  </tbody>
-  </table>
+
+<h2 class="cart__text">All orders</h2>
+<h2 class="cart__text">Revenue: $<%= number_with_precision(@total_revenue, :precision => 2, :delimiter => ',') %> </h2>
+<%= render partial: "order-collection", locals: { collection: @order_collection } %>
+
+
+<br>
 
 </section>

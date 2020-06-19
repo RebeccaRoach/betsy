@@ -26,7 +26,8 @@
       <h2 class="catalog__description-text">On Outdoorsy since: <%= @merchant.created_at.strftime("%B %d, %Y") %></h2> <br>
       <% if @merchant.id == session[:merchant_id] %>
         <%= button_to "Add New Product", new_product_path, method: :get, class: "product__new-button" %> <br>
-        <%= button_to "Add New Category", new_category_path, method: :get, class: "product__new-button" %>
+        <%= button_to "Add New Category", new_category_path, method: :get, class: "product__new-button" %> <br>
+        <%= button_to "Order Fulfillment", orders_path, method: :get, class: "product__new-button" %>
       <% end %>
     </div>
   </div>

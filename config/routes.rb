@@ -10,12 +10,12 @@ Rails.application.routes.draw do
   resources :orderitems, only: [:update, :destroy]
   patch 'orderitems/:id/mark_shipped', to: 'orderitems#mark_shipped', as: 'mark_shipped'
 
-  resources :orders, only: [:index, :new, :show, :edit, :update, :cancel]
+  resources :orders, only: [:index, :show, :edit, :update]
   get '/orders/:id/cart/success', to: 'orders#success', as: 'success'
   get '/orders/:id/cart', to: 'orders#cart', as: 'cart'
   patch '/orders/:id/cancel', to: 'orders#cancel', as: 'cancel'
 
-  resources :merchants
+  resources :merchants, only: [:index, :show, :create]
   post "/auth/github", as: "github_login"
   get "/auth/:github/callback", to: "merchants#create", as: "auth_callback"
   post "/logout", to: "merchants#logout", as: "logout"

@@ -9,7 +9,14 @@ class OrdersController < ApplicationController
   def index
     @merchant = Merchant.find_by(id: session[:merchant_id])
     @order_collection = @merchant.all_orders
+    @paid_collection = @merchant.order_status("paid")
+    @complete_collection = @merchant.order_status("complete")
+    @cancelled_collection = @merchant.order_status("cancelled")
+
     @total_revenue = @merchant.total_revenue
+    @paid_revenue = @merchant.revenue_by_status("paid")
+    @complete_revenue = @merchant.revenue_by_status("complete")
+    @cancelled_revenue = @merchant.revenue_by_status("cancelled")
   end
 
   def show
@@ -64,7 +71,7 @@ class OrdersController < ApplicationController
       flash[:failure] = "Cannot cancel an order that has already been shipped"
       redirect_back fallback_location: root_path
     else
-      flash[:failure] = "Cannot perform this action"
+      flash[:failure] = "Cannot cancel this order, one or more of your items has already shipped"
       redirect_to root_path
     end
   end
