@@ -35,15 +35,31 @@ describe Product do
     end
 
     it "has many reviews" do
-      
+      review1 = Review.create(content: "Wow testing is so fun", rating: 5, product_id: products(:snow_pass))
+      review2 = Review.create(content: "Testing is necessary but sometimes I'm just not feeling it", rating: 3, product_id: products(:snow_pass))
+
+      expect {
+        products(:snow_pass).reviews << [review1, review2]
+      }.must_differ "products(:snow_pass).reviews.count", 2
+
+      products(:snow_pass).reviews.each do |review|
+        expect(review).must_be_instance_of Review
+      end
     end
 
     it "has many orderitems" do
-      
+      expect(products(:rx_bar).orderitems.count).must_equal 2
+
+      products(:rx_bar).orderitems.each do |orderitem|
+        expect(orderitem).must_be_instance_of Orderitem
+      end
     end
 
     it "has many orders through orderitems" do
-      
+      products(:rx_bar).orderitems.each do |orderitem|
+        expect(orderitem).must_be_instance_of Orderitem
+        expect(orderitem.order).must_be_instance_of Order
+      end
     end
   end
 
