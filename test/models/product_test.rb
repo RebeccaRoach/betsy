@@ -13,12 +13,20 @@ describe Product do
     )
   }
 
+  before do
+    @review1 = Review.create(content: "Wow testing is so fun", 
+                            rating: 5, 
+                            product_id: products(:snow_pass))
+    @review2 = Review.create(content: "Testing is necessary but sometimes I'm just not feeling it", 
+                            rating: 3, 
+                            product_id: products(:snow_pass))
+  end
+
   # relationships
   describe "relationships" do
     it "belongs to merchant" do
       new_product.save
       new_product = Product.last
-      puts new_product.inspect
 
       expect(new_product.merchant.valid?).must_equal true
       expect(new_product.merchant).must_be_instance_of Merchant
@@ -35,11 +43,8 @@ describe Product do
     end
 
     it "has many reviews" do
-      review1 = Review.create(content: "Wow testing is so fun", rating: 5, product_id: products(:snow_pass))
-      review2 = Review.create(content: "Testing is necessary but sometimes I'm just not feeling it", rating: 3, product_id: products(:snow_pass))
-
       expect {
-        products(:snow_pass).reviews << [review1, review2]
+        products(:snow_pass).reviews << [@review1, @review2]
       }.must_differ "products(:snow_pass).reviews.count", 2
 
       products(:snow_pass).reviews.each do |review|
@@ -97,12 +102,23 @@ describe Product do
   describe "custom methods" do
     describe "retire!" do
       it "can change a product's retired status from false to true" do
-        
+        products(:snow_pass).retire!
+        expect(products(:snow_pass).retired).must_equal true
       end
     end
 
     describe "average_rating" do
-      
+      it "returns 0 if a product has no reviews" do
+        expect(products(:snow_pass).average_rating).must_equal 0
+      end
+
+      it "returns the correct rating for a product" do
+        expect {
+          products(:snow_pass).reviews << [@review1, @review2]
+        }.must_differ "products(:snow_pass).reviews.count", 2
+        
+        expect(products(:snow_pass).average_rating).must_equal 4
+      end
     end
   end
 end
