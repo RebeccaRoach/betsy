@@ -25,7 +25,13 @@ describe Product do
     end
 
     it "has and belongs to many categories" do
-      
+      expect { 
+        products(:snow_pass).categories << [categories(:parking_pass), categories(:gear)] 
+        }.must_differ "products(:snow_pass).categories.count", 2
+
+      products(:snow_pass).categories.each do |category|
+        expect(category).must_be_instance_of Category
+      end
     end
 
     it "has many reviews" do
@@ -65,6 +71,10 @@ describe Product do
       it "can change a product's retired status from false to true" do
         
       end
+    end
+
+    describe "average_rating" do
+      
     end
   end
 end
