@@ -70,12 +70,24 @@ describe Product do
     end
 
     it "is invalid without a product name" do
+      new_product.product_name = nil
+      expect(new_product.valid?).must_equal false
     end
 
     it "is invalid without a price and must be greater than 0" do
+      new_product.price = nil
+      expect(new_product.valid?).must_equal false
+
+      new_product.price = -5
+      expect(new_product.valid?).must_equal false
     end
 
     it "is invalid without a stock and must be greater than 0" do
+      new_product.stock = nil
+      expect(new_product.valid?).must_equal false
+
+      new_product.stock = -5
+      expect(new_product.valid?).must_equal false
     end
   end
 
